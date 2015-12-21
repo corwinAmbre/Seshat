@@ -1,0 +1,9 @@
+application/.classpath
+application/.project
+application/.settings/
+application/eclipse/
+application/lib/
+application/modules/
+application/test-result/
+application/tmp/
+application/logs/
