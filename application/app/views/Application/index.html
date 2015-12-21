@@ -1,4 +1,22 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
+#{set title:'Benchmarks' /}
 
-#{welcome /}
+<script src="@{'public/js/cryptojs/rollups/aes.js'}"></script>
+<script src="@{'public/js/benchmark-data.js'}"></script>
+<script src="@{'public/js/benchmark.js'}"></script>
+
+<style>
+	table {
+		border: 1px solid;
+		border-collapse: collapse;
+	}
+</style>
+
+<h1>Banchmark branch</h1>
+<p>This branch is only meant to test options that could impact performances</p>
+
+<h2>AES encryption</h2>
+<p>This test aims to check the impact of fragmenting encrypted data into several small pieces (ie to encrypt only the leaf of the data structure) versus encrypted the full tree as a JSON object</p>
+<button onclick="javascript:runBenchmarkAESCrypto()">Run benchmark</button>
+<div id="aesBenchmarkResults">
+</div>
