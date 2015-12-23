@@ -3,15 +3,21 @@
 <html>
     <head>
         <title>#{get 'title' /}</title>
-        
-        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+		
         <meta charset="${_response_encoding}">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <link rel="stylesheet" href="@{'/public/css/font-awesome.min.css'}">
+		<link rel="stylesheet" href="@{'/public/css/material.blue_grey-indigo.min.css'}" /> 
         <link rel="stylesheet" media="screen" href="@{'/public/css/main.css'}">
         #{get 'moreStyles' /}
         
         <script src="@{'/public/js/jquery-1.11.3.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="@{'/public/js/material.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="@{'/public/js/main.js'}" type="text/javascript" charset="${_response_encoding}"></script>
         #{get 'moreScripts' /}
+		
+		<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
     </head>
     <body>
         #{doLayout /}        
