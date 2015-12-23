@@ -39,4 +39,8 @@ public class Project extends Model {
 		this.versions.add(v);
 	}
 
+	public List<Version> getVersions() {
+		return versions;
+	}
+
 }

@@ -1,5 +1,7 @@
 package fr.corwin.apps.sheshat.tests.services;
 
+import java.io.File;
+
 import org.junit.Test;
 
 import play.libs.F.Tuple;
@@ -25,5 +27,16 @@ public class SecurityServiceTest extends UnitTest {
 		String decrypt = SecurityService.decrypt(key, iv, encrypted);
 		assertNotNull(decrypt);
 		assertEquals("Message", decrypt);
+	}
+
+	@Test
+	public void testGetChecksumFromFile() {
+		File loreIpsum = new File("test/test-files/testChecksumFile.txt");
+		assertTrue(loreIpsum.exists());
+		String checksum = SecurityService.getChecksumFromFile(loreIpsum);
+		assertNotNull(checksum);
+		assertEquals(
+				"563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d",
+				checksum);
 	}
 }
