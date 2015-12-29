@@ -11,6 +11,7 @@ import play.Play;
 import play.test.Fixtures;
 import play.test.UnitTest;
 import fr.corwin.apps.sheshat.model.Project;
+import fr.corwin.apps.sheshat.model.TemporaryKey;
 import fr.corwin.apps.sheshat.model.User;
 import fr.corwin.apps.sheshat.model.Version;
 
@@ -88,5 +89,25 @@ public class ModelTest extends UnitTest {
 						+ "563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d");
 		assertTrue(savedFile.exists());
 		assertTrue(savedFile.delete());
+	}
+
+	@Test
+	public void testTemporaryKey() {
+		assertEquals(0, TemporaryKey.count());
+		TemporaryKey key1 = TemporaryKey.getTemporaryKey();
+		TemporaryKey key2 = TemporaryKey.getTemporaryKey();
+		assertEquals(2, TemporaryKey.count());
+		assertNotNull(key1.getId());
+		assertNotNull(key1.getKey());
+		assertNotNull(key1.getIv());
+		assertNotNull(key1.getCreationDate());
+		assertNotNull(key2.getId());
+		assertNotNull(key2.getKey());
+		assertNotNull(key2.getIv());
+		assertNotNull(key2.getCreationDate());
+		assertNotEquals(key1.getId(), key2.getId());
+		assertNotEquals(key1.getKey(), key2.getKey());
+		assertNotEquals(key1.getIv(), key2.getIv());
+		assertNotEquals(key1.getCreationDate(), key2.getCreationDate());
 	}
 }

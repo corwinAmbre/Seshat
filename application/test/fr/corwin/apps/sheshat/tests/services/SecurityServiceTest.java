@@ -2,13 +2,22 @@ package fr.corwin.apps.sheshat.tests.services;
 
 import java.io.File;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import play.libs.F.Tuple;
+import play.test.Fixtures;
 import play.test.UnitTest;
+import fr.corwin.apps.sheshat.model.TemporaryKey;
+import fr.corwin.apps.sheshat.model.User;
 import fr.corwin.apps.sheshat.services.SecurityService;
 
 public class SecurityServiceTest extends UnitTest {
+
+	@Before
+	public void before() {
+		Fixtures.deleteAllModels();
+	}
 
 	@Test
 	public void testEncryption() {
@@ -38,5 +47,27 @@ public class SecurityServiceTest extends UnitTest {
 		assertEquals(
 				"563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d",
 				checksum);
+	}
+
+	@Test
+	public void testUserLogin() {
+		String username = "test User";
+		String password = "passwordtest";
+		new User(username, password).save();
+		TemporaryKey key = TemporaryKey.getTemporaryKey();
+		TemporaryKey key2 = TemporaryKey.getTemporaryKey();
+		String encryptedPassword = SecurityService.encrypt(key.getKey(),
+				key.getIv(), password);
+		String somethingElse = SecurityService.encrypt(key.getKey(),
+				key.getIv(), "somethingelse");
+
+		assertTrue(SecurityService.connectUser(username, encryptedPassword,
+				key.getId())); // Nominal case
+		assertFalse(SecurityService.connectUser(username, encryptedPassword,
+				key.getId() + 1000)); // Temporary key not found
+		assertFalse(SecurityService.connectUser(username, encryptedPassword,
+				key2.getId())); // Wrong key
+		assertFalse(SecurityService.connectUser(username, somethingElse,
+				key.getId())); // Wrong password
 	}
 }

@@ -23,9 +23,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import play.Logger;
 import play.libs.F.Tuple;
+import fr.corwin.apps.sheshat.model.TemporaryKey;
+import fr.corwin.apps.sheshat.model.User;
 
 public class SecurityService {
 
@@ -200,6 +203,26 @@ public class SecurityService {
 					"IOException");
 		}
 		return null;
+	}
+
+	public static Boolean connectUser(String userName, String password,
+			Long temporaryKey) {
+		TemporaryKey key = TemporaryKey.findById(temporaryKey);
+		if (key == null) {
+			return false;
+		}
+		String plainPassword = decrypt(key.getKey(), key.getIv(), password);
+		if (plainPassword == null) {
+			return false;
+		}
+		if (User.count("byUsernameAndPassword", userName,
+				DigestUtils.sha256Hex(plainPassword)) == 1) {
+			plainPassword = ""; // Just to clean the pile in case of late
+								// garbage
+			return true;
+		}
+		plainPassword = ""; // Just to clean the pile in case of late garbage
+		return false;
 	}
 
 }
