@@ -23,8 +23,11 @@ function max(arr) {
 	return arr[0];
 }
 
-
-
+function async(call_function) {
+    setTimeout(function() {
+    	call_function();
+    }, 0);
+}
 
 function runBenchmarkAESCrypto() {
 	// Tests are run 100 times in order to get relevant dataAES
@@ -65,4 +68,73 @@ function runBenchmarkAESCrypto() {
 			"<tr><td>Leaf encrypt / decrypt</td><td>" + mean(partialEncryptionTest) + "</td><td>" + median(partialEncryptionTest) + "</td><td>" + min(partialEncryptionTest) + "</td><td>" + max(partialEncryptionTest) + "</td></tr>" +
 			"<tr><td>Full tree encrypt / decrypt at leaf level</td><td>" + mean(fullEncryptionTreeTest) + "</td><td>" + median(fullEncryptionTreeTest) + "</td><td>" + min(fullEncryptionTreeTest) + "</td><td>" + max(fullEncryptionTreeTest) + "</td></tr>" +
 			"</tbody></table>");
+}
+
+function runBenchmarkAESCryptoLargeData() {
+	var encryption50kTest = new Array();
+	var encryption100kTest = new Array();
+	var encryption200kTest = new Array();
+	for(var i=0; i<100; ++i) {
+		var start = new Date().getTime();
+		var encrypted = CryptoJS.AES.encrypt(loreIpsum50k, "Secret Passphrase");
+		var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
+		var end = new Date().getTime();
+		encryption50kTest[i]= end - start;
+	}
+	for(var i=0; i<100; ++i) {
+		var start = new Date().getTime();
+		var encrypted = CryptoJS.AES.encrypt(loreIpsum50k + loreIpsum50k, "Secret Passphrase");
+		var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
+		var end = new Date().getTime();
+		encryption100kTest[i]= end - start;
+	}
+	for(var i=0; i<100; ++i) {
+		var start = new Date().getTime();
+		var encrypted = CryptoJS.AES.encrypt(loreIpsum50k + loreIpsum50k + loreIpsum50k + loreIpsum50k, "Secret Passphrase");
+		var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
+		var end = new Date().getTime();
+		encryption200kTest[i]= end - start;
+	}
+	$("#aesBenchmarkLargeDataResults").append("<table><thead><tr><th>Length</th><th>Mean</th><th>Median</th><th>Min</th><th>Max</th></tr></thead><tbody>" +
+			"<tr><td>50k words</td><td>" + mean(encryption50kTest) + "</td><td>" + median(encryption50kTest) + "</td><td>" + min(encryption50kTest) + "</td><td>" + max(encryption50kTest) + "</td></tr>" +
+			"<tr><td>100k words</td><td>" + mean(encryption100kTest) + "</td><td>" + median(encryption100kTest) + "</td><td>" + min(encryption100kTest) + "</td><td>" + max(encryption100kTest) + "</td></tr>" +
+			"<tr><td>200k words</td><td>" + mean(encryption200kTest) + "</td><td>" + median(encryption200kTest) + "</td><td>" + min(encryption200kTest) + "</td><td>" + max(encryption200kTest) + "</td></tr>" +
+			"</tbody></table>");	
+}
+
+
+function convertToDataURLviaCanvas(url, callback, outputFormat){
+    var img = new Image();
+    img.onload = function(){
+        var canvas = document.createElement('CANVAS');
+        var ctx = canvas.getContext('2d');
+        var dataURL;
+        canvas.height = this.height;
+        canvas.width = this.width;
+        ctx.drawImage(this, 0, 0);
+        dataURL = canvas.toDataURL(outputFormat);
+        callback(dataURL);
+        canvas = null; 
+    };
+    img.src = url;
+}
+
+function runBenchmarkAESCryptoImage() {
+	// Original image size: ~9 Mo
+	// Output: ~11 Mo
+	convertToDataURLviaCanvas("/public/images/photo-1447752875215-b2761acb3c5d.jpg", runBenchmarkAESCryptoImageAfterLoad, "image/jpeg");
+}
+
+function runBenchmarkAESCryptoImageAfterLoad(base64Img) {
+	var encryptionImgTest = new Array();
+	for(var i=0; i<10; ++i) {
+		var start = new Date().getTime();
+		var encrypted = CryptoJS.AES.encrypt(base64Img, "Secret Passphrase");
+		var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
+		var end = new Date().getTime();
+		encryptionImgTest[i]= end - start;
+	}
+	$("#aesBenchmarkImageResults").append("<table><thead><tr><th>Length</th><th>Mean</th><th>Median</th><th>Min</th><th>Max</th></tr></thead><tbody>" +
+			"<tr><td>Image 9Mo</td><td>" + mean(encryptionImgTest) + "</td><td>" + median(encryptionImgTest) + "</td><td>" + min(encryptionImgTest) + "</td><td>" + max(encryptionImgTest) + "</td></tr>" +
+			"</tbody></table>");	
 }

@@ -10,13 +10,26 @@
 		border: 1px solid;
 		border-collapse: collapse;
 	}
+	
+	td {
+		border: 1px solid;
+	}
 </style>
 
-<h1>Banchmark branch</h1>
-<p>This branch is only meant to test options that could impact performances</p>
+<h1>Benchmark branch</h1>
+<p>This branch is only meant to test options that could impact performances. Data are expressed in milliseconds</p>
+<p><strong>Some tests can trigger a timeout event on the browser</strong></p>
 
 <h2>AES encryption</h2>
 <p>This test aims to check the impact of fragmenting encrypted data into several small pieces (ie to encrypt only the leaf of the data structure) versus encrypted the full tree as a JSON object</p>
-<button onclick="javascript:runBenchmarkAESCrypto()">Run benchmark</button>
+<button onclick="javascript:async(runBenchmarkAESCrypto)">Run benchmark</button>
 <div id="aesBenchmarkResults">
+</div>
+<p>This test aims to check impact on length of text to encrypt on performances.</p>
+<button onclick="javascript:async(runBenchmarkAESCryptoLargeData)">Run benchmark</button>
+<div id="aesBenchmarkLargeDataResults">
+</div>
+<p>This test aims to measure encryption performances on an image.</p>
+<button onclick="javascript:async(runBenchmarkAESCryptoImage)">Run benchmark</button>
+<div id="aesBenchmarkImageResults">
 </div>
