@@ -10,7 +10,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import play.Play;
 import play.db.jpa.Model;
+import play.libs.Files;
 import fr.corwin.apps.sheshat.services.SecurityService;
 
 @Entity
@@ -35,6 +37,10 @@ public class Project extends Model {
 
 	public void addVersion(File version) {
 		String checksum = SecurityService.getChecksumFromFile(version);
+		File dest = new File(
+				Play.configuration.getProperty("seshat.paths.versions")
+						+ File.separator + checksum);
+		Files.copy(version, dest);
 		Version v = new Version(this, checksum);
 		this.versions.add(v);
 	}

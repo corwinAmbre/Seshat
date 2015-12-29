@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.Play;
 import play.test.Fixtures;
 import play.test.UnitTest;
 import fr.corwin.apps.sheshat.model.Project;
@@ -18,6 +19,13 @@ public class ModelTest extends UnitTest {
 	@Before
 	public void before() {
 		Fixtures.deleteAllModels();
+		File savedFile = new File(
+				Play.configuration.getProperty("seshat.paths.versions")
+						+ File.separator
+						+ "563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d");
+		if (savedFile.exists()) {
+			assertTrue(savedFile.delete());
+		}
 	}
 
 	@Test
@@ -74,5 +82,11 @@ public class ModelTest extends UnitTest {
 		assertEquals(
 				"563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d",
 				v.checksum);
+		File savedFile = new File(
+				Play.configuration.getProperty("seshat.paths.versions")
+						+ File.separator
+						+ "563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d");
+		assertTrue(savedFile.exists());
+		assertTrue(savedFile.delete());
 	}
 }
