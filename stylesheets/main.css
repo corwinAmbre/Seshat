@@ -1,0 +1,151 @@
+/**
+* Base colors:
+* Default text   : #7f8c8d
+* Primary color  : #2980b9
+* Secondary color: #ecf0f1
+*/
+
+@font-face {
+	font-family: 'Material Icons';
+	font-style: normal;
+	font-weight: 400;
+	src: url(./material-design-icons/iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
+	src: local('Material Icons'),
+		 local('MaterialIcons-Regular'),
+		 url(./material-design-icons/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+		 url(./material-design-icons/iconfont/MaterialIcons-Regular.woff) format('woff'),
+		 url(./material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;  /* Preferred icon size */
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	/* Support for all WebKit browsers. */
+	-webkit-font-smoothing: antialiased;
+	/* Support for Safari and Chrome. */
+	text-rendering: optimizeLegibility;
+	/* Support for Firefox. */
+	-moz-osx-font-smoothing: grayscale;
+	/* Support for IE. */
+	font-feature-settings: 'liga';
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	color: #7f8c8d;
+	padding-bottom: 50px;
+}
+
+.lobster {
+	font-family: 'Lobster', cursive;
+	font-size: 1.1em;
+}
+
+a {
+	color: #2980b9;
+}
+
+nav.header {
+	width: 100%;
+	height: 4em;
+	align-items: center;
+	justify-content: space-between;
+	text-align:center; /* centrage horizontal */
+}
+
+nav.header .logo {
+	font-family: 'Lobster', cursive;
+	font-size: 2.5em;
+	text-decoration: none;
+	color: black;
+}
+
+nav.header .links {
+	height: 100%;
+	align-items: center;
+}
+
+nav.header .links a {
+	text-decoration: none;
+	vertical-align:middle;
+	padding: 0em 0.5em;
+}
+
+article {
+	margin-top: 3em;
+}
+
+.feature {
+	margin-top: 1em;
+	text-align: center;
+}
+
+.feature i.material-icons {
+	font-size: 2.8em;
+}
+
+.feature h3 {
+	font-size: 2em;
+	font-weight: 400;
+	color: #2980b9;
+	margin-top: 0.2em;
+	margin-bottom: 0.3em;
+}
+
+article h1, article h2 {
+	font-size: 2.5em;
+	font-weight: 400;
+	color: #2980b9;
+	margin-bottom: 0.2em;
+}
+
+.responsivewidth {
+	width: 100%;
+}
+
+.storytelling span.quote {
+	font-family: 'Lobster', cursive;
+	font-size: 2em;
+	width: 100%;
+	text-align: center;
+}
+
+.separator {
+	margin: auto;
+	width: 80%;
+	height: 1px;
+	background: rgba(255,255,255,1);
+	background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(50%, rgba(41,128,185,1)), color-stop(100%, rgba(255,255,255,1)));
+	background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+}
+
+@media screen and (min-width: 960px) {
+	.storytelling span.quote {
+		font-family: 'Lobster', cursive;
+		font-size: 5em;
+		z-index: 100;
+		position: absolute;
+		top: 1.5em;
+		color: #ecf0f1;
+		width: 30%;
+		text-align: right;
+	}
+	
+	.responsivewidth {
+		width: 80%;
+	}
+}
