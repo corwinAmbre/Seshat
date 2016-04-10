@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.Logger;
 import play.Play;
 import play.test.Fixtures;
 import play.test.UnitTest;
@@ -40,6 +41,7 @@ public class ModelTest extends UnitTest {
 		assertNotNull(user.id);
 		assertEquals(username, user.username);
 		assertEquals(DigestUtils.sha256Hex(password), user.password);
+		Logger.info(DigestUtils.sha256Hex(user.username));
 	}
 
 	@Test
@@ -85,8 +87,8 @@ public class ModelTest extends UnitTest {
 				v.checksum);
 		File savedFile = new File(
 				Play.configuration.getProperty("seshat.paths.versions")
-						+ File.separator
-						+ "563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d");
+						+ File.separator + "412021ba4dbdd19ca3b2fc1eb42353b43c06974567474570d09c0e15a444c4bf"
+						+ File.separator + "563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d");
 		assertTrue(savedFile.exists());
 		assertTrue(savedFile.delete());
 	}

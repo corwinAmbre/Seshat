@@ -10,6 +10,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import play.Play;
 import play.db.jpa.Model;
 import play.libs.Files;
@@ -39,6 +41,7 @@ public class Project extends Model {
 		String checksum = SecurityService.getChecksumFromFile(version);
 		File dest = new File(
 				Play.configuration.getProperty("seshat.paths.versions")
+						+ File.separator + DigestUtils.sha256Hex(author.username)
 						+ File.separator + checksum);
 		Files.copy(version, dest);
 		Version v = new Version(this, checksum);
