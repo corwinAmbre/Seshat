@@ -70,4 +70,24 @@ public class SecurityServiceTest extends UnitTest {
 		assertFalse(SecurityService.connectUser(username, somethingElse,
 				key.getId())); // Wrong password
 	}
+
+	@Test
+	public void testTemporaryKey() {
+		assertEquals(0, TemporaryKey.count());
+		TemporaryKey key1 = TemporaryKey.getTemporaryKey();
+		TemporaryKey key2 = TemporaryKey.getTemporaryKey();
+		assertEquals(2, TemporaryKey.count());
+		assertNotNull(key1.getId());
+		assertNotNull(key1.getKey());
+		assertNotNull(key1.getIv());
+		assertNotNull(key1.getCreationDate());
+		assertNotNull(key2.getId());
+		assertNotNull(key2.getKey());
+		assertNotNull(key2.getIv());
+		assertNotNull(key2.getCreationDate());
+		assertNotEquals(key1.getId(), key2.getId());
+		assertNotEquals(key1.getKey(), key2.getKey());
+		assertNotEquals(key1.getIv(), key2.getIv());
+		assertNotEquals(key1.getCreationDate(), key2.getCreationDate());
+	}
 }

@@ -30,7 +30,7 @@ public class Project extends Model {
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	List<Version> versions;
-	
+
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	List<PublicVersion> publicVersions;
 
@@ -43,29 +43,35 @@ public class Project extends Model {
 
 	public void addVersion(File version) {
 		String checksum = SecurityService.getChecksumFromFile(version);
-		File dest = new File(getStoragePath()+ checksum);
+		File dest = new File(getStoragePath() + checksum);
 		Files.copy(version, dest);
 		Version v = new Version(this, checksum);
 		this.versions.add(v);
 	}
-	
-	public void addPublicVersion(File publicVersion) {
+
+	public PublicVersion addPublicVersion(File publicVersion) {
 		String checksum = SecurityService.getChecksumFromFile(publicVersion);
-		File dest = new File(getStoragePath() + checksum);
+		File dest = new File(getStoragePath() + "public" + File.separator
+				+ checksum);
 		Files.copy(publicVersion, dest);
 		PublicVersion v = new PublicVersion(this, checksum);
 		this.publicVersions.add(v);
+		return v;
 	}
 
 	public List<Version> getVersions() {
 		return versions;
 	}
-	
+
 	private String getStoragePath() {
 		return Play.configuration.getProperty("seshat.paths.versions")
 				+ File.separator + DigestUtils.sha256Hex(author.username)
 				+ File.separator;
-		
+
+	}
+
+	public List<PublicVersion> getPublicVersions() {
+		return publicVersions;
 	}
 
 }
