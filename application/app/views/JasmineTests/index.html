@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>#{get 'title' /}</title>
+
+		<link rel="shortcut icon" type="image/png" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine_favicon.png'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.css'}">
+
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.js'}"></script>
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine-html.js'}"></script>
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/boot.js'}"></script>
+	</head>
+	<body>
+		<script>
+			describe("A suite", function() {
+			  it("contains spec with an expectation", function() {
+			    expect(true).toBe(true);
+			  });
+			});
+		</script>
+	</body>
+</html>
