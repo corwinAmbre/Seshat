@@ -70,6 +70,18 @@ public class SecurityService {
 		return null;
 	}
 
+	public static String resizeKey(String key) {
+		String result = key;
+		if (key.length() > 31) {
+			result = key.substring(0, 31);
+		} else if (key.length() < 31) {
+			while (result.length() < 31) {
+				result = result + "0";
+			}
+		}
+		return Base64.encodeBase64String(result.getBytes());
+	}
+
 	/**
 	 * Encrypt a message with AES encryption mechanism.
 	 * 

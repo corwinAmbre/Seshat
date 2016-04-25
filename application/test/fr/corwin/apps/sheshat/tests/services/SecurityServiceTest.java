@@ -2,12 +2,17 @@ package fr.corwin.apps.sheshat.tests.services;
 
 import java.io.File;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import play.libs.F.Tuple;
 import play.test.Fixtures;
 import play.test.UnitTest;
+
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+
 import fr.corwin.apps.sheshat.model.TemporaryKey;
 import fr.corwin.apps.sheshat.model.User;
 import fr.corwin.apps.sheshat.services.SecurityService;
@@ -89,5 +94,26 @@ public class SecurityServiceTest extends UnitTest {
 		assertNotEquals(key1.getKey(), key2.getKey());
 		assertNotEquals(key1.getIv(), key2.getIv());
 		assertNotEquals(key1.getCreationDate(), key2.getCreationDate());
+	}
+
+	@Test
+	public void testKeyResize() {
+		String result = SecurityService.resizeKey("password");
+		assertNotNull(result);
+		try {
+			String resultPlain = new String(Base64.decode(result.getBytes()));
+			assertEquals(resultPlain.replaceAll("0", ""), "password");
+		} catch (Base64DecodingException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		Tuple<String, String> iv = SecurityService.generateKey();
+		String encrypted = SecurityService.encrypt(result, iv._2, "{}");
+		assertNotNull(encrypted);
+		assertTrue(StringUtils.isNotEmpty(encrypted));
+		String decrypted = SecurityService.decrypt(result, iv._2, encrypted);
+		assertNotNull(decrypted);
+		assertTrue(StringUtils.isNotEmpty(decrypted));
+		assertEquals("{}", decrypted);
 	}
 }
