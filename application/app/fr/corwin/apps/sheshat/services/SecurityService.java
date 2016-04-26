@@ -24,6 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
 import play.libs.F.Tuple;
@@ -72,12 +73,10 @@ public class SecurityService {
 
 	public static String resizeKey(String key) {
 		String result = key;
-		if (key.length() > 31) {
-			result = key.substring(0, 31);
-		} else if (key.length() < 31) {
-			while (result.length() < 31) {
-				result = result + "0";
-			}
+		if (key.length() > 16) {
+			result = key.substring(0, 15);
+		} else if (key.length() < 16) {
+			result = StringUtils.rightPad(result, 16, "0");
 		}
 		return Base64.encodeBase64String(result.getBytes());
 	}
@@ -111,19 +110,19 @@ public class SecurityService {
 			return encrypt;
 		} catch (NoSuchAlgorithmException ex) {
 			Logger.error("Error while encrypting AES value: %s",
-					"IllegalBlockSizeException");
+					"NoSuchAlgorithmException");
 		} catch (IllegalBlockSizeException ex) {
 			Logger.error("Error while encrypting AES value: %s",
 					"IllegalBlockSizeException");
 		} catch (BadPaddingException ex) {
 			Logger.error("Error while encrypting AES value: %s",
-					"IllegalBlockSizeException");
+					"BadPaddingException");
 		} catch (InvalidKeyException ex) {
 			Logger.error("Error while encrypting AES value: %s",
-					"IllegalBlockSizeException");
+					"InvalidKeyException");
 		} catch (NoSuchPaddingException ex) {
 			Logger.error("Error while encrypting AES value: %s",
-					"IllegalBlockSizeException");
+					"NoSuchPaddingException");
 		} catch (InvalidAlgorithmParameterException e) {
 			Logger.error("Error while encrypting AES value: %s",
 					"InvalidAlgorithmParameterException");

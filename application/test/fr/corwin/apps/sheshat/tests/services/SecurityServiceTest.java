@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.Logger;
 import play.libs.F.Tuple;
 import play.test.Fixtures;
 import play.test.UnitTest;
@@ -101,6 +102,9 @@ public class SecurityServiceTest extends UnitTest {
 		String result = SecurityService.resizeKey("password");
 		assertNotNull(result);
 		try {
+			Logger.info("Length generated key: %d",
+					Base64.decode(SecurityService.generateKey()._1).length);
+			Logger.info("Length resized key: %d", Base64.decode(result).length);
 			String resultPlain = new String(Base64.decode(result.getBytes()));
 			assertEquals(resultPlain.replaceAll("0", ""), "password");
 		} catch (Base64DecodingException e) {
