@@ -73,10 +73,11 @@ public class SecurityService {
 
 	public static String resizeKey(String key) {
 		String result = key;
-		if (key.length() > 16) {
-			result = key.substring(0, 15);
-		} else if (key.length() < 16) {
-			result = StringUtils.rightPad(result, 16, "0");
+		int keySize = 32;
+		if (key.length() > keySize) {
+			result = key.substring(0, keySize);
+		} else if (key.length() < keySize) {
+			result = StringUtils.rightPad(result, keySize, "0");
 		}
 		return Base64.encodeBase64String(result.getBytes());
 	}

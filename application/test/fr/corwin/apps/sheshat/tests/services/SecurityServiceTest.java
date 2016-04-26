@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import play.Logger;
 import play.libs.F.Tuple;
 import play.test.Fixtures;
 import play.test.UnitTest;
@@ -51,7 +50,7 @@ public class SecurityServiceTest extends UnitTest {
 		String checksum = SecurityService.getChecksumFromFile(loreIpsum);
 		assertNotNull(checksum);
 		assertEquals(
-				"563934aa9a0c1e8dceb5ad7163a7e0c7f44dce95e42e3b4eab418389333f980d",
+				"030dfbf355f658bc9a816ffe66a3d89dd064f8696def894be7afe60d9842e0ab",
 				checksum);
 	}
 
@@ -102,13 +101,9 @@ public class SecurityServiceTest extends UnitTest {
 		String result = SecurityService.resizeKey("password");
 		assertNotNull(result);
 		try {
-			Logger.info("Length generated key: %d",
-					Base64.decode(SecurityService.generateKey()._1).length);
-			Logger.info("Length resized key: %d", Base64.decode(result).length);
 			String resultPlain = new String(Base64.decode(result.getBytes()));
 			assertEquals(resultPlain.replaceAll("0", ""), "password");
 		} catch (Base64DecodingException e) {
-			e.printStackTrace();
 			fail(e.getMessage());
 		}
 		Tuple<String, String> iv = SecurityService.generateKey();
@@ -116,6 +111,22 @@ public class SecurityServiceTest extends UnitTest {
 		assertNotNull(encrypted);
 		assertTrue(StringUtils.isNotEmpty(encrypted));
 		String decrypted = SecurityService.decrypt(result, iv._2, encrypted);
+		assertNotNull(decrypted);
+		assertTrue(StringUtils.isNotEmpty(decrypted));
+		assertEquals("{}", decrypted);
+		result = SecurityService
+				.resizeKey("AVeryLongPasswordToTestTruncatedCaseIfNeeded");
+		assertNotNull(result);
+		try {
+			String resultPlain = new String(Base64.decode(result.getBytes()));
+			assertEquals(resultPlain, "AVeryLongPasswordToTestTruncated");
+		} catch (Base64DecodingException e) {
+			fail(e.getMessage());
+		}
+		encrypted = SecurityService.encrypt(result, iv._2, "{}");
+		assertNotNull(encrypted);
+		assertTrue(StringUtils.isNotEmpty(encrypted));
+		decrypted = SecurityService.decrypt(result, iv._2, encrypted);
 		assertNotNull(decrypted);
 		assertTrue(StringUtils.isNotEmpty(decrypted));
 		assertEquals("{}", decrypted);
