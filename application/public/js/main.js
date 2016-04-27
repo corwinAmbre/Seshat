@@ -4,7 +4,7 @@
  * @param keyBase64 key to use for encryption, in Base64
  * @param ivBase64 init vector to use for encryption, in Base64
  * @param encrypted encrypted message, in Base64
- * @returns Return the decrypted string if key matches, null otherwise
+ * @returns Return the decrypted string if key matches, empty string otherwise
  *
  */
 function decryptFromServer(keyBase64, ivBase64, encrypted) {
@@ -47,5 +47,8 @@ function openVault(key, ivBase64, vault) {
 	padKey = padKey.slice(0, 32);
 	var keyBase64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(padKey));
 	var decrypted = decryptFromServer(keyBase64, ivBase64, vault);
+	if(decrypted == null || decrypted == '') {
+		return null;
+	}
 	return JSON.parse(decrypted);
 }

@@ -12,15 +12,79 @@
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/boot.js'}"></script>
 		
 		<script src="@{'public/js/cryptojs/rollups/aes.js'}"></script>
+		<script src="@{'public/js/model/project.js'}"></script>
 		<script src="@{'public/js/main.js'}"></script>
 	</head>
 	<body>
 		<script>
-			describe("Master keys vault suite", function() {
+			describe("Model classes", function() {
+				it("can create an empty project", function(){
+					var project = new Project("Test project");
+					expect(project).toEqual(jasmine.any(Object));
+					expect(project.name).toEqual("Test project");
+					expect(project.summary).toEqual("");
+					expect(project.chapters).toEqual([]);
+				});
+				it("can add a chapter", function() {
+					var project = new Project("Test project with chapters");
+					expect(project.addChapter).toEqual(jasmine.any(Function));
+					project.addChapter();
+					expect(project.chapters.length).toEqual(1);
+					expect(project.chapters[0]).toEqual(jasmine.any(Object));
+					expect(project.chapters[0].number).toEqual(1);
+					expect(project.chapters[0].content).toEqual(jasmine.any(Array));
+					expect(project.chapters[0].content.length).toEqual(1);
+					expect(project.chapters[0].content[0].content).toEqual("");
+				});
+				it("can add multiple chapters", function() {
+					var project = new Project("Test project with chapters");
+					project.addChapter();
+					project.addChapter();
+					expect(project.chapters.length).toEqual(2);
+					expect(project.chapters[0].number).toEqual(1);
+					expect(project.chapters[1].number).toEqual(2);
+				});
+			});
+			describe("Client side crypto methods", function(){
+				it("can encrypt a message", function() {
+					var key = "6KeWgxIT6/TDV5MPZQCm7lodTLYH9T2cHDh8x7dL/QA=";
+					var iv = "767oue2NJ9uLqOvjffH1ng==";
+					var message = "Message";
+					var encrypted = encryptToServer(key, iv, message);
+					expect(encrypted).toEqual("cAgnrSrVUdZOpKJguykRlA==");					
+				});
+				it("can decrypt a message", function(){
+					var key = "6KeWgxIT6/TDV5MPZQCm7lodTLYH9T2cHDh8x7dL/QA=";
+					var iv = "767oue2NJ9uLqOvjffH1ng==";
+					var message = "cAgnrSrVUdZOpKJguykRlA==";
+					var decrypted = decryptFromServer(key, iv, message);
+					expect(decrypted).toEqual("Message");
+				});
+				it("cannot decrypt a message with wrong key", function(){
+					var key = "NktlV2d4SVQ2L1REVjVNUFpRQ203bG9kVExZSDlUMmNIRGg4eDdkTC9RQT0=";
+					var iv = "767oue2NJ9uLqOvjffH1ng==";
+					var message = "cAgnrSrVUdZOpKJguykRlA==";
+					var decrypted = decryptFromServer(key, iv, message);
+					expect(decrypted).toBe('');
+				});
+				it("cannot decrypt a message with wrong iv", function(){
+					var key = "6KeWgxIT6/TDV5MPZQCm7lodTLYH9T2cHDh8x7dL/QA=";
+					var iv = "${tempUser.getVault()._2}";
+					var message = "cAgnrSrVUdZOpKJguykRlA==";
+					var decrypted = decryptFromServer(key, iv, message);
+					expect(decrypted).toBe('');
+				});
+			});
+			describe("Master keys vault", function() {
 			  	it("can read empty vault from server", function() {
 			  		var decrypted = openVault("password", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
 			  		var emptyVault = {};
-			    	expect(emptyVault).toEqual(decrypted);
+			    	expect(decrypted).toEqual(emptyVault);
+			  	});
+			  	it("cannot read vault with wrong password", function() {
+			  		var decrypted = openVault("fakepassword", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
+			  		var emptyVault = {};
+			    	expect(decrypted).toBe(null);
 			  	});
 			});
 		</script>
