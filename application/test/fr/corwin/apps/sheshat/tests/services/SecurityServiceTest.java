@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.Logger;
 import play.libs.F.Tuple;
 import play.test.Fixtures;
 import play.test.UnitTest;
@@ -102,6 +103,7 @@ public class SecurityServiceTest extends UnitTest {
 		assertNotNull(result);
 		try {
 			String resultPlain = new String(Base64.decode(result.getBytes()));
+			Logger.info(resultPlain);
 			assertEquals(resultPlain.replaceAll("0", ""), "password");
 		} catch (Base64DecodingException e) {
 			fail(e.getMessage());

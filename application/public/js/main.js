@@ -34,3 +34,18 @@ function encryptToServer(keyBase64, ivBase64, message) {
 		{ mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: iv });
 	return result.toString();
 }
+
+/**
+ * Wrapper method to decrypt a vault when received from the server using client side decryption.
+ * @param key key to use for decryption, in plain text. Will be padded to 32 characters automatically (or truncate if needed)
+ * @param ivBase64 init vectore to user for decryption, in Base64
+ * @param vault encrypted vault, in Base64
+ * @returns Return vault as a JSON object if key matches, null otherwise
+ */
+function openVault(key, ivBase64, vault) {
+	var padKey = key + "00000000000000000000000000000000";
+	padKey = padKey.slice(0, 32);
+	var keyBase64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(padKey));
+	var decrypted = decryptFromServer(keyBase64, ivBase64, vault);
+	return JSON.parse(decrypted);
+}

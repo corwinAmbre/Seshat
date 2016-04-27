@@ -10,13 +10,18 @@
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.js'}"></script>
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine-html.js'}"></script>
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/boot.js'}"></script>
+		
+		<script src="@{'public/js/cryptojs/rollups/aes.js'}"></script>
+		<script src="@{'public/js/main.js'}"></script>
 	</head>
 	<body>
 		<script>
-			describe("A suite", function() {
-			  it("contains spec with an expectation", function() {
-			    expect(true).toBe(true);
-			  });
+			describe("Master keys vault suite", function() {
+			  	it("can read empty vault from server", function() {
+			  		var decrypted = openVault("password", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
+			  		var emptyVault = {};
+			    	expect(emptyVault).toEqual(decrypted);
+			  	});
 			});
 		</script>
 	</body>

@@ -5,6 +5,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import play.Play;
 import play.mvc.Before;
 import play.mvc.Controller;
+import fr.corwin.apps.sheshat.model.User;
 
 public class JasmineTests extends Controller {
 
@@ -20,7 +21,11 @@ public class JasmineTests extends Controller {
 	}
 
 	public static void index() {
-		render();
+		if (User.count("byUsername", "jasmineTest") > 0) {
+			((User) User.find("byUsername", "jasmineTest").first()).delete();
+		}
+		User tempUser = new User("jasmineTest", "password");
+		render(tempUser);
 	}
 
 }
