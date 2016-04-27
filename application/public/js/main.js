@@ -4,17 +4,24 @@
  * @param keyBase64 key to use for encryption, in Base64
  * @param ivBase64 init vector to use for encryption, in Base64
  * @param encrypted encrypted message, in Base64
- * @returns Return the decrypted string if key matches, empty string otherwise
+ * @returns Return the decrypted string if key matches, null if any issue
  *
  */
 function decryptFromServer(keyBase64, ivBase64, encrypted) {
 	var key = CryptoJS.enc.Base64.parse(keyBase64);
 	var iv = CryptoJS.enc.Base64.parse(ivBase64);
-	var result = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(
-		encrypted,
-		key, 
-		{ mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: iv }));
-	return result;
+	try {
+		var result = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(
+			encrypted,
+			key, 
+			{ mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: iv }));
+		if(result == '') {
+			return null;
+		}
+		return result;
+	} catch(err) {
+		return null;
+	}
 }
 
 /**
@@ -28,11 +35,18 @@ function decryptFromServer(keyBase64, ivBase64, encrypted) {
 function encryptToServer(keyBase64, ivBase64, message) {
 	var key = CryptoJS.enc.Base64.parse(keyBase64);
 	var iv = CryptoJS.enc.Base64.parse(ivBase64);
-	var result = CryptoJS.AES.encrypt(
-		message,
-		key, 
-		{ mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: iv });
-	return result.toString();
+	try {
+		var result = CryptoJS.AES.encrypt(
+			message,
+			key, 
+			{ mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: iv });
+		if(result.toString() == '') {
+			return null;
+		}
+		return result.toString();
+	} catch(err) {
+		return null;
+	}
 }
 
 /**
@@ -51,4 +65,11 @@ function openVault(key, ivBase64, vault) {
 		return null;
 	}
 	return JSON.parse(decrypted);
+}
+
+function generateKeyAndIv(secretPhrase) {
+	 var salt = CryptoJS.lib.WordArray.random(128/8);
+	 var key = CryptoJS.enc.Base64.stringify(CryptoJS.PBKDF2(secretPhrase, salt, { keySize: 256/32 }));
+	 var iv = CryptoJS.enc.Base64.stringify(CryptoJS.PBKDF2(secretPhrase, salt, { keySize: 128/32 }));
+	 return {key: key, iv: iv};
 }
