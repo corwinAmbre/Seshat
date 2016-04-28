@@ -25,6 +25,7 @@
 					expect(project.name).toBe("Test project");
 					expect(project.summary).toBe("");
 					expect(project.chapters).toEqual([]);
+					expect(project.key).toEqual(jasmine.any(String));
 				});
 				it("can add a chapter", function() {
 					var project = new Project("Test project with chapters");
@@ -44,6 +45,33 @@
 					expect(project.chapters.length).toBe(2);
 					expect(project.chapters[0].number).toBe(1);
 					expect(project.chapters[1].number).toBe(2);
+				});
+				it("can remove a chapter", function() {
+					var project = new Project("Test project with chapters");
+					expect(project.removeChapter).toEqual(jasmine.any(Function));
+					for(var i = 0; i < 10; i++) {
+						project.addChapter();
+					}
+					expect(project.chapters.length).toBe(10);
+					expect(project.removeChapter(11)).toBe(false);
+					expect(project.chapters.length).toBe(10);
+					expect(project.removeChapter(0)).toBe(false);
+					expect(project.chapters.length).toBe(10);
+					expect(project.removeChapter(1)).toBe(true);
+					expect(project.chapters.length).toBe(9);
+					for(var i = 0; i < 9; i++) {
+						expect(project.chapters[i].number).toBe(i+1);
+					}
+					expect(project.removeChapter(9)).toBe(true);
+					expect(project.chapters.length).toBe(8);
+					for(var i = 0; i < 8; i++) {
+						expect(project.chapters[i].number).toBe(i+1);
+					}
+					expect(project.removeChapter(4)).toBe(true);
+					expect(project.chapters.length).toBe(7);
+					for(var i = 0; i < 7; i++) {
+						expect(project.chapters[i].number).toBe(i+1);
+					}
 				});
 			});
 			describe("Client side crypto methods", function(){
@@ -83,6 +111,9 @@
 					var message = "Message";
 					var encrypted = encryptToServer(keyIv.key, keyIv.iv, message);
 					expect(encrypted).not.toBe(null);
+					var anotherKey = generateKeyAndIv("Secret Passphrase");
+					expect(keyIv.key).not.toEqual(anotherKey.key);
+					expect(keyIv.iv).not.toEqual(anotherKey.iv);
 				});
 			});
 			describe("Master keys vault", function() {
@@ -95,6 +126,20 @@
 			  		var decrypted = openVault("fakepassword", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
 			  		var emptyVault = {};
 			    	expect(decrypted).toBe(null);
+			  	});
+			  	it("can add a new key to the vault", function() {
+			  		var vault = openVault("password", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
+			  		var project = new Project("Test for vault");
+			  		vault[project.key] = generateKeyAndIv("Test for vault");
+			  		expect(vault[project.key]).toBeDefined();
+			  		expect(vault[project.key]).toEqual(jasmine.any(Object));
+			  		var encrypted = saveVault("password", "${tempUser.getVault()._2}", vault);
+			  		expect(encrypted).not.toBe(null);
+			  		var decryptedVault = openVault("password", "${tempUser.getVault()._2}", encrypted);
+			  		expect(decryptedVault).not.toBe(null);
+			  		expect(decryptedVault).toEqual(jasmine.any(Object));
+			  		expect(decryptedVault[project.key]).toBeDefined();
+			  		expect(decryptedVault[project.key]).toEqual(vault[project.key]);
 			  	});
 			});
 		</script>

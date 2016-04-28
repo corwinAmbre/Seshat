@@ -67,6 +67,13 @@ function openVault(key, ivBase64, vault) {
 	return JSON.parse(decrypted);
 }
 
+function saveVault(key, ivBase64, vault) {
+	var padKey = key + "00000000000000000000000000000000";
+	padKey = padKey.slice(0, 32);
+	var keyBase64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(padKey));
+	return encryptToServer(keyBase64, ivBase64, JSON.stringify(vault));
+}
+
 function generateKeyAndIv(secretPhrase) {
 	 var salt = CryptoJS.lib.WordArray.random(128/8);
 	 var key = CryptoJS.enc.Base64.stringify(CryptoJS.PBKDF2(secretPhrase, salt, { keySize: 256/32 }));
