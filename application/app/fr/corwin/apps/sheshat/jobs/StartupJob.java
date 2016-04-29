@@ -6,6 +6,7 @@ import play.Logger;
 import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import fr.corwin.apps.sheshat.model.User;
 
 @OnApplicationStart
 public class StartupJob extends Job {
@@ -23,6 +24,9 @@ public class StartupJob extends Job {
 		if (!versionsDirectory.isDirectory()) {
 			Logger.error("%s is expected to be a folder but is a file",
 					Play.configuration.getProperty("seshat.paths.versions"));
+		}
+		if (User.count() == 0) {
+			new User("admin", "admin").save();
 		}
 	}
 }
