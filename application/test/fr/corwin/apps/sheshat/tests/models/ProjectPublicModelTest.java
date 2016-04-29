@@ -27,6 +27,7 @@ public class ProjectPublicModelTest extends UnitTest {
 	private static final String INVITE_EMAIL = "testmail@inviteseshat.com";
 
 	private static final String PROJECT_NAME = "My project for testing";
+	private static final String PROJECT_KEY = "6KeWgxIT6/TDV5MPZQCm7lodTLYH9T2cHDh8x7dL/QA=";
 
 	private User user;
 	private Project project;
@@ -42,7 +43,7 @@ public class ProjectPublicModelTest extends UnitTest {
 			assertTrue(savedFile.delete());
 		}
 		user = new User(USERNAME, PASSWORD).save();
-		user.addProject(PROJECT_NAME);
+		user.addProject(PROJECT_NAME, PROJECT_KEY);
 		user.save();
 		project = user.getProjects().get(0);
 	}

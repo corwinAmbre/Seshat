@@ -38,8 +38,8 @@ public class User extends Model {
 		this.ivVault = iv._2;
 	}
 
-	public Project addProject(String name) {
-		Project p = new Project(name, this);
+	public Project addProject(String name, String key) {
+		Project p = new Project(name, this, key);
 		this.projects.add(p);
 		return p;
 	}

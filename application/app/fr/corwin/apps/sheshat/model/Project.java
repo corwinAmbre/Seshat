@@ -28,15 +28,18 @@ public class Project extends Model {
 	@Lob
 	public String summary;
 
+	public String idKey;
+
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	List<Version> versions;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	List<PublicVersion> publicVersions;
 
-	public Project(String name, User author) {
+	public Project(String name, User author, String key) {
 		this.name = name;
 		this.author = author;
+		this.idKey = key;
 		this.versions = new ArrayList<Version>();
 		this.publicVersions = new ArrayList<PublicVersion>();
 	}

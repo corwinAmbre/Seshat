@@ -26,6 +26,7 @@ public class ProjectPrivateModelTest extends UnitTest {
 	private static final String TEST_FILE_CHECKSUM = "030dfbf355f658bc9a816ffe66a3d89dd064f8696def894be7afe60d9842e0ab";
 
 	private static final String PROJECT_NAME = "My project for testing";
+	private static final String PROJECT_KEY = "6KeWgxIT6/TDV5MPZQCm7lodTLYH9T2cHDh8x7dL/QA=";
 
 	private User user;
 
@@ -46,7 +47,7 @@ public class ProjectPrivateModelTest extends UnitTest {
 	public void testProject() {
 		assertEquals(0, Project.count());
 
-		user.addProject(PROJECT_NAME);
+		user.addProject(PROJECT_NAME, PROJECT_KEY);
 		user.save();
 
 		assertEquals(1, Project.count());
@@ -54,6 +55,7 @@ public class ProjectPrivateModelTest extends UnitTest {
 		assertEquals(1, user.getProjects().size());
 		Project p = user.getProjects().get(0);
 		assertEquals(PROJECT_NAME, p.name);
+		assertEquals(PROJECT_KEY, p.idKey);
 		assertNotNull(p.author);
 		assertEquals(user.id, p.author.id);
 	}
@@ -63,7 +65,7 @@ public class ProjectPrivateModelTest extends UnitTest {
 		assertEquals(0, Version.count());
 		File loreIpsum = new File(TEST_FILE_PATH);
 
-		Project p = user.addProject(PROJECT_NAME);
+		Project p = user.addProject(PROJECT_NAME, PROJECT_KEY);
 		p.addVersion(loreIpsum);
 		user.save();
 
