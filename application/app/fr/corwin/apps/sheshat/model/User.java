@@ -71,4 +71,23 @@ public class User extends Model {
 		return new Tuple<String, String>(this.keysVault, this.ivVault);
 	}
 
+	public static User findByUsername(String username) {
+		return User.find("byUsername", username).first();
+	}
+
+	public static Boolean connect(String username, String password) {
+		User user = User.find("byUsername", username).first();
+		if (user == null) {
+			return false;
+		} else {
+			if (StringUtils.equals(user.password,
+					DigestUtils.sha256Hex(password))) {
+				return true;
+			} else {
+				// TODO handle multiple failed login
+				return false;
+			}
+		}
+	}
+
 }
