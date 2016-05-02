@@ -9,6 +9,7 @@ var Chapter = function(number) {
 
 var Project = function(name) {
 	var salt = CryptoJS.lib.WordArray.random(128/8);
+	this.remoteId = null;
 	this.key = CryptoJS.enc.Base64.stringify(CryptoJS.PBKDF2(name, salt, { keySize: 256/32 })); 
 	this.name = name;
 	this.summary = "";

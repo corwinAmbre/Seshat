@@ -10,12 +10,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import play.Play;
 import play.db.jpa.Model;
 import play.libs.Files;
 import fr.corwin.apps.sheshat.services.SecurityService;
+import fr.corwin.apps.sheshat.utils.SeshatUtils;
 
 @Entity
 public class Project extends Model {
@@ -46,7 +44,7 @@ public class Project extends Model {
 
 	public void addVersion(File version) {
 		String checksum = SecurityService.getChecksumFromFile(version);
-		File dest = new File(getStoragePath() + checksum);
+		File dest = new File(SeshatUtils.getStoragePath(author) + checksum);
 		Files.copy(version, dest);
 		Version v = new Version(this, checksum);
 		this.versions.add(v);
@@ -54,8 +52,8 @@ public class Project extends Model {
 
 	public PublicVersion addPublicVersion(File publicVersion) {
 		String checksum = SecurityService.getChecksumFromFile(publicVersion);
-		File dest = new File(getStoragePath() + "public" + File.separator
-				+ checksum);
+		File dest = new File(SeshatUtils.getStoragePath(author) + "public"
+				+ File.separator + checksum);
 		Files.copy(publicVersion, dest);
 		PublicVersion v = new PublicVersion(this, checksum);
 		this.publicVersions.add(v);
@@ -64,13 +62,6 @@ public class Project extends Model {
 
 	public List<Version> getVersions() {
 		return versions;
-	}
-
-	private String getStoragePath() {
-		return Play.configuration.getProperty("seshat.paths.versions")
-				+ File.separator + DigestUtils.sha256Hex(author.username)
-				+ File.separator;
-
 	}
 
 	public List<PublicVersion> getPublicVersions() {

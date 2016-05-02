@@ -18,5 +18,8 @@ GET     /js/                                 	staticDir:public/scripts
 GET     /images/							 	staticDir:public/images
 GET		/fonts/								 	staticDir:public/fonts
 
+POST	/rest/project							Application.createProject
+GET		/project/{id}							Application.getProject
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

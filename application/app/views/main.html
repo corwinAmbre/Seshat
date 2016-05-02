@@ -14,7 +14,11 @@
         #{get 'moreStyles' /}
         
         <script type="text/javascript" src="@{'/public/js/jquery-1.11.3.min.js'}" ></script>
-		<script type="text/javascript" src="@{'/public/js/main.js'}"></script>
+        <script type="text/javascript" src="@{'public/js/cryptojs/rollups/aes.js'}"></script>
+		<script type="text/javascript" src="@{'public/js/cryptojs/rollups/pbkdf2.js'}"></script>
+		<script type="text/javascript" src="@{'public/js/model/project.js'}"></script>
+		<script type="text/javascript" src="@{'public/js/connected.js'}"></script>
+		<script type="text/javascript" src="@{'public/js/main.js'}"></script>
         #{get 'moreScripts' /}
 		
 		<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
@@ -22,86 +26,12 @@
     <body lang="en">
 		<nav class="header flex-container">
 			<a href="./" class="logo mll">Seshat</a>
+			<div class="links mrs flex-container">
+				<a href="/logout" title="Logout"><i class="fa fa-power-off"></i> ${user.username}</a>
+			</div>
 		</nav>
-		<div class="w100 storytelling">
-			<img src="images/storytelling.jpg" class="w100"/>
-			<span class="quote pll plm">Your story is worth to be written</span>
+		<div>
+			#{doLayout /}
 		</div>
-		<div class="responsivewidth center txtcenter">
-			<article class="center txtcenter">
-				<h2>What is <span class="lobster">Seshat</span>?</h2>
-				<div class="separator"></div>
-				<p><span class="lobster">Seshat</span> is a web tool to help you planning, organizing and writing your own book, novel, scenario...</p>
-				<p>
-					The idea came during my first <a href="http://nanowrimo.org/">NaNoWriMo</a>. At this point I was using <a href="http://www.spacejock.com/yWriter6.html">yWriter 6</a> which is very useful but was not totally suited for my needs so I decided to create my own tool and to share it with anyone who could be interested as well.
-				</p>
-			</article>
-			<article class="grid-4-small-1" id="features">
-				<div class="feature">
-					<i class="material-icons">create</i>
-					<h3>Focus on writing</h3>
-					<div class="separator"></div>
-					<span>While writing, you're focused on your story with minimal toolbars displayed on the page</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">lock</i>
-					<h3>Security</h3>
-					<div class="separator"></div>
-					<span>Your story can't be read by anyone other than you until you want to unveil it</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">devices</i>
-					<h3>No permanent connection</h3>
-					<div class="separator"></div>
-					<span>Once you've loaded your story on your device, you can continue to write even without any connection</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">share</i>
-					<i class="material-icons">fingerprint</i>
-					<h3>Share your story</h3>
-					<div class="separator"></div>
-					<span>You can share your story with your friends or with the world, online or by exporting to PDF or EPUB with Watermark system to track your copies</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">description</i>
-					<h3>Sticky notes wall</h3>
-					<div class="separator"></div>
-					<span>Put all your ideas on sticky notes and create links between them. It's as having your wall into your pocket</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">chrome_reader_mode</i>
-					<h3>Plan your story</h3>
-					<div class="separator"></div>
-					<span>You can plan your story, define your characters and places and link public images to them</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">memory</i>
-					<h3>Self hosting</h3>
-					<div class="separator"></div>
-					<span>You can host your own <span class="lobster">Seshat</span> instance as you want</span>
-				</div>
-				<div class="feature">
-					<i class="material-icons">trending_up</i>
-					<h3>Follow your progress</h3>
-					<div class="separator"></div>
-					<span>Statistic module will show you how often you write, how long and your average word speed</span>
-				</div>
-			</article>
-			<article class="center txtcenter">
-				<h2>Stay tunned!</h2>
-				<div class="separator"></div>
-				<p><span class="lobster">Seshat</span> is at its early stage and therefore will evolve. To be totally honest, project already changed quite a bit already. If you have ideas, feedback or just a message, you can <a href="mailto:sebastien.domergue@gmail.com">contact me</a> or go to <a href="https://github.com/corwinAmbre/Seshat">the project page on Github <i class="fa fa-github"></i></a></p>
-			</article>
-		</div>
-		<script type="text/javascript">
-			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-		</script>
-		<script type="text/javascript">
-			try {
-				var pageTracker = _gat._getTracker("UA-70768055-1");
-	            pageTracker._trackPageview();
-			} catch(err) {}
-		</script>
 	</body>
 </html>

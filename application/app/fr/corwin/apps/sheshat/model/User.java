@@ -1,5 +1,7 @@
 package fr.corwin.apps.sheshat.model;
 
+import java.io.File;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +12,12 @@ import javax.persistence.OneToMany;
 
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 
 import play.db.jpa.Model;
 import play.libs.F.Tuple;
 import fr.corwin.apps.sheshat.services.SecurityService;
+import fr.corwin.apps.sheshat.utils.SeshatUtils;
 
 @Entity
 public class User extends Model {
@@ -69,6 +73,15 @@ public class User extends Model {
 
 	public Tuple<String, String> getVault() {
 		return new Tuple<String, String>(this.keysVault, this.ivVault);
+	}
+
+	public BigInteger getSpaceConsumed() {
+		String path = SeshatUtils.getStoragePath(this);
+		File folder = new File(path);
+		if (folder.exists()) {
+			return FileUtils.sizeOfAsBigInteger(folder);
+		}
+		return BigInteger.ZERO;
 	}
 
 	public static User findByUsername(String username) {

@@ -35,10 +35,9 @@ public class ProjectPrivateModelTest extends UnitTest {
 		Fixtures.deleteAllModels();
 		File savedFile = new File(
 				Play.configuration.getProperty("seshat.paths.versions")
-						+ File.separator + USERNAME_SHA1 + File.separator
-						+ TEST_FILE_CHECKSUM);
+						+ File.separator + USERNAME_SHA1);
 		if (savedFile.exists()) {
-			assertTrue(savedFile.delete());
+			assertTrue(play.libs.Files.deleteDirectory(savedFile));
 		}
 		user = new User(USERNAME, PASSWORD).save();
 	}

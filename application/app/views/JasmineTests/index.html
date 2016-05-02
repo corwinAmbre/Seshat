@@ -14,6 +14,7 @@
 		<script src="@{'public/js/cryptojs/rollups/aes.js'}"></script>
 		<script src="@{'public/js/cryptojs/rollups/pbkdf2.js'}"></script>
 		<script src="@{'public/js/model/project.js'}"></script>
+		<script src="@{'public/js/connected.js'}"></script>
 		<script src="@{'public/js/main.js'}"></script>
 	</head>
 	<body>
@@ -141,6 +142,18 @@
 			  		expect(decryptedVault[project.key]).toBeDefined();
 			  		expect(decryptedVault[project.key]).toEqual(vault[project.key]);
 			  	});
+			});
+			describe("Methods with remote connection", function() {
+				it("exist in application", function() {
+					expect(remoteCalls).toEqual(jasmine.any(Object));
+					expect(remoteCalls.createProject).toEqual(jasmine.any(Function));
+				});
+				it("can create a project", function() {
+					var project = new Project("Test project");
+					spyOn(remoteCalls, "createProject");
+					remoteCalls.createProject(project);
+					expect(remoteCalls.createProject).toHaveBeenCalled();					
+				});
 			});
 		</script>
 	</body>

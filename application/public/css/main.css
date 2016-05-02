@@ -3,6 +3,7 @@
 * Default text   : #7f8c8d
 * Primary color  : #2980b9
 * Secondary color: #ecf0f1
+* Error color    : #f44336
 *******************************************/
 
 /*******************************************
@@ -165,6 +166,7 @@ article h1, article h2 {
 
 .separator {
 	margin: auto;
+	margin-top: 15px;
 	width: 80%;
 	height: 1px;
 	background: rgba(255,255,255,1);
@@ -175,6 +177,13 @@ article h1, article h2 {
 	background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
 	background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+}
+
+h1 {
+	font-size: 2.5em;
+	font-weight: 400;
+	color: #2980b9;
+	margin-bottom: 0.1em;
 }
 
 @media screen and (min-width: 960px) {
@@ -192,4 +201,63 @@ article h1, article h2 {
 	.responsivewidth {
 		width: 80%;
 	}
+}
+
+/****************
+* Form controls *
+****************/
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+
+.form-control {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.form-buttons {
+	align-self: flex-end;
+}
+
+.btn {
+	border: none;
+	padding: 0.5em 1em;
+	border-radius: 5px;
+	background-color: #ecf0f1;
+	color: #7f8c8d;
+}
+
+.btn-cancel {
+	margin-right: 20px;
+}
+
+.btn-primary {
+	background-color: #2980b9;
+	color: white;
+}
+
+.error {
+	color: #f44336;
+}
+
+/*************
+* Login page *
+**************/
+#login,
+#createnewproject {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	margin: auto;
+	max-width: 400px;
+}
+
+#login h1,
+#createnewproject h2 {
+	align-self: center;
 }
