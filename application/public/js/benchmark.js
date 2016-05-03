@@ -25,7 +25,9 @@ function max(arr) {
 
 function async(call_function) {
     setTimeout(function() {
+    	console.log("Starting " + call_function.name);
     	call_function();
+    	console.log("Ending " + call_function.name);
     }, 0);
 }
 
@@ -136,5 +138,54 @@ function runBenchmarkAESCryptoImageAfterLoad(base64Img) {
 	}
 	$("#aesBenchmarkImageResults").append("<table><thead><tr><th>Length</th><th>Mean</th><th>Median</th><th>Min</th><th>Max</th></tr></thead><tbody>" +
 			"<tr><td>Image 9Mo</td><td>" + mean(encryptionImgTest) + "</td><td>" + median(encryptionImgTest) + "</td><td>" + min(encryptionImgTest) + "</td><td>" + max(encryptionImgTest) + "</td></tr>" +
+			"</tbody></table>");	
+}
+
+function runBenchmarkLZMA() {
+	var compressionlzString = new Array();
+	var decompressionlzString = new Array();
+	var sourceString = JSON.stringify(dataAES);
+	var initialSize = sourceString.length;
+	var compressedSizelzString = 0;
+	for(var i=0; i<100; ++i) {
+		var start = new Date().getTime();
+		var compressed = LZString.compress(sourceString);
+		var end = new Date().getTime();
+		compressedSizelzString = compressed.length;
+		compressionlzString[i] = end - start;
+		start = new Date().getTime();
+		LZString.decompress(compressed);
+		end = new Date().getTime();
+		decompressionlzString[i] = end - start;
+	}
+	$("#compressionBenchmarkResults").append("<strong>Default object</strong><br/>" + 
+				"Initial text size: " + initialSize + "<br/>" +
+				"LZString compressed size: " + compressedSizelzString + " - " + (compressedSizelzString / initialSize * 100).toFixed(2) + "%<br/>");
+	$("#compressionBenchmarkResults").append("<table><thead><tr><th>Length</th><th>Mean</th><th>Median</th><th>Min</th><th>Max</th></tr></thead><tbody>" +
+			"<tr><td>Compression LZString</td><td>" + mean(compressionlzString) + "</td><td>" + median(compressionlzString) + "</td><td>" + min(compressionlzString) + "</td><td>" + max(compressionlzString) + "</td></tr>" +
+			"<tr><td>Decompression LZString</td><td>" + mean(decompressionlzString) + "</td><td>" + median(decompressionlzString) + "</td><td>" + min(decompressionlzString) + "</td><td>" + max(decompressionlzString) + "</td></tr>" +
+			"</tbody></table>");
+	compressionlzString = new Array();
+	decompressionlzString = new Array();
+	sourceString = JSON.stringify(loreIpsum50k) + JSON.stringify(loreIpsum50k) + JSON.stringify(loreIpsum50k);
+	initialSize = sourceString.length;
+	compressedSizelzString = 0;
+	for(var i=0; i<100; ++i) {
+		var start = new Date().getTime();
+		var compressed = LZString.compress(sourceString);
+		var end = new Date().getTime();
+		compressedSizelzString = compressed.length;
+		compressionlzString[i] = end - start;
+		start = new Date().getTime();
+		LZString.decompress(compressed);
+		end = new Date().getTime();
+		decompressionlzString[i] = end - start;
+	}
+	$("#compressionBenchmarkResults").append("<strong>Large text</strong><br/>" + 
+				"Initial text size: " + initialSize + "<br/>" +
+				"LZString compressed size: " + compressedSizelzString + " - " + (compressedSizelzString / initialSize * 100).toFixed(2) + "%<br/>");
+	$("#compressionBenchmarkResults").append("<table><thead><tr><th>Length</th><th>Mean</th><th>Median</th><th>Min</th><th>Max</th></tr></thead><tbody>" +
+			"<tr><td>Compression LZString</td><td>" + mean(compressionlzString) + "</td><td>" + median(compressionlzString) + "</td><td>" + min(compressionlzString) + "</td><td>" + max(compressionlzString) + "</td></tr>" +
+			"<tr><td>Decompression LZString</td><td>" + mean(decompressionlzString) + "</td><td>" + median(decompressionlzString) + "</td><td>" + min(decompressionlzString) + "</td><td>" + max(decompressionlzString) + "</td></tr>" +
 			"</tbody></table>");	
 }
