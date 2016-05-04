@@ -88,17 +88,17 @@ public class User extends Model {
 		return User.find("byUsername", username).first();
 	}
 
-	public static Boolean connect(String username, String password) {
+	public static User connect(String username, String password) {
 		User user = User.find("byUsername", username).first();
 		if (user == null) {
-			return false;
+			return null;
 		} else {
 			if (StringUtils.equals(user.password,
 					DigestUtils.sha256Hex(password))) {
-				return true;
+				return user;
 			} else {
 				// TODO handle multiple failed login
-				return false;
+				return null;
 			}
 		}
 	}

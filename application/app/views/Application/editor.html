@@ -1,2 +1,19 @@
 #{extends 'main.html' /}
 #{set title:'Editor' /}
+
+<div id="editor">
+	<div>
+		
+	</div>
+	<nav>
+		<ul>
+			<li v-for="chapter in project.chapters" v-on:click="goTo(chapter.number)">
+				{{chapter.number}}
+			</li>
+		</ul>
+	</nav>
+</div>
+<script type="text/javascript">
+	var projectEncrypted = "${project.getLatestVersionContent()}";
+	var projectKey = "${project.idKey}";
+</script>

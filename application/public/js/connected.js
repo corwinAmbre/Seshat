@@ -14,14 +14,14 @@ var remoteCalls = {
 				method: "POST"
 			}).done(function(data) {
 				project.remoteId = data;
-				var vault = localStorage.getItem("vault");
+				var vault = readCookie("vault");
 				if(vault == null) {
 					vault = {};
 				} else {
 					vault = JSON.parse(vault);
 				}
 				vault[project.key] = generateKeyAndIv(project.key);
-				localStorage.setItem("vault", JSON.stringify(vault));
+				writeCookie("vault", JSON.stringify(vault));
 				window.location.href="/project/" + data;
 			}).fail(function() {
 				

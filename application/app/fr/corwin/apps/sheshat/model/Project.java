@@ -1,7 +1,11 @@
 package fr.corwin.apps.sheshat.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import play.db.jpa.Model;
 import play.libs.Files;
@@ -62,6 +68,33 @@ public class Project extends Model {
 
 	public List<Version> getVersions() {
 		return versions;
+	}
+
+	public String getLatestVersionContent() {
+		if (CollectionUtils.isEmpty(versions)) {
+			return "";
+		}
+		Collections.sort(versions, new Comparator<Version>() {
+
+			@Override
+			public int compare(Version o1, Version o2) {
+				return o2.date.compareTo(o1.date);
+			}
+
+		});
+		try {
+			List<String> content = java.nio.file.Files.readAllLines(new File(
+					SeshatUtils.getStoragePath(author)
+							+ versions.get(0).checksum).toPath(),
+					StandardCharsets.UTF_8);
+			StringBuilder result = new StringBuilder();
+			for (String line : content) {
+				result.append(line);
+			}
+			return result.toString();
+		} catch (IOException e) {
+			return "";
+		}
 	}
 
 	public List<PublicVersion> getPublicVersions() {

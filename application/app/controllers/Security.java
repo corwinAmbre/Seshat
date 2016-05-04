@@ -1,11 +1,24 @@
 package controllers;
 
 import fr.corwin.apps.sheshat.model.User;
+import fr.corwin.apps.sheshat.services.SecurityService;
 
 public class Security extends Secure.Security {
 
 	static boolean authenticate(String username, String password) {
-		return User.connect(username, password);
+		User user = User.connect(username, password);
+		if (user != null) {
+			String vault = SecurityService.decrypt(
+					SecurityService.resizeKey(password), user.getVault()._2,
+					user.getVault()._1);
+			response.setCookie("vault", vault);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
+	static void onDisconnect() {
+		response.removeCookie("vault");
+	}
 }
