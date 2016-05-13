@@ -4,27 +4,36 @@
 ************************************************************************************/
 
 var remoteCalls = {
-		createProject: function(project) {
+		createProject: function(project, vault, version) {
 			$.ajax({
 				url: "rest/project", 
 				data: {
 					name: project.name,
-					key: project.key
+					key: project.key,
+					vault: vault,
+					firstVersion: version
 				},
 				method: "POST"
 			}).done(function(data) {
-				project.remoteId = data;
-				var vault = readCookie("vault");
-				if(vault == null) {
-					vault = {};
-				} else {
-					vault = JSON.parse(vault);
-				}
-				vault[project.key] = generateKeyAndIv(project.key);
-				writeCookie("vault", JSON.stringify(vault));
 				window.location.href="/project/" + data;
 			}).fail(function() {
-				
+				alert("Error while creating project on server");
+			});
+		},
+		saveVersion: function(id, version) {
+			$.ajax({
+				url: "/rest/project/version",
+				data: {
+					id: id,
+					version: version
+				},
+				method: "POST"
+			}).done(function(data) {
+
+			}).fail(function(data) {
+				alert("Error while pushing version to the server");
+				$("#logger").append(data);
 			});
 		}
 }
+

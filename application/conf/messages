@@ -12,4 +12,5 @@ secure.error=Oops, unknown username or password
 
 
 project.name=Project name
+project.new.password=Please confirm your account password to create a project
 project.create.new=Start writting

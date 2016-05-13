@@ -38,7 +38,7 @@ public class User extends Model {
 		this.projects = new ArrayList<Project>();
 		Tuple<String, String> iv = SecurityService.generateKey();
 		this.keysVault = SecurityService.encrypt(
-				SecurityService.resizeKey(password), iv._2, "{}");
+				SecurityService.resizeKey(password), iv._2, "");
 		this.ivVault = iv._2;
 	}
 
@@ -73,6 +73,10 @@ public class User extends Model {
 
 	public Tuple<String, String> getVault() {
 		return new Tuple<String, String>(this.keysVault, this.ivVault);
+	}
+
+	public void setVault(String vault) {
+		this.keysVault = vault;
 	}
 
 	public BigInteger getSpaceConsumed() {

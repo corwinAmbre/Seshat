@@ -64,7 +64,7 @@ function openVault(key, ivBase64, vault) {
 	if(decrypted == null || decrypted == '') {
 		return null;
 	}
-	return JSON.parse(decrypted);
+	return decrypted;
 }
 
 /**
@@ -78,7 +78,7 @@ function saveVault(key, ivBase64, vault) {
 	var padKey = key + "00000000000000000000000000000000";
 	padKey = padKey.slice(0, 32);
 	var keyBase64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(padKey));
-	return encryptToServer(keyBase64, ivBase64, JSON.stringify(vault));
+	return encryptToServer(keyBase64, ivBase64, vault);
 }
 
 /**
@@ -94,19 +94,58 @@ function generateKeyAndIv(secretPhrase) {
 }
 
 /**
- * Create a new project as a javascript object based on inputs provided in form 
+ * Create a new project as a javascript object based on inputs provided in form
+ * Always return false to prevent default behavior of button 
  */
 function createProject() {
+	// Check if project name exists
 	var projectName = $("#projectname").val();
 	if(projectName === null || projectName.trim() == '') {
-		// TODO display error message
-		return;
+		errorMessage("Empty project name");
+		return false;
 	}
+	// Check if password is the correct one
+	var password = $("#password").val();
+	var masterKey = readCookie("masterKey");
+	var sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)
+	if(sha256Password != masterKey) {
+		errorMessage("Wrong password");
+		return false;
+	}
+	// Create project object
 	var project = new Project(projectName);
-	remoteCalls.createProject(project);
+	project.addChapter();
+	// Create an encryption key in the vault
+	var vault = readVault();
+	vault[project.key] = generateKeyAndIv(project.key);
+	var b64Vault = writeVault(vault);
+	// Prepare data for remote call //
+	// Encrypt vault with password 
+	var encryptedVault = saveVault(password, $("#ivVault").val(), b64Vault);
+	/// Encrypt project with vault password
+	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
+	remoteCalls.createProject(project, encryptedVault, encryptedProject);
 	return false;
 }
 
+function saveProjectVersion(project) {
+	var vault = readVault();
+	if(vault[project.key] == null || vault[project.key].key == null || vault[project.key].iv == null) {
+		errorMessage("No encryption key found for this project");
+		return;
+	}
+	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
+	remoteCalls.saveVersion(project.remoteId, encryptedProject);
+}
+
+/**
+ * Methods to handle cookies with JS. Cookies are only read on application domain. 
+ */
+/**
+ * Read a cookie based on its name.
+ * @param name String with cookie name
+ * @returns if cookie exists, return the its value as a string, return null if cookie does not exist
+ */
 function readCookie(name) {
 	var cookies = document.cookie.split(";");
 	for(var i=0; i < cookies.length; i++) {
@@ -118,6 +157,44 @@ function readCookie(name) {
 	return null;
 }
 
+/**
+ * Write a cookie. If cookie already exists, override the value
+ * @param name Name of the cookie as a string
+ * @param value Value to store as a string
+ */
 function writeCookie(name, value) {
 	document.cookie = name + "=" + value;
+}
+
+/**
+ * Wrapper to write vault into cookie. Vault is stored in base64 to avoid special characters
+ * @param vault Vault as a JSON object
+ * @returns String returns the initial object stringifyed and in base64
+ */
+function writeVault(vault) {
+	var stringVault = JSON.stringify(vault);
+	var words = CryptoJS.enc.Utf8.parse(stringVault);
+	var b64Vault = CryptoJS.enc.Base64.stringify(words);
+	writeCookie("vault", b64Vault);
+	return b64Vault;
+}
+
+/**
+ * Wrapper to read vault from cookie. 
+ * @returns JSON object of the vault stored in cookie. If cookie does not exists or is empty, return an empty JSON object.
+ */
+function readVault() {
+	var vault = readCookie("vault");
+	if(vault == null || vault == "") {
+		vault = {};
+	} else {
+		var words = CryptoJS.enc.Base64.parse(vault);
+		var stringVault = CryptoJS.enc.Utf8.stringify(words);
+		vault = JSON.parse(stringVault);
+	}
+	return vault;
+}
+
+function errorMessage(message) {
+	alert(message);
 }

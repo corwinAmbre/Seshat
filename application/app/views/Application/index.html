@@ -16,6 +16,11 @@
 			<label for="projectname">&{'project.name'}</label>
 			<input type="text" name="projectname" id="projectname" />
 		</p>
+		<p id="password-field" class="form-control">
+			<label for="password">&{'project.new.password'}</label>
+			<input type="password" name="password" id="password" />
+		</p>
+		<input type="hidden" id="ivVault" value="${user.getVault()._2}"/>
 		<p id="buttoncreateproject-field" class="form-buttons">
 			<button id="createproject" class="btn btn-primary" onclick="return createProject()">&{'project.create.new'}</button>
 		</p>

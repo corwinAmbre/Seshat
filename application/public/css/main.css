@@ -261,3 +261,39 @@ form {
 #createnewproject h2 {
 	align-self: center;
 }
+
+
+/**************
+* Editor page *
+***************/
+#editor {
+	width: 100%;
+}
+
+#editor h3 {
+	font-weight: normal;
+}
+
+.chapter {
+	width: 90%;
+	margin: auto;
+	background: no-repeat url(/images/paperbackground.png) 0 0;
+	background-color: #EBEBEB;
+	background-repeat: repeat;
+	color: black;
+	padding: 1em 2em;
+	box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.4);
+	margin-bottom: 2em; 
+}
+
+.scene:focus {
+	outline-style: none;
+}
+
+#editor_nav li.chapter_list {
+	cursor: pointer;
+}
+
+#editor_nav .button {
+	cursor: pointer;
+}

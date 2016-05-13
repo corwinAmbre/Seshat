@@ -21,9 +21,12 @@ public class Application extends Controller {
 		render();
 	}
 
-	public static void createProject(String name, String key) {
+	public static void createProject(String name, String key, String vault,
+			String firstVersion) {
 		User user = User.findByUsername(Security.connected());
 		Project project = user.addProject(name, key);
+		project.addVersion(firstVersion);
+		user.setVault(vault);
 		user.save();
 		renderJSON(project.id);
 	}
@@ -38,6 +41,19 @@ public class Application extends Controller {
 		}
 		renderTemplate("Application/editor.html", project);
 
+	}
+
+	public static void addVersion(Long id, String version) {
+		Project project = Project.findById(id);
+		if (project == null) {
+			notFound();
+		}
+		if (!StringUtils.equals(project.author.username, Security.connected())) {
+			forbidden();
+		}
+		project.addVersion(version);
+		project.save();
+		renderText(0);
 	}
 
 }

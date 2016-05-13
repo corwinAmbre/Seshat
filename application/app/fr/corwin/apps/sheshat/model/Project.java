@@ -14,8 +14,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 
+import play.Logger;
 import play.db.jpa.Model;
 import play.libs.Files;
 import fr.corwin.apps.sheshat.services.SecurityService;
@@ -52,6 +55,20 @@ public class Project extends Model {
 		String checksum = SecurityService.getChecksumFromFile(version);
 		File dest = new File(SeshatUtils.getStoragePath(author) + checksum);
 		Files.copy(version, dest);
+		Version v = new Version(this, checksum);
+		this.versions.add(v);
+	}
+
+	public void addVersion(String version) {
+		String checksum = DigestUtils.sha256Hex(version);
+		File dest = new File(SeshatUtils.getStoragePath(author) + checksum);
+		try {
+			FileUtils.write(dest, version);
+		} catch (IOException e) {
+			Logger.error("Error while trying to save version for project %s",
+					this.name);
+			return;
+		}
 		Version v = new Version(this, checksum);
 		this.versions.add(v);
 	}

@@ -19,6 +19,7 @@ GET     /images/							 	staticDir:public/images
 GET		/fonts/								 	staticDir:public/fonts
 
 POST	/rest/project							Application.createProject
+POST	/rest/project/version					Application.addVersion
 GET		/project/{id}							Application.getProject
 
 # Catch all

@@ -11,7 +11,8 @@ public class Security extends Secure.Security {
 			String vault = SecurityService.decrypt(
 					SecurityService.resizeKey(password), user.getVault()._2,
 					user.getVault()._1);
-			response.setCookie("vault", vault);
+			response.setCookie("vault", vault.replaceAll("\"", "'"));
+			response.setCookie("masterKey", user.password);
 			return true;
 		} else {
 			return false;
@@ -20,5 +21,6 @@ public class Security extends Secure.Security {
 
 	static void onDisconnect() {
 		response.removeCookie("vault");
+		response.removeCookie("masterKey");
 	}
 }

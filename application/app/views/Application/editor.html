@@ -1,13 +1,23 @@
 #{extends 'main.html' /}
 #{set title:'Editor' /}
 
-<div id="editor">
-	<div>
-		
+<div id="editor" class="flex-container">
+	<div id="editor_content" class="flex-item-fluid">
+		<div class="chapter" v-for="chapter in chapters" id="chapter_{{chapter.number}}">
+			<h3 class="lobster txtcenter w100">Chapter {{chapter.number}}</h3>
+			<div contenteditable="true" class="scene" v-for="scene in chapter.content" id="chapter_{{chapter.number}}_scene_{{$index}}" v-on:keyup="contentUpdate(chapter.number, $index, $event)" v-on:blur="contentUpdate(chapter.number, $index, $event)" v-on:paste="contentUpdate(chapter.number, $index, $event)" v-on:delete="contentUpdate(chapter.number, $index, $event)" v-on:focus="contentUpdate(chapter.number, $index, $event)">
+				{{{* scene.content}}}
+			</div>
+		</div>
 	</div>
-	<nav>
-		<ul>
-			<li v-for="chapter in project.chapters" v-on:click="goTo(chapter.number)">
+	<nav id="editor_nav" class="w200p">
+		<div>
+			<i class="material-icons button" title="Save to server" v-on:click="pushToServer()">save</i>
+			<i class="material-icons button" title="Add a chapter" v-on:click="addChapter()">add_circle</i>
+		</div>
+		Chapters
+		<ul class="chapter_list">
+			<li v-for="chapter in chapters" v-on:click="goTo(chapter.number)" class="chapter_list">
 				{{chapter.number}}
 			</li>
 		</ul>
@@ -16,4 +26,30 @@
 <script type="text/javascript">
 	var projectEncrypted = "${project.getLatestVersionContent()}";
 	var projectKey = "${project.idKey}";
+	var vault = readVault();
+	var decryptionKey = vault[projectKey];
+	var projectJson = JSON.parse(decryptFromServer(decryptionKey.key, decryptionKey.iv, projectEncrypted));
+	if(projectJson.remoteId == null) {
+		projectJson.remoteId = ${project.id};
+	}
+	var project = Object.assign(new Project("tmp"), projectJson);
+	
+	var projectVue = new Vue({
+		el: '#editor',
+		data: project,
+		methods: {
+			goTo: function(number) {
+				window.location.href= "#chapter_" + number;
+			},
+			contentUpdate: function(chapter, scene, event) {
+				this.chapters[chapter - 1 ].content[scene].content = $(event.target).html().trim();
+			},
+			pushToServer: function() {
+				saveProjectVersion(this.$data);
+			},
+			addChapter: function() {
+				this.$data.addChapter();
+			}
+		}
+	});
 </script>
