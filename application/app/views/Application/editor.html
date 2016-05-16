@@ -50,6 +50,30 @@
 			addChapter: function() {
 				this.$data.addChapter();
 			}
+		},
+		ready: function() {
+			if(this.$data.chapters.length == 1 && this.$data.chapters[0].content.length == 1) {
+				var node = $("#chapter_1_scene_0").get(0);
+				var isNodeEmpty = false;
+				if(node.innerHTML.length == 0) {
+					node.innerHTML = '\u00a0';
+					isNodeEmpty = true;
+				}
+				var range = document.createRange();
+				if(isNodeEmpty) {
+					range.selectNodeContents(node);
+				} else {
+					var lastPos = node.innerHTML.trim().length;
+					range.setStart(node, lastPos - 1);
+					range.setEnd(node, lastPos - 1);	
+				}
+				var selection = window.getSelection();
+				selection.removeAllRanges();
+				selection.addRange(range);
+				if(isNodeEmpty) {
+					document.execCommand('delete', false, null);
+				}
+			}
 		}
 	});
 </script>
