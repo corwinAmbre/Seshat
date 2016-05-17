@@ -22,5 +22,8 @@ POST	/rest/project							Application.createProject
 POST	/rest/project/version					Application.addVersion
 GET		/project/{id}							Application.getProject
 
+GET		/admin/									Administration.index
+GET		/admin/user								Administration.getUsers
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

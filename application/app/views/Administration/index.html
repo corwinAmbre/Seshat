@@ -1,0 +1,31 @@
+#{extends 'main.html' /}
+#{set 'title'}
+	Administration
+#{/set}
+
+<table id="user_list">
+	<thead>
+		<tr>
+			<th>Username</th>
+			<th>Number of projects</th>
+			<th>Available data</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	$.get("/admin/user").done(function(data) {
+		data.forEach(function(user) {
+			$("#user_list tbody").append("<tr>" +
+					"<td>" + user.username + "</td>" +
+					"<td>" + user.projects.length + "</td>" +
+					"<td>" + user.available + "</td>" +
+					"<td></td>" +
+					"</tr>");			
+		})
+	});
+</script>

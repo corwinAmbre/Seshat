@@ -19,6 +19,15 @@ public class Security extends Secure.Security {
 		}
 	}
 
+	static boolean check(String profile) {
+		User user = User.findByUsername(Security.connected());
+		if ("administrator".equals(profile)) {
+			return user.getIsAdmin();
+		} else {
+			return false;
+		}
+	}
+
 	static void onDisconnect() {
 		response.removeCookie("vault");
 		response.removeCookie("masterKey");

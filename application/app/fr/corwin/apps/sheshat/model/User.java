@@ -24,6 +24,8 @@ public class User extends Model {
 
 	public String username;
 	public String password;
+	private Boolean isAdmin;
+	private Long quota;
 
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	List<Project> projects;
@@ -40,6 +42,13 @@ public class User extends Model {
 		this.keysVault = SecurityService.encrypt(
 				SecurityService.resizeKey(password), iv._2, "");
 		this.ivVault = iv._2;
+		this.isAdmin = false;
+		this.quota = SeshatUtils.getDefaultQuota();
+	}
+
+	public User isAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+		return this;
 	}
 
 	public Project addProject(String name, String key) {
@@ -105,6 +114,14 @@ public class User extends Model {
 				return null;
 			}
 		}
+	}
+
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public Long getQuota() {
+		return quota;
 	}
 
 }

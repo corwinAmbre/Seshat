@@ -30,10 +30,13 @@
 		<nav class="header flex-container">
 			<a href="/" class="logo mll">Seshat</a>
 			<div class="links mrs flex-container">
+				#{secure.check "administrator"}
+					<a href="@{Administration.index}" title="Admin section"><i class="fa fa-cogs"></i> Administration</a>
+				#{/secure.check}
 				<a href="/logout" title="Logout"><i class="fa fa-power-off"></i> ${user.username}</a>
 			</div>
 		</nav>
-		<div>
+		<div id="main_content">
 			#{doLayout /}
 		</div>
 	</body>

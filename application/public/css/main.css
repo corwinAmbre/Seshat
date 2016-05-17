@@ -125,6 +125,10 @@ nav.header .links a {
 	padding: 0em 0.5em;
 }
 
+#main_content {
+	padding-top: 3em;
+}
+
 article {
 	margin-top: 3em;
 }
