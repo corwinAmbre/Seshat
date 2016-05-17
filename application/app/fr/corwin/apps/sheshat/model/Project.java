@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,12 +45,15 @@ public class Project extends Model {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	List<PublicVersion> publicVersions;
 
+	private Date lastUpdate;
+
 	public Project(String name, User author, String key) {
 		this.name = name;
 		this.author = author;
 		this.idKey = key;
 		this.versions = new ArrayList<Version>();
 		this.publicVersions = new ArrayList<PublicVersion>();
+		this.lastUpdate = Calendar.getInstance().getTime();
 	}
 
 	public void addVersion(File version) {
@@ -57,6 +62,7 @@ public class Project extends Model {
 		Files.copy(version, dest);
 		Version v = new Version(this, checksum);
 		this.versions.add(v);
+		this.lastUpdate = Calendar.getInstance().getTime();
 	}
 
 	public void addVersion(String version) {
@@ -71,6 +77,7 @@ public class Project extends Model {
 		}
 		Version v = new Version(this, checksum);
 		this.versions.add(v);
+		this.lastUpdate = Calendar.getInstance().getTime();
 	}
 
 	public PublicVersion addPublicVersion(File publicVersion) {
@@ -116,6 +123,10 @@ public class Project extends Model {
 
 	public List<PublicVersion> getPublicVersions() {
 		return publicVersions;
+	}
+
+	public Date getLastUpdate() {
+		return this.lastUpdate;
 	}
 
 }

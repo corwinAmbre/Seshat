@@ -262,6 +262,27 @@ form {
 	align-self: center;
 }
 
+/**************
+* Index page  *
+***************/
+#features {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+#features .book {
+	flex: 0 0 20%;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	cursor: pointer;
+}
+
+#features .book .fa {
+	font-size: 3em;
+}
+
 
 /**************
 * Editor page *

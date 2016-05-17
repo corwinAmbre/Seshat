@@ -1,14 +1,18 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-<article class="grid-4-small-1" id="features">
+#{if user.getProjects().size() > 0}
+<article id="features">
 	#{list items:user.getProjects(), as:'project'}
-	<div class="book">
-		<i class="material-icons">create</i>
+	<div class="book" onclick="location.href='/project/${project.id}'">
+		<i class="fa fa-book"></i>
 		<h3>${project.name}</h3>
+		${project.getLastUpdate().format('dd/MM/yyyy HH:mm:ss')}
 	</div>
 	#{/list}
 </article>
+<div class="separator"></div>
+#{/if}
 <article>
 	<form id="createnewproject">
 		<h2>Create a new project</h2>
