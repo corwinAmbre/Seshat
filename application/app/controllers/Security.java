@@ -32,4 +32,5 @@ public class Security extends Secure.Security {
 		response.removeCookie("vault");
 		response.removeCookie("masterKey");
 	}
+
 }

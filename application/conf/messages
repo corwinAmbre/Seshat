@@ -5,8 +5,10 @@
 secure.title=Please connect
 secure.username=Username
 secure.password=Password
+secure.password.confirm=Confirm password
 secure.remember=Remember me
 secure.signin=Sign-in
+secure.signup=Create an account
 secure.newuser=or Create a new user
 secure.error=Oops, unknown username or password
 

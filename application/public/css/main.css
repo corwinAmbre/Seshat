@@ -252,8 +252,16 @@ form {
 /*************
 * Login page *
 **************/
+.loginTitle {
+	width: 100%;
+	text-align:center;
+	font-size: 7em;
+	color: #7f8c8d;
+}
+
 #login,
-#createnewproject {
+#createnewproject,
+#createUser {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
@@ -262,8 +270,17 @@ form {
 }
 
 #login h1,
+#createUser h1,
 #createnewproject h2 {
 	align-self: center;
+}
+
+#login {
+	margin-bottom: 2em;
+}
+
+#createUser {
+	margin-top: 2em;
 }
 
 /**************

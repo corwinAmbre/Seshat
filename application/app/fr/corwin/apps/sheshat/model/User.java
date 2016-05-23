@@ -116,6 +116,19 @@ public class User extends Model {
 		}
 	}
 
+	public static User createUser(String username, String password,
+			String repeatPassword) {
+		if (!StringUtils.equals(password, repeatPassword)) {
+			return null;
+		}
+		if (findByUsername(username) != null) {
+			return null;
+		}
+		User user = new User(username, password);
+		user.save();
+		return user;
+	}
+
 	public Boolean getIsAdmin() {
 		return isAdmin;
 	}

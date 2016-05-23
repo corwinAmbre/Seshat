@@ -25,5 +25,7 @@ GET		/project/{id}							Application.getProject
 GET		/admin/									Administration.index
 GET		/admin/user								Administration.getUsers
 
+POST	/signup									Users.signup
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

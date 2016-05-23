@@ -1,22 +1,26 @@
 #{extends 'Secure/layout.html' /}
 
+<h1 class="lobster loginTitle">Seshat</h1>
 
+#{if flash.error}
+	<div>
+		<p class="error">
+			${messages.get(flash.error)}
+		</p>
+	</div>
+#{/if}
+#{if flash.success}
+	<div>
+		<p class="success">
+			${messages.get(flash.success)}
+		</p>
+	</div>
+#{/if}
 
 <div id="login">
 	
 	<h1>&{'secure.title'}</h1>
 	#{form @authenticate(), id:'loginForm'}
-		#{if flash.error}
-			<p class="error">
-				${messages.get(flash.error)}
-			</p>
-		#{/if}
-		#{if flash.success}
-			<p class="success">
-				${messages.get(flash.success)}
-			</p>
-		#{/if}		
-	
 		<p id="username-field" class="form-control">
 			<label for="username">&{'secure.username'}</label>
 			<input type="text" name="username" id="username" value="${flash.username}" />
@@ -31,6 +35,27 @@
 		</p>
 		<p id="signin-field" class="form-buttons">
 			<input type="submit" id="signin" value="&{'secure.signin'}" class="btn btn-primary"/>
+		</p>
+	#{/form}
+</div>
+<div class="separator"></div>
+<div id="createUser">
+	<h1>Or create an account</h1>
+	#{form @Users.signup(), id:'signupForm'}
+		<p id="usernameSignup-field" class="form-control">
+			<label for="usernameSignup">&{'secure.username'}</label>
+			<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" />
+		</p>
+		<p id="passwordSignup-field" class="form-control">
+			<label for="passwordSignup">&{'secure.password'}</label>
+			<input type="password" name="passwordSignup" id="passwordSignup" value="" />
+		</p>
+		<p id="password2Signup-field" class="form-control">
+			<label for="password2Signup">&{'secure.password.confirm'}</label>
+			<input type="password" name="password2Signup" id="password2Signup" value="" />
+		</p>
+		<p id="signup-field" class="form-buttons">
+			<input type="submit" id="signup" value="&{'secure.signup'}" class="btn btn-primary" />
 		</p>
 	#{/form}
 </div>
