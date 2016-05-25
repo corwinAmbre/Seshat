@@ -61,8 +61,8 @@ public class UserModelTest extends UnitTest {
 		assertTrue(StringUtils.isNotEmpty(vault._1));
 		Logger.info(vault._1);
 		assertEquals(SecurityService.encrypt(
-				SecurityService.resizeKey(PASSWORD), vault._2, "{}"), vault._1);
-		assertEquals("{}", SecurityService.decrypt(
+				SecurityService.resizeKey(PASSWORD), vault._2, ""), vault._1);
+		assertEquals("", SecurityService.decrypt(
 				SecurityService.resizeKey(PASSWORD), vault._2, vault._1));
 	}
 

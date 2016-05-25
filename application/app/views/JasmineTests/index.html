@@ -120,23 +120,23 @@
 			describe("Master keys vault", function() {
 			  	it("can read empty vault from server", function() {
 			  		var decrypted = openVault("password", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
-			  		var emptyVault = {};
-			    	expect(decrypted).toEqual(emptyVault);
+			    	expect(decrypted).toBe(null);
 			  	});
 			  	it("cannot read vault with wrong password", function() {
 			  		var decrypted = openVault("fakepassword", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
-			  		var emptyVault = {};
 			    	expect(decrypted).toBe(null);
 			  	});
 			  	it("can add a new key to the vault", function() {
-			  		var vault = openVault("password", "${tempUser.getVault()._2}", "${tempUser.getVault()._1}");
+			  		var vault = readVault();
 			  		var project = new Project("Test for vault");
 			  		vault[project.key] = generateKeyAndIv("Test for vault");
 			  		expect(vault[project.key]).toBeDefined();
 			  		expect(vault[project.key]).toEqual(jasmine.any(Object));
-			  		var encrypted = saveVault("password", "${tempUser.getVault()._2}", vault);
-			  		expect(encrypted).not.toBe(null);
-			  		var decryptedVault = openVault("password", "${tempUser.getVault()._2}", encrypted);
+			  		writeVault(vault);
+			  		//var encrypted = saveVault("password", "${tempUser.getVault()._2}", vault);
+			  		//expect(encrypted).not.toBe(null);
+			  		//var decryptedVault = openVault("password", "${tempUser.getVault()._2}", encrypted);
+			  		var decryptedVault = readVault();
 			  		expect(decryptedVault).not.toBe(null);
 			  		expect(decryptedVault).toEqual(jasmine.any(Object));
 			  		expect(decryptedVault[project.key]).toBeDefined();
