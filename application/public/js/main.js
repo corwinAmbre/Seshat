@@ -195,6 +195,44 @@ function readVault() {
 	return vault;
 }
 
+/**
+ * Display an error message, used on result from ajax calls
+ * @param message String to display as error message
+ */
 function errorMessage(message) {
 	alert(message);
+}
+
+/**
+ * Ask for a confirmation before an action
+ * @param message Message to display in confirmation box as a String
+ * @param confirmationLabel Message to display in action button - Not used for now
+ * @returns true if user confirms action, false otherwise
+ */
+function askConfirmation(message, confirmationLabel) {
+	return confirm(message);
+}
+
+/***********************
+ * Admin JS function
+ ***********************/
+
+/**
+ * Lock a user based on his ID
+ */
+function lockUser(source, id) {
+	var username = $(source).parent().parent().find("td:first").html();
+	if(askConfirmation("User \"" + username + "\" won't be able to login anymore, do you confirm lock?", "")) {
+		remoteCalls.lockUser(id, source);
+	}
+}
+
+/**
+ * Unlock a user based on his ID
+ */
+function unlockUser(source, id) {
+	var username = $(source).parent().parent().find("td:first").html();
+	if(askConfirmation("User \"" + username + "\" will be reactivated, do you confirm unlock?", "")) {
+		remoteCalls.unlockUser(id, source);
+	}
 }

@@ -24,6 +24,8 @@ GET		/project/{id}							Application.getProject
 
 GET		/admin/									Administration.index
 GET		/admin/user								Administration.getUsers
+PUT		/admin/user/{id}/lock					Administration.lockUser
+PUT		/admin/user/{id}/unlock					Administration.unlockUser
 
 POST	/signup									Users.signup
 

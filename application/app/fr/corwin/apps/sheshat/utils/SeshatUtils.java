@@ -16,6 +16,11 @@ public class SeshatUtils {
 						"seshat.users.quota", "0"));
 	}
 
+	public static Integer getLimitFailedLogins() {
+		return Integer.parseInt(Play.configuration.getProperty(
+				"seshat.users.limitfailedlogin", "3"));
+	}
+
 	public static String getStoragePath(User author) {
 		return Play.configuration.getProperty("seshat.paths.versions")
 				+ File.separator + DigestUtils.sha256Hex(author.username)

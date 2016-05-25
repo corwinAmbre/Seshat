@@ -17,11 +17,12 @@ public class UserDto {
 	public BigInteger consumed;
 	public List<Tuple<Long, String>> projects;
 	public String available;
+	public Boolean isBlocked;
 
 	public UserDto(User user) {
 		this.id = user.id;
 		this.username = user.username;
-		this.isAdmin = user.getIsAdmin();
+		this.isAdmin = user.isAdmin();
 		this.quota = user.getQuota();
 		this.consumed = user.getSpaceConsumed();
 		this.projects = new ArrayList<Tuple<Long, String>>();
@@ -34,6 +35,7 @@ public class UserDto {
 		BigInteger tmp = new BigInteger(quota.toString());
 		tmp.subtract(consumed);
 		available = tmp.toString();
+		this.isBlocked = user.isBlockedUser();
 	}
 
 }

@@ -12,7 +12,13 @@ secure.signup=Create an account
 secure.newuser=or Create a new user
 secure.error=Oops, unknown username or password
 
-
 project.name=Project name
 project.new.password=Please confirm your account password to create a project
 project.create.new=Start writting
+
+user.create.error.repeatpassword=Passwords do not match, please enter the same password twice
+user.create.error.usernameexists=Username is already in use, please choose another one
+user.update.error.notfound=User not found
+user.update.error.unauthorizedself=You are not allowed to do this action on your user
+
+error.generic.unexpected=An unexpected error occured, please try again later or contact administrator

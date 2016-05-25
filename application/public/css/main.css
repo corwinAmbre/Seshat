@@ -190,6 +190,10 @@ h1 {
 	margin-bottom: 0.1em;
 }
 
+.hidden {
+	display: none;
+}
+
 @media screen and (min-width: 960px) {
 	.storytelling span.quote {
 		font-family: 'Lobster', cursive;
@@ -336,6 +340,7 @@ form {
 	cursor: pointer;
 }
 
-#editor_nav .button {
+#editor_nav .button,
+i.button {
 	cursor: pointer;
 }

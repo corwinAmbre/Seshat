@@ -22,7 +22,7 @@ public class Security extends Secure.Security {
 	static boolean check(String profile) {
 		User user = User.findByUsername(Security.connected());
 		if ("administrator".equals(profile)) {
-			return user.getIsAdmin();
+			return user.isAdmin();
 		} else {
 			return false;
 		}

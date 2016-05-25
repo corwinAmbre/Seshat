@@ -17,7 +17,7 @@ var remoteCalls = {
 			}).done(function(data) {
 				window.location.href="/project/" + data;
 			}).fail(function() {
-				alert("Error while creating project on server");
+				errorMessage("Error while creating project on server");
 			});
 		},
 		saveVersion: function(id, version) {
@@ -30,10 +30,31 @@ var remoteCalls = {
 				method: "POST"
 			}).done(function(data) {
 
-			}).fail(function(data) {
-				alert("Error while pushing version to the server");
-				$("#logger").append(data);
+			}).fail(function() {
+				errorMessage("Error while pushing version to the server");
 			});
-		}
+		},
+		lockUser: function(id, source) {
+			$.ajax({
+				url: "/admin/user/" + id + "/lock",
+				method: "PUT"
+			}).done(function() {
+				$(source).siblings(".fa-unlock").removeClass("hidden");
+				$(source).addClass("hidden");
+			}).fail(function(data) {
+				errorMessage(data.responseText);
+			});
+		},
+		unlockUser: function(id, source) {
+			$.ajax({
+				url: "/admin/user/" + id + "/unlock",
+				method: "PUT"
+			}).done(function() {
+				$(source).siblings(".fa-lock").removeClass("hidden");
+				$(source).addClass("hidden");
+			}).fail(function(data) {
+				errorMessage(data.responseText);
+			});
+		}	
 }
 

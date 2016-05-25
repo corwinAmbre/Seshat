@@ -24,7 +24,10 @@
 					"<td>" + user.username + "</td>" +
 					"<td>" + user.projects.length + "</td>" +
 					"<td>" + user.available + "</td>" +
-					"<td></td>" +
+					"<td>" + 
+						"<i class=\"fa fa-unlock button" + (user.isBlocked ? "" : " hidden") + "\" title=\"Unlock\" onclick=\"unlockUser(this, " + user.id + ")\"></i>" +
+						"<i class=\"fa fa-lock button" + (user.isBlocked ? " hidden" : "") + "\" title=\"Lock\" onclick=\"lockUser(this, " + user.id + ")\"></i>" +
+					"</td>" +
 					"</tr>");			
 		})
 	});

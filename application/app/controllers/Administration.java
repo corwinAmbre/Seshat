@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.StringUtils;
 
+import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -38,6 +40,30 @@ public class Administration extends Controller {
 					}
 				});
 		renderJSON(cleanedUsers);
+	}
+
+	public static void lockUser(Long id) {
+		User user = User.findById(id);
+		if (user == null) {
+			notFound(Messages.get("user.update.error.notfound"));
+		} else {
+			if (StringUtils.equals(user.username, Security.connected())) {
+				error(Messages.get("user.update.error.unauthorizedself"));
+			} else {
+				user.lockUser();
+				renderText("ok");
+			}
+		}
+	}
+
+	public static void unlockUser(Long id) {
+		User user = User.findById(id);
+		if (user == null) {
+			notFound(Messages.get("user.update.error.notfound"));
+		} else {
+			user.unlockUser();
+			renderText("ok");
+		}
 	}
 
 }

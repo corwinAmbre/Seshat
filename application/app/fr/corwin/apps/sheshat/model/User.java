@@ -24,6 +24,8 @@ public class User extends Model {
 
 	public String username;
 	public String password;
+	private Integer failedLogin;
+	private Boolean blockedUser;
 	private Boolean isAdmin;
 	private Long quota;
 
@@ -44,6 +46,8 @@ public class User extends Model {
 		this.ivVault = iv._2;
 		this.isAdmin = false;
 		this.quota = SeshatUtils.getDefaultQuota();
+		this.failedLogin = 0;
+		this.blockedUser = false;
 	}
 
 	public User isAdmin(Boolean isAdmin) {
@@ -106,35 +110,63 @@ public class User extends Model {
 		if (user == null) {
 			return null;
 		} else {
-			if (StringUtils.equals(user.password,
-					DigestUtils.sha256Hex(password))) {
+			if (!user.blockedUser
+					&& StringUtils.equals(user.password,
+							DigestUtils.sha256Hex(password))) {
+				user.failedLogin = 0;
+				user.save();
 				return user;
 			} else {
-				// TODO handle multiple failed login
+				user.failedLogin += 1;
+				if (user.failedLogin >= SeshatUtils.getLimitFailedLogins()) {
+					user.blockedUser = true;
+				}
+				user.save();
 				return null;
 			}
 		}
 	}
 
-	public static User createUser(String username, String password,
-			String repeatPassword) {
+	public static Tuple<User, String> createUser(String username,
+			String password, String repeatPassword) {
 		if (!StringUtils.equals(password, repeatPassword)) {
-			return null;
+			return new Tuple<User, String>(null,
+					"user.create.error.repeatpassword");
 		}
 		if (findByUsername(username) != null) {
-			return null;
+			return new Tuple<User, String>(null,
+					"user.create.error.usernameexists");
 		}
 		User user = new User(username, password);
 		user.save();
-		return user;
+		return new Tuple<User, String>(user, "");
 	}
 
-	public Boolean getIsAdmin() {
+	public Boolean isAdmin() {
 		return isAdmin;
 	}
 
 	public Long getQuota() {
 		return quota;
+	}
+
+	public Integer getFailedLogin() {
+		return failedLogin;
+	}
+
+	public Boolean isBlockedUser() {
+		return blockedUser;
+	}
+
+	public void lockUser() {
+		this.blockedUser = true;
+		this.save();
+	}
+
+	public void unlockUser() {
+		this.blockedUser = false;
+		this.failedLogin = 0;
+		this.save();
 	}
 
 }

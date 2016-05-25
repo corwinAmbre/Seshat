@@ -49,6 +49,10 @@ public class UserModelTest extends UnitTest {
 		assertEquals(USERNAME, user.username);
 		assertNotEquals(PASSWORD, user.password);
 		assertEquals(DigestUtils.sha256Hex(PASSWORD), user.password);
+		assertNotNull(user.getQuota());
+		assertEquals(new Integer(0), user.getFailedLogin());
+		assertFalse(user.isBlockedUser());
+		assertFalse(user.isAdmin());
 	}
 
 	@Test
@@ -74,6 +78,39 @@ public class UserModelTest extends UnitTest {
 		Project p = user.addProject(PROJECT_NAME, PROJECT_KEY);
 		p.addVersion(loreIpsum);
 		assertTrue(BigInteger.ZERO.compareTo(user.getSpaceConsumed()) < 0);
+	}
+
+	@Test
+	public void testGetUserByUsername() {
+		assertNull(User.findByUsername(USERNAME));
+		User dbUser = new User(USERNAME, PASSWORD).save();
+		assertNull(User.findByUsername(PROJECT_NAME));
+		User user = User.findByUsername(USERNAME);
+		assertNotNull(user);
+		assertEquals(dbUser.id, user.id);
+	}
+
+	@Test
+	public void testConnect() {
+		new User(USERNAME, PASSWORD).save();
+		assertNull(User.connect(PROJECT_NAME, PROJECT_NAME));
+		assertNull(User.connect(USERNAME, PROJECT_NAME));
+		assertEquals(new Integer(1), User.findByUsername(USERNAME)
+				.getFailedLogin());
+		assertFalse(User.findByUsername(USERNAME).isBlockedUser());
+
+		User user = User.connect(USERNAME, PASSWORD);
+		assertNotNull(user);
+		assertEquals(new Integer(0), user.getFailedLogin());
+		assertFalse(user.isBlockedUser());
+
+		assertNull(User.connect(USERNAME, PROJECT_NAME));
+		assertNull(User.connect(USERNAME, PROJECT_NAME));
+		assertNull(User.connect(USERNAME, PROJECT_NAME));
+		assertEquals(new Integer(3), User.findByUsername(USERNAME)
+				.getFailedLogin());
+		assertTrue(User.findByUsername(USERNAME).isBlockedUser());
+		assertNull(User.connect(USERNAME, PASSWORD));
 	}
 
 }
