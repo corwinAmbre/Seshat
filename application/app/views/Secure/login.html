@@ -3,16 +3,16 @@
 <h1 class="lobster loginTitle">Seshat</h1>
 
 #{if flash.error}
-	<div>
+	<div class="message">
 		<p class="error">
-			${messages.get(flash.error)}
+			<i class="material-icons">error</i> ${messages.get(flash.error)}
 		</p>
 	</div>
 #{/if}
 #{if flash.success}
-	<div>
+	<div class="message">
 		<p class="success">
-			${messages.get(flash.success)}
+			<i class="material-icons">done</i> ${messages.get(flash.success)}
 		</p>
 	</div>
 #{/if}

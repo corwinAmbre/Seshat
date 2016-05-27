@@ -194,6 +194,26 @@ h1 {
 	display: none;
 }
 
+.message {
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.message p {
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.message .error {
+	color: #f44336;
+}
+
+.message .success {
+	color: #4CAF50;
+}
+
 @media screen and (min-width: 960px) {
 	.storytelling span.quote {
 		font-family: 'Lobster', cursive;
