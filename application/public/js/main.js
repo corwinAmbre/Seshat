@@ -123,7 +123,7 @@ function createProject() {
 	// Encrypt vault with password 
 	var encryptedVault = saveVault(password, $("#ivVault").val(), b64Vault);
 	/// Encrypt project with vault password
-	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
+	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, LZString.compress(JSON.stringify(project)));
 	remoteCalls.createProject(project, encryptedVault, encryptedProject);
 	return false;
 }
@@ -134,7 +134,7 @@ function saveProjectVersion(project) {
 		errorMessage("No encryption key found for this project");
 		return;
 	}
-	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
+	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, LZString.compress(JSON.stringify(project)));
 	remoteCalls.saveVersion(project.remoteId, encryptedProject);
 }
 

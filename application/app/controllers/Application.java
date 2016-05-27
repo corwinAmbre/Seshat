@@ -1,7 +1,8 @@
 package controllers;
 
-import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
+import play.Logger;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -23,6 +24,10 @@ public class Application extends Controller {
 
 	public static void createProject(String name, String key, String vault,
 			String firstVersion) {
+		if (StringUtils.isEmpty(firstVersion)) {
+			Logger.error("Empty version");
+			error();
+		}
 		User user = User.findByUsername(Security.connected());
 		Project project = user.addProject(name, key);
 		project.addVersion(firstVersion);
@@ -50,6 +55,10 @@ public class Application extends Controller {
 		}
 		if (!StringUtils.equals(project.author.username, Security.connected())) {
 			forbidden();
+		}
+		if (StringUtils.isEmpty(version)) {
+			Logger.error("Empty version");
+			error();
 		}
 		project.addVersion(version);
 		project.save();

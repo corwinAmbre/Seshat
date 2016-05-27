@@ -5,9 +5,7 @@
 	<div id="editor_content" class="flex-item-fluid">
 		<div class="chapter" v-for="chapter in chapters" id="chapter_{{chapter.number}}">
 			<h3 class="lobster txtcenter w100">Chapter {{chapter.number}}</h3>
-			<div contenteditable="true" class="scene" v-for="scene in chapter.content" id="chapter_{{chapter.number}}_scene_{{$index}}" v-on:keyup="contentUpdate(chapter.number, $index, $event)" v-on:blur="contentUpdate(chapter.number, $index, $event)" v-on:paste="contentUpdate(chapter.number, $index, $event)" v-on:delete="contentUpdate(chapter.number, $index, $event)" v-on:focus="contentUpdate(chapter.number, $index, $event)">
-				{{{* scene.content}}}
-			</div>
+			<div contenteditable="true" class="scene" v-for="scene in chapter.content" id="chapter_{{chapter.number}}_scene_{{$index}}" v-on:keyup="contentUpdate(chapter.number, $index, $event)" v-on:blur="contentUpdate(chapter.number, $index, $event)" v-on:paste="contentUpdate(chapter.number, $index, $event)" v-on:delete="contentUpdate(chapter.number, $index, $event)" v-on:focus="contentUpdate(chapter.number, $index, $event)">{{{* scene.content}}}</div>
 		</div>
 	</div>
 	<nav id="editor_nav" class="w200p">
@@ -28,7 +26,7 @@
 	var projectKey = "${project.idKey}";
 	var vault = readVault();
 	var decryptionKey = vault[projectKey];
-	var projectJson = JSON.parse(decryptFromServer(decryptionKey.key, decryptionKey.iv, projectEncrypted));
+	var projectJson = JSON.parse(LZString.decompress(decryptFromServer(decryptionKey.key, decryptionKey.iv, projectEncrypted)));
 	if(projectJson.remoteId == null) {
 		projectJson.remoteId = ${project.id};
 	}
@@ -60,13 +58,10 @@
 					isNodeEmpty = true;
 				}
 				var range = document.createRange();
-				if(isNodeEmpty) {
-					range.selectNodeContents(node);
-				} else {
-					var lastPos = node.innerHTML.trim().length;
-					range.setStart(node, lastPos - 1);
-					range.setEnd(node, lastPos - 1);	
-				}
+				range.selectNodeContents(node);
+				var lastPos = range.endOffset;
+				range.setStart(node, lastPos);
+				range.setEnd(node, lastPos);	
 				var selection = window.getSelection();
 				selection.removeAllRanges();
 				selection.addRange(range);
