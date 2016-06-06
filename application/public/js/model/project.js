@@ -32,3 +32,15 @@ Project.prototype.removeChapter = function(number) {
 		return true;
 	}
 }
+
+Scene.prototype.getWords = function() {
+	return this.content.split(" ").length;
+}
+
+Chapter.prototype.getWords = function () {
+	var result = 0;
+	this.content.forEach(function(item) {
+		result = result + item.getWords();
+	});
+	return result;
+}

@@ -29,7 +29,7 @@ var remoteCalls = {
 				},
 				method: "POST"
 			}).done(function(data) {
-
+				$("#quotameter").attr("value", data);
 			}).fail(function() {
 				errorMessage("Error while pushing version to the server");
 			});

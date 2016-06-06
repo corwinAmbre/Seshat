@@ -3,6 +3,7 @@ package controllers;
 import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
+import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -60,9 +61,13 @@ public class Application extends Controller {
 			Logger.error("Empty version");
 			error();
 		}
+		User user = (User) renderArgs.get("user");
+		if(user.getQuota() > 0 && user.getSpaceConsumed().longValue() > user.getQuota()) {
+			error(509, Messages.get("error.user.quota.exceeded"));
+		}
 		project.addVersion(version);
 		project.save();
-		renderText(0);
+		renderText(user.getSpaceConsumed().toString());
 	}
 
 }

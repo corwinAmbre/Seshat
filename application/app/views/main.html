@@ -30,6 +30,13 @@
 		<nav class="header flex-container">
 			<a href="/" class="logo mll">Seshat</a>
 			<div class="links mrs flex-container">
+				<p>
+					#{if user.getQuota() > 0}
+						<meter id="quotameter" name="quota" value="${user.getSpaceConsumed()}" max="${user.getQuota()}" min="0" high="${user.getQuota() * 0.9}" title="Space consumed: ${user.getSpaceConsumed()}/${user.getQuota()}">
+							${user.getSpaceConsumed()} bytes consumed / ${user.getQuota()} available
+						</meter>
+					#{/if}
+				</p>
 				#{secure.check "administrator"}
 					<a href="@{Administration.index}" title="Admin section"><i class="fa fa-cogs"></i> Administration</a>
 				#{/secure.check}

@@ -22,3 +22,7 @@ user.update.error.notfound=User not found
 user.update.error.unauthorizedself=You are not allowed to do this action on your user
 
 error.generic.unexpected=An unexpected error occured, please try again later or contact administrator
+error.user.quota.exceeded=Quota exceeded, the version cannot be saved
+
+editor.chapters=Chapters
+editor.words=words

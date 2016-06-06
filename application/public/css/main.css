@@ -356,8 +356,17 @@ form {
 	outline-style: none;
 }
 
+#editor_nav ul.chapter_list {
+	list-style-type: none;
+	padding: 0;
+}
+
 #editor_nav li.chapter_list {
 	cursor: pointer;
+	border-top: 1px solid #7f8c8d;
+	border-bottom: 1px solid #7f8c8d;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 #editor_nav .button,

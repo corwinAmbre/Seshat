@@ -123,7 +123,7 @@ function createProject() {
 	// Encrypt vault with password 
 	var encryptedVault = saveVault(password, $("#ivVault").val(), b64Vault);
 	/// Encrypt project with vault password
-	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, LZString.compress(JSON.stringify(project)));
+	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
 	remoteCalls.createProject(project, encryptedVault, encryptedProject);
 	return false;
 }
@@ -134,8 +134,23 @@ function saveProjectVersion(project) {
 		errorMessage("No encryption key found for this project");
 		return;
 	}
-	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, LZString.compress(JSON.stringify(project)));
+	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
 	remoteCalls.saveVersion(project.remoteId, encryptedProject);
+}
+
+function prototypeProject(projectJson) {
+	var result = Object.assign(new Project("tmp"), projectJson);
+	result.chapters = new Array();
+	projectJson.chapters.forEach(function(chapter) {
+		var chap = Object.assign(new Chapter(chapter.number));
+		chap.content = new Array();
+		chapter.content.forEach(function(scene) {
+			var sc = Object.assign(new Scene(), scene);
+			chap.content.push(sc);
+		});
+		result.chapters.push(chap);
+	});
+	return result;
 }
 
 /**

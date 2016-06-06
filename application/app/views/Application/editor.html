@@ -13,10 +13,10 @@
 			<i class="material-icons button" title="Save to server" v-on:click="pushToServer()">save</i>
 			<i class="material-icons button" title="Add a chapter" v-on:click="addChapter()">add_circle</i>
 		</div>
-		Chapters
+		&{'editor.chapters'}
 		<ul class="chapter_list">
 			<li v-for="chapter in chapters" v-on:click="goTo(chapter.number)" class="chapter_list">
-				{{chapter.number}}
+				{{chapter.number}} - {{chapter.getWords()}} &{'editor.words'}
 			</li>
 		</ul>
 	</nav>
@@ -26,11 +26,11 @@
 	var projectKey = "${project.idKey}";
 	var vault = readVault();
 	var decryptionKey = vault[projectKey];
-	var projectJson = JSON.parse(LZString.decompress(decryptFromServer(decryptionKey.key, decryptionKey.iv, projectEncrypted)));
+	var projectJson = JSON.parse(decryptFromServer(decryptionKey.key, decryptionKey.iv, projectEncrypted));
 	if(projectJson.remoteId == null) {
 		projectJson.remoteId = ${project.id};
 	}
-	var project = Object.assign(new Project("tmp"), projectJson);
+	var project = prototypeProject(projectJson);
 	
 	var projectVue = new Vue({
 		el: '#editor',
