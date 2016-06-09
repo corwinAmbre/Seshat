@@ -142,7 +142,7 @@ function prototypeProject(projectJson) {
 	var result = Object.assign(new Project("tmp"), projectJson);
 	result.chapters = new Array();
 	projectJson.chapters.forEach(function(chapter) {
-		var chap = Object.assign(new Chapter(chapter.number));
+		var chap = Object.assign(new Chapter(chapter.number), chapter);
 		chap.content = new Array();
 		chapter.content.forEach(function(scene) {
 			var sc = Object.assign(new Scene(), scene);
@@ -226,6 +226,32 @@ function errorMessage(message) {
  */
 function askConfirmation(message, confirmationLabel) {
 	return confirm(message);
+}
+
+function focusOnEditableContent(id, selectOption) {
+	var node = $("#" + id).get(0);
+	var isNodeEmpty = false;
+	if(node.innerHTML.length == 0) {
+		node.innerHTML = '\u00a0';
+		isNodeEmpty = true;
+	}
+	var range = document.createRange();
+	switch(selectOption) {
+	case 0:
+		range.selectNodeContents(node);
+		var lastPos = range.endOffset;
+		range.setStart(node, lastPos);
+		range.setEnd(node, lastPos);
+		break;
+	case 1:
+		range.selectNodeContents(node);
+	}
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	selection.addRange(range);
+	if(isNodeEmpty) {
+		document.execCommand('delete', false, null);
+	}
 }
 
 /***********************

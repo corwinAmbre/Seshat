@@ -4,6 +4,7 @@ var Scene = function() {
 
 var Chapter = function(number) {
 	this.number = number;
+	this.title = "";
 	this.content = [new Scene()];
 }
 
@@ -40,6 +41,14 @@ Scene.prototype.getWords = function() {
 Chapter.prototype.getWords = function () {
 	var result = 0;
 	this.content.forEach(function(item) {
+		result = result + item.getWords();
+	});
+	return result;
+}
+
+Project.prototype.getWords = function() {
+	var result = 0;
+	this.chapters.forEach(function(item) {
 		result = result + item.getWords();
 	});
 	return result;

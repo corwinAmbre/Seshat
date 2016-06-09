@@ -26,3 +26,4 @@ error.user.quota.exceeded=Quota exceeded, the version cannot be saved
 
 editor.chapters=Chapters
 editor.words=words
+editor.wordcount=Word count:
