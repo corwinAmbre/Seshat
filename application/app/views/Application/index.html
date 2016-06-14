@@ -30,3 +30,30 @@
 		</p>
 	</form>
 </article>
+#{if user.getProjects().size() > 0}
+<div class="hidden">
+</div>
+<script>
+	var vault = readVault();
+	vault2 = null;
+	var knowsAllProjects = true;
+	#{list items:user.getProjects(), as:'project'}
+		knowsAllProjects = knowsAllProjects && (vault["${project.idKey}"] !== undefined);
+	#{/list}
+	if(!knowsAllProjects) {
+		var password = askInput("A project has been created from another session, please confirm your password to synchronize this session");
+		var fullVault = "${user.getVault()._1}";
+		var vaultIv = "${user.getVault()._2}";
+		var vaultTmp = openVault(password, vaultIv, fullVault);
+		if(vaultTmp == null) {
+			errorMessage("Wrong password");
+			location.reload();
+		} else {
+			var words = CryptoJS.enc.Base64.parse(vaultTmp);
+			var stringVault = CryptoJS.enc.Utf8.stringify(words);
+			vault = JSON.parse(stringVault);
+			writeVault(vault);
+		}
+	}
+</script>
+#{/if}

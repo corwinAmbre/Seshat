@@ -228,6 +228,10 @@ function askConfirmation(message, confirmationLabel) {
 	return confirm(message);
 }
 
+function askInput(message) {
+	return prompt(message);
+}
+
 function focusOnEditableContent(id, selectOption) {
 	var node = $("#" + id).get(0);
 	var isNodeEmpty = false;
