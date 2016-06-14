@@ -1,8 +1,8 @@
 /**
 * Base colors:
-* Default text   : #7f8c8d
-* Primary color  : #2980b9
-* Secondary color: #ecf0f1
+* Default text   : #7f8c8d - rgb(127, 140, 141)
+* Primary color  : #2980b9 - rgb(41, 128, 185)
+* Secondary color: #ecf0f1 - rgb(236, 240, 241)
 */
 
 @font-face {
@@ -89,6 +89,20 @@ article {
 	text-align: center;
 }
 
+.feature.withinfo {
+	cursor: pointer;
+}
+
+.feature.withinfo h3:after {
+	content: "help_outline";
+	font-family: 'Material Icons';
+	z-index: 10;
+	font-size: 0.8em;
+	color: #2980b9;
+	position: relative;
+	top: -0.5em;
+}
+
 .feature i.material-icons {
 	font-size: 2.8em;
 }
@@ -133,6 +147,58 @@ article h1, article h2 {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
 }
 
+.moreinfo {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	background-color: rgba(127, 140, 141, 0.7);
+	padding: 10px;
+	display: none;
+}
+
+.moreinfo > * {
+	width: 100%;
+	background-color: white;
+}
+
+.moreinfo > div {
+	position: relative;
+	height: 100%;
+}
+
+.moreinfo h4 {
+	padding-top: 15px;
+	margin-bottom: 15px;
+	color: #2980b9;
+	font-weight: 400;
+}
+
+.moreinfo p {
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-bottom: 15px;
+	overflow-y: auto;
+}
+
+.moreinfo .closebutton {
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: #7f8c8d;
+	border: none;
+	background-color: white;
+	font-size: 1em;
+	padding: 0;
+}
+
+.moreinfo .closebutton  .material-icons {
+	font-size: 2em;
+	margin-right: 0;
+}
+
 @media screen and (min-width: 960px) {
 	.storytelling span.quote {
 		font-family: 'Lobster', cursive;
@@ -147,5 +213,24 @@ article h1, article h2 {
 	
 	.responsivewidth {
 		width: 80%;
+	}
+	
+	.moreinfo {
+		padding: 0px;
+		padding-top: 50px;
+	}
+	
+	.moreinfo > * {
+		width: 500px;
+		margin: auto;
+	}
+	
+	.moreinfo > div {
+		height: auto;
+		max-height: 90%;
+	}
+	
+	.moreinfo p {
+		text-align: left;
 	}
 }

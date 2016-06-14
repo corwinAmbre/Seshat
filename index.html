@@ -13,6 +13,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Lobster|Open+Sans:400,700' rel='stylesheet' type='text/css'>
   
 	<script type="text/javascript" src="javascripts/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="javascripts/main.js"></script>
 	<!--script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script-->
   
 	<title>Seshat - Your story is worth to be written</title>
@@ -48,11 +49,23 @@
 				<div class="separator"></div>
 				<span>While writing, you're focused on your story with minimal toolbars displayed on the page</span>
 			</div>
-			<div class="feature">
+			<div class="feature withinfo">
 				<i class="material-icons">lock</i>
 				<h3>Security</h3>
 				<div class="separator"></div>
 				<span>Your story can't be read by anyone other than you until you want to unveil it</span>
+				<div class="moreinfo">
+					<div>
+						<h4>Security</h4>
+						<div class="separator"></div>
+						<p>
+							You're the only one able to read your novel and work on it until you decide to unveal it. Data are cyphered directly in your browser before being sent to <span class="lobster">Seshat</span> and decyphered locally as well which means that <span class="lobster">Seshat</span> has no way to decypher data that belongs to you. On the other side, it also implies that if you loose your password, you'll loose all of your data.<br/>
+							As another consequence, <span class="lobster">Seshat</span> will also requests you to confirm your password for few specific actions like creating a new novel or synchronizing data accross several openned sessions.<br/>
+							A back-up mechanism will be created to allow you to save externally your data in clear text.
+						</p>
+						<button class="closebutton" onclick="javascript:closeMoreInfo(this)"><i class="material-icons">highlight_off</i></button>
+					</div>
+				</div>
 			</div>
 			<div class="feature">
 				<i class="material-icons">devices</i>
@@ -100,13 +113,13 @@
 	</div>
 	<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		//document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 	</script>
 	<script type="text/javascript">
-		try {
+		/*try {
 			var pageTracker = _gat._getTracker("UA-70768055-1");
             pageTracker._trackPageview();
-		} catch(err) {}
+		} catch(err) {}*/
 	</script>
 </body>
 </html>
