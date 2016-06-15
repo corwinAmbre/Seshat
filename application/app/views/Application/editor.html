@@ -2,7 +2,7 @@
 #{set title:'Editor' /}
 
 <div id="editor" class="flex-container">
-	<div id="editor_content" class="flex-item-fluid">
+	<div id="editor_content" class="flex-item-fluid" spellcheck="true">
 		<div class="chapter" v-for="chapter in chapters" id="chapter_{{chapter.number}}">
 			<h3 class="lobster txtcenter w100">Chapter {{chapter.number}}</h3>
 			<h3 class="lobster txtcenter w100 chapter_title" v-show="chapter.title.length > 0">{{chapter.title}}</h3>
