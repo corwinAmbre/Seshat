@@ -33,4 +33,12 @@ public class Security extends Secure.Security {
 		response.removeCookie("masterKey");
 	}
 
+	static void onAuthenticated() {
+		Application.index();
+	}
+
+	static void onDisconnected() {
+		Public.index();
+	}
+
 }

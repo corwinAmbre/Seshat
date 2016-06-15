@@ -6,7 +6,8 @@
 *		/										module:secure
 
 # Home page
-GET     /                                       Application.index
+GET     /                                       Public.index
+GET		/projects								Application.index
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
