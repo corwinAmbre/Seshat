@@ -43,11 +43,27 @@
 			</p>
 		</article>
 		<article class="grid-4-small-1" id="features">
-			<div class="feature">
+			<div class="feature withinfo">
 				<i class="material-icons">create</i>
 				<h3>Focus on writing</h3>
 				<div class="separator"></div>
 				<span>While writing, you're focused on your story with minimal toolbars displayed on the page</span>
+				<div class="moreinfo">
+					<div>
+						<h4>Focus on writing</h4>
+						<div class="separator"></div>
+						<p>
+							Text editor supports usual shortcuts natively:
+							<ul>
+								<li><strong>CTRL + C / CTRL + X / CTRL + V: </strong>copy / cut / paste content</li>
+								<li><strong>CTRL + B: </strong>if a text is selected, put it in <strong>bold</strong>, if not, put cursor in bold mode (press again to go back to normal)</li>
+								<li><strong>CTRL + I: </strong>if a text is selected, put it in <i>italic</i>, if not, put cursor in italic mode (press again to go back to normal)</li>
+								<li><strong>CTRL + U: </strong>if a text is selected, put it <u>underlined</u>, if not, put cursor in underline mode (press again to go back to normal)</li>
+							</ul>
+						</p>
+						<button class="closebutton" onclick="javascript:closeMoreInfo(this)"><i class="material-icons">highlight_off</i></button>
+					</div>
+				</div>
 			</div>
 			<div class="feature withinfo">
 				<i class="material-icons">lock</i>
@@ -92,11 +108,21 @@
 				<div class="separator"></div>
 				<span>You can plan your story, define your characters and places and link public images to them</span>
 			</div>
-			<div class="feature">
+			<div class="feature withinfo">
 				<i class="material-icons">memory</i>
 				<h3>Self hosting</h3>
 				<div class="separator"></div>
 				<span>You can host your own <span class="lobster">Seshat</span> instance as you want</span>
+				<div class="moreinfo">
+					<div>
+						<h4>Self hosting</h4>
+						<div class="separator"></div>
+						<p>
+							Source code is fully available on project <a href="https://github.com/corwinAmbre/Seshat">Github <i class="fa fa-github"></i></a>. It requires a Java environment to run.
+						</p>
+						<button class="closebutton" onclick="javascript:closeMoreInfo(this)"><i class="material-icons">highlight_off</i></button>
+					</div>
+				</div>
 			</div>
 			<div class="feature">
 				<i class="material-icons">trending_up</i>
