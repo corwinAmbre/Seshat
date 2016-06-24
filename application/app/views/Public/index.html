@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Your story is worth to be shared">
+	<meta name="description" content="&{'public.meta.description'}">
         
     <link rel="stylesheet" href="@{'/public/css/font-awesome.min.css'}">
     <link rel="stylesheet" href="@{'/public/css/knacss.css'}">
@@ -17,7 +17,7 @@
 	<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
 
   
-	<title>Seshat - Your story is worth to be written</title>
+	<title>&{'public.meta.description'}</title>
 </head>
 
 <body lang="en">
@@ -25,45 +25,39 @@
 		<a href="./" class="logo mll">Seshat</a>
 		<div class="links mrs flex-container">
 			#{if user == null}
-				<a href="/login" title="Login"><i class="fa fa-plug"></i> Signin</a>
+				<a href="/login" title="&{'public.header.button.signin'}"><i class="fa fa-plug"></i> &{'public.header.button.signin'}</a>
 			#{/if}
 			#{else}
-				<a href="/projects" title="My projects"><i class="fa fa-book"></i> My projects</a>
-				<a href="/logout" title="Logout"><i class="fa fa-power-off"></i> ${user.username}</a>
+				<a href="/projects" title="&{'public.header.button.myprojects'}"><i class="fa fa-book"></i> &{'public.header.button.myprojects'}</a>
+				<a href="/logout" title="&{'public.header.button.logout'}"><i class="fa fa-power-off"></i> ${user.username}</a>
 			#{/else}
 		</div>
 	</nav>
 	<div class="w100 storytelling">
 		<img src="@{'/public/images/storytelling.jpg'}" class="w100"/>
-		<span class="quote pll plm">Your story is worth to be written</span>
+		<span class="quote pll plm">&{'public.storytelling'}</span>
 	</div>
 	<div class="responsivewidth center txtcenter">
 		<article class="center txtcenter">
-			<h2>What is <span class="lobster">Seshat</span>?</h2>
+			<h2>&{'public.whatis'}</h2>
 			<div class="separator"></div>
-			<p><span class="lobster">Seshat</span> is a web tool to help you planning, organizing and writing your own book, novel, scenario...</p>
+			<p><span class="lobster">&{'application.name'}</span> &{'public.whatis.desc'}</p>
 			<p>
-				The idea came during my first <a href="http://nanowrimo.org/">NaNoWriMo</a>. At this point I was using <a href="http://www.spacejock.com/yWriter6.html">yWriter 6</a> which is very useful but was not totally suited for my needs so I decided to create my own tool and to share it with anyone who could be interested as well.
+				&{'public.whatis.why'}
 			</p>
 		</article>
 		<article class="grid-4-small-1" id="features">
 			<div class="feature withinfo">
 				<i class="material-icons">create</i>
-				<h3>Focus on writing</h3>
+				<h3>&{'public.feature.editor.title'}</h3>
 				<div class="separator"></div>
-				<span>While writing, you're focused on your story with minimal toolbars displayed on the page</span>
+				<span>&{'public.feature.editor.shortdesc'}</span>
 				<div class="moreinfo">
 					<div>
-						<h4>Focus on writing</h4>
+						<h4>&{'public.feature.editor.title'}</h4>
 						<div class="separator"></div>
 						<p>
-							Text editor supports usual shortcuts natively:
-							<ul>
-								<li><strong>CTRL + C / CTRL + X / CTRL + V: </strong>copy / cut / paste content</li>
-								<li><strong>CTRL + B: </strong>if a text is selected, put it in <strong>bold</strong>, if not, put cursor in bold mode (press again to go back to normal)</li>
-								<li><strong>CTRL + I: </strong>if a text is selected, put it in <i>italic</i>, if not, put cursor in italic mode (press again to go back to normal)</li>
-								<li><strong>CTRL + U: </strong>if a text is selected, put it <u>underlined</u>, if not, put cursor in underline mode (press again to go back to normal)</li>
-							</ul>
+							&{'public.feature.editor.longdesc'}
 						</p>
 						<button class="closebutton" onclick="javascript:closeMoreInfo(this)"><i class="material-icons">highlight_off</i></button>
 					</div>
@@ -71,17 +65,15 @@
 			</div>
 			<div class="feature withinfo">
 				<i class="material-icons">lock</i>
-				<h3>Security</h3>
+				<h3>&{'public.feature.security.title'}</h3>
 				<div class="separator"></div>
-				<span>Your story can't be read by anyone other than you until you want to unveil it</span>
+				<span>&{'public.feature.security.shortdesc'}</span>
 				<div class="moreinfo">
 					<div>
-						<h4>Security</h4>
+						<h4>&{'public.feature.security.title'}</h4>
 						<div class="separator"></div>
 						<p>
-							You're the only one able to read your novel and work on it until you decide to unveal it. Data are cyphered directly in your browser before being sent to <span class="lobster">Seshat</span> and decyphered locally as well which means that <span class="lobster">Seshat</span> has no way to decypher data that belongs to you. On the other side, it also implies that if you loose your password, you'll loose all of your data.<br/>
-							As another consequence, <span class="lobster">Seshat</span> will also requests you to confirm your password for few specific actions like creating a new novel or synchronizing data accross several openned sessions.<br/>
-							A back-up mechanism will be created to allow you to save externally your data in clear text.
+							&{'public.feature.security.longdesc'}
 						</p>
 						<button class="closebutton" onclick="javascript:closeMoreInfo(this)"><i class="material-icons">highlight_off</i></button>
 					</div>
@@ -89,40 +81,40 @@
 			</div>
 			<div class="feature">
 				<i class="material-icons">devices</i>
-				<h3>No permanent connection</h3>
+				<h3>&{'public.feature.offline.title'}</h3>
 				<div class="separator"></div>
-				<span>Once you've loaded your story on your device, you can continue to write even without any connection</span>
+				<span>&{'public.feature.offline.shortdesc'}</span>
 			</div>
 			<div class="feature">
 				<i class="material-icons">share</i>
 				<i class="material-icons">fingerprint</i>
-				<h3>Share your story</h3>
+				<h3>&{'public.feature.share.title'}</h3>
 				<div class="separator"></div>
-				<span>You can share your story with your friends or with the world, online or by exporting to PDF or EPUB with Watermark system to track your copies</span>
+				<span>&{'public.feature.share.shortdesc'}</span>
 			</div>
 			<div class="feature">
 				<i class="material-icons">description</i>
-				<h3>Sticky notes wall</h3>
+				<h3>&{'public.feature.stickynotes.title'}</h3>
 				<div class="separator"></div>
-				<span>Put all your ideas on sticky notes and create links between them. It's as having your wall into your pocket</span>
+				<span>&{'public.feature.stickynotes.shortdesc'}</span>
 			</div>
 			<div class="feature">
 				<i class="material-icons">chrome_reader_mode</i>
-				<h3>Plan your story</h3>
+				<h3>&{'public.feature.plan.title'}</h3>
 				<div class="separator"></div>
-				<span>You can plan your story, define your characters and places and link public images to them</span>
+				<span>&{'public.feature.plan.shortdesc'}</span>
 			</div>
 			<div class="feature withinfo">
 				<i class="material-icons">memory</i>
-				<h3>Self hosting</h3>
+				<h3>&{'public.feature.selfhosting.title'}</h3>
 				<div class="separator"></div>
-				<span>You can host your own <span class="lobster">Seshat</span> instance as you want</span>
+				<span>&{'public.feature.selfhosting.shortdesc'}</span>
 				<div class="moreinfo">
 					<div>
-						<h4>Self hosting</h4>
+						<h4>&{'public.feature.selfhosting.title'}</h4>
 						<div class="separator"></div>
 						<p>
-							Source code is fully available on project <a href="https://github.com/corwinAmbre/Seshat">Github <i class="fa fa-github"></i></a>. It requires a Java environment to run.
+							&{'public.feature.selfhosting.longdesc'}
 						</p>
 						<button class="closebutton" onclick="javascript:closeMoreInfo(this)"><i class="material-icons">highlight_off</i></button>
 					</div>
@@ -130,15 +122,15 @@
 			</div>
 			<div class="feature">
 				<i class="material-icons">trending_up</i>
-				<h3>Follow your progress</h3>
+				<h3>&{'public.feature.stats.title'}</h3>
 				<div class="separator"></div>
-				<span>Statistic module will show you how often you write, how long and your average word speed</span>
+				<span>&{'public.feature.stats.shortdesc'}</span>
 			</div>
 		</article>
 		<article class="center txtcenter">
-			<h2>Stay tunned!</h2>
+			<h2>&{'public.staytuned.title'}</h2>
 			<div class="separator"></div>
-			<p><span class="lobster">Seshat</span> is at its early stage and therefore will evolve. To be totally honest, project already changed quite a bit already. If you have ideas, feedback or just a message, you can <a href="mailto:sebastien.domergue@gmail.com">contact me</a> or go to <a href="https://github.com/corwinAmbre/Seshat">the project page on Github <i class="fa fa-github"></i></a></p>
+			<p>&{'public.staytuned.message'}</p>
 		</article>
 	</div>
 </body>

@@ -2,6 +2,8 @@
 # For example, for French create a messages.fr file
 #
 
+application.name=Seshat
+
 secure.title=Please connect
 secure.username=Username
 secure.password=Password
@@ -27,3 +29,33 @@ error.user.quota.exceeded=Quota exceeded, the version cannot be saved
 editor.chapters=Chapters
 editor.words=words
 editor.wordcount=Word count:
+
+public.meta.description=Seshat - Your story is worth to be written
+public.header.button.signin=Signin
+public.header.button.myprojects=My projects
+public.header.button.logout=Logout
+public.storytelling=Your story is worth to be written
+public.whatis=What is <span class="lobster">Seshat</span>?
+public.whatis.desc=is a web tool to help you planning, organizing and writing your own book, novel, scenario...
+public.whatis.why=The idea came during my first <a href="http://nanowrimo.org/">NaNoWriMo</a>. At this point I was using <a href="http://www.spacejock.com/yWriter6.html">yWriter 6</a> which is very useful but was not totally suited for my needs so I decided to create my own tool and to share it with anyone who could be interested as well.
+public.feature.editor.title=Focus on writing
+public.feature.editor.shortdesc=While writing, you're focused on your story with minimal toolbars displayed on the page
+public.feature.editor.longdesc=Text editor supports usual shortcuts natively:<ul><li><strong>CTRL + C / CTRL + X / CTRL + V: </strong>copy / cut / paste content</li><li><strong>CTRL + B: </strong>if a text is selected, put it in <strong>bold</strong>, if not, put cursor in bold mode (press again to go back to normal)</li><li><strong>CTRL + I: </strong>if a text is selected, put it in <i>italic</i>, if not, put cursor in italic mode (press again to go back to normal)</li><li><strong>CTRL + U: </strong>if a text is selected, put it <u>underlined</u>, if not, put cursor in underline mode (press again to go back to normal)</li></ul>
+public.feature.security.title=Security
+public.feature.security.shortdesc=Your story can't be read by anyone other than you until you want to unveil it
+public.feature.security.longdesc=You're the only one able to read your novel and work on it until you decide to unveal it. Data are cyphered directly in your browser before being sent to <span class="lobster">Seshat</span> and decyphered locally as well which means that <span class="lobster">Seshat</span> has no way to decypher data that belongs to you. On the other side, it also implies that if you loose your password, you'll loose all of your data.<br/>As another consequence, <span class="lobster">Seshat</span> will also requests you to confirm your password for few specific actions like creating a new novel or synchronizing data accross several openned sessions.<br/>A back-up mechanism will be created to allow you to save externally your data in clear text.
+public.feature.offline.title=No permanent connection
+public.feature.offline.shortdesc=Once you've loaded your story on your device, you can continue to write even without any connection
+public.feature.share.title=Share your story
+public.feature.share.shortdesc=You can share your story with your friends or with the world, online or by exporting to PDF or EPUB with Watermark system to track your copies
+public.feature.stickynotes.title=Sticky notes wall
+public.feature.stickynotes.shortdesc=Put all your ideas on sticky notes and create links between them. It's as having your wall into your pocket
+public.feature.plan.title=Plan your story
+public.feature.plan.shortdesc=You can plan your story, define your characters and places and link public images to them
+public.feature.selfhosting.title=Self hosting
+public.feature.selfhosting.shortdesc=You can host your own <span class="lobster">Seshat</span> instance as you want
+public.feature.selfhosting.longdesc=Source code is fully available on project <a href="https://github.com/corwinAmbre/Seshat">Github <i class="fa fa-github"></i></a>. It requires a Java environment to run.
+public.feature.stats.title=Follow your progress
+public.feature.stats.shortdesc=Statistic module will show you how often you write, how long and your average word speed
+public.staytuned.title=Stay tuned!
+public.staytuned.message=<span class="lobster">Seshat</span> is at its early stage and therefore will evolve. To be totally honest, project already changed quite a bit already. If you have ideas, feedback or just a message, you can <a href="mailto:sebastien.domergue@gmail.com">contact me</a> or go to <a href="https://github.com/corwinAmbre/Seshat">the project page on Github <i class="fa fa-github"></i></a>
