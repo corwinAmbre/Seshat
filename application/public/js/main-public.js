@@ -2,6 +2,10 @@ function closeMoreInfo(source) {
 	$(source).parents("div.moreinfo").fadeOut();
 }
 
+function openLoginOverlay() {
+	$(".login-overlay").slideToggle();
+}
+
 $(document).ready(function() {
 	$(".moreinfo").click(function(e){
 		if (e.target !== this) {

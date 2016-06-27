@@ -17,45 +17,46 @@
 	</div>
 #{/if}
 
-<div id="login">
-	
-	<h1>&{'secure.title'}</h1>
-	#{form @authenticate(), id:'loginForm'}
-		<p id="username-field" class="form-control">
-			<label for="username">&{'secure.username'}</label>
-			<input type="text" name="username" id="username" value="${flash.username}" />
-		</p>
-		<p id="password-field" class="form-control">
-			<label for="password">&{'secure.password'}</label>
-			<input type="password" name="password" id="password" value="" />
-		</p>
-		<p id="remember-field">
-			<input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} />
-			<label for="remember">&{'secure.remember'}</label>
-		</p>
-		<p id="signin-field" class="form-buttons">
-			<input type="submit" id="signin" value="&{'secure.signin'}" class="btn btn-primary"/>
-		</p>
-	#{/form}
-</div>
-<div class="separator"></div>
-<div id="createUser">
-	<h1>Or create an account</h1>
-	#{form @Users.signup(), id:'signupForm'}
-		<p id="usernameSignup-field" class="form-control">
-			<label for="usernameSignup">&{'secure.username'}</label>
-			<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" />
-		</p>
-		<p id="passwordSignup-field" class="form-control">
-			<label for="passwordSignup">&{'secure.password'}</label>
-			<input type="password" name="passwordSignup" id="passwordSignup" value="" />
-		</p>
-		<p id="password2Signup-field" class="form-control">
-			<label for="password2Signup">&{'secure.password.confirm'}</label>
-			<input type="password" name="password2Signup" id="password2Signup" value="" />
-		</p>
-		<p id="signup-field" class="form-buttons">
-			<input type="submit" id="signup" value="&{'secure.signup'}" class="btn btn-primary" />
-		</p>
-	#{/form}
+<div class="flex-container">
+	<div id="login">
+		<h1>&{'secure.title'}</h1>
+		#{form @authenticate(), id:'loginForm'}
+			<p id="username-field" class="form-control">
+				<label for="username">&{'secure.username'}</label>
+				<input type="text" name="username" id="username" value="${flash.username}" />
+			</p>
+			<p id="password-field" class="form-control">
+				<label for="password">&{'secure.password'}</label>
+				<input type="password" name="password" id="password" value="" />
+			</p>
+			<p id="remember-field">
+				<input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} />
+				<label for="remember">&{'secure.remember'}</label>
+			</p>
+			<p id="signin-field" class="form-buttons">
+				<input type="submit" id="signin" value="&{'secure.signin'}" class="btn btn-primary"/>
+			</p>
+		#{/form}
+	</div>
+	<div class="v-separator"></div>
+	<div id="createUser">
+		<h1>Or create an account</h1>
+		#{form @Users.signup(), id:'signupForm'}
+			<p id="usernameSignup-field" class="form-control">
+				<label for="usernameSignup">&{'secure.username'}</label>
+				<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" />
+			</p>
+			<p id="passwordSignup-field" class="form-control">
+				<label for="passwordSignup">&{'secure.password'}</label>
+				<input type="password" name="passwordSignup" id="passwordSignup" value="" />
+			</p>
+			<p id="password2Signup-field" class="form-control">
+				<label for="password2Signup">&{'secure.password.confirm'}</label>
+				<input type="password" name="password2Signup" id="password2Signup" value="" />
+			</p>
+			<p id="signup-field" class="form-buttons">
+				<input type="submit" id="signup" value="&{'secure.signup'}" class="btn btn-primary" />
+			</p>
+		#{/form}
+	</div>
 </div>

@@ -25,7 +25,7 @@
 		<a href="./" class="logo mll">Seshat</a>
 		<div class="links mrs flex-container">
 			#{if user == null}
-				<a href="/login" title="&{'public.header.button.signin'}"><i class="fa fa-plug"></i> &{'public.header.button.signin'}</a>
+				<a href="#" title="&{'public.header.button.signin'}" onclick="javascript:openLoginOverlay()"><i class="fa fa-plug"></i> &{'public.header.button.signin'}</a>
 			#{/if}
 			#{else}
 				<a href="/projects" title="&{'public.header.button.myprojects'}"><i class="fa fa-book"></i> &{'public.header.button.myprojects'}</a>
@@ -33,6 +33,68 @@
 			#{/else}
 		</div>
 	</nav>
+	#{if user == null}
+		<div class="login-overlay">			
+			#{if flash.error}
+				<div class="message">
+					<p class="error">
+						<i class="material-icons">error</i> ${messages.get(flash.error)}
+					</p>
+				</div>
+			#{/if}
+			#{if flash.success}
+				<div class="message">
+					<p class="success">
+						<i class="material-icons">done</i> ${messages.get(flash.success)}
+					</p>
+				</div>
+			#{/if}
+			
+			<div class="flex-container">
+				<div id="login">
+					<h1>&{'secure.title'}</h1>
+					#{form @Secure.authenticate(), id:'loginForm'}
+						<p id="username-field" class="form-control">
+							<label for="username">&{'secure.username'}</label>
+							<input type="text" name="username" id="username" value="${flash.username}" />
+						</p>
+						<p id="password-field" class="form-control">
+							<label for="password">&{'secure.password'}</label>
+							<input type="password" name="password" id="password" value="" />
+						</p>
+						<p id="remember-field">
+							<input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} />
+							<label for="remember">&{'secure.remember'}</label>
+						</p>
+						<p id="signin-field" class="form-buttons">
+							<input type="submit" id="signin" value="&{'secure.signin'}" class="btn btn-primary"/>
+						</p>
+					#{/form}
+				</div>
+				<div class="v-separator"></div>
+				<div id="createUser">
+					<h1>Or create an account</h1>
+					#{form @Users.signup(), id:'signupForm'}
+						<p id="usernameSignup-field" class="form-control">
+							<label for="usernameSignup">&{'secure.username'}</label>
+							<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" />
+						</p>
+						<p id="passwordSignup-field" class="form-control">
+							<label for="passwordSignup">&{'secure.password'}</label>
+							<input type="password" name="passwordSignup" id="passwordSignup" value="" />
+						</p>
+						<p id="password2Signup-field" class="form-control">
+							<label for="password2Signup">&{'secure.password.confirm'}</label>
+							<input type="password" name="password2Signup" id="password2Signup" value="" />
+						</p>
+						<p id="signup-field" class="form-buttons">
+							<input type="submit" id="signup" value="&{'secure.signup'}" class="btn btn-primary" />
+						</p>
+					#{/form}
+				</div>
+			</div>	
+		</div>
+	#{/if}
 	<div class="w100 storytelling">
 		<img src="@{'/public/images/storytelling.jpg'}" class="w100"/>
 		<span class="quote pll plm">&{'public.storytelling'}</span>
