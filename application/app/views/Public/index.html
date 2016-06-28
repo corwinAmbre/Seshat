@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="@{'/public/css/main-public.css'}">
         
     <script type="text/javascript" src="@{'/public/js/jquery-1.11.3.min.js'}" ></script>
+    <script type="text/javascript" src="@{'public/js/vue.min.js'}"></script>
+	<script type="text/javascript" src="@{'public/js/vue-validator.min.js'}"></script>
 	<script type="text/javascript" src="@{'/public/js/main-public.js'}"></script>
 		
 	<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
@@ -53,44 +55,58 @@
 			<div class="flex-container">
 				<div id="login">
 					<h1>&{'secure.title'}</h1>
-					#{form @Secure.authenticate(), id:'loginForm'}
-						<p id="username-field" class="form-control">
-							<label for="username">&{'secure.username'}</label>
-							<input type="text" name="username" id="username" value="${flash.username}" />
-						</p>
-						<p id="password-field" class="form-control">
-							<label for="password">&{'secure.password'}</label>
-							<input type="password" name="password" id="password" value="" />
-						</p>
-						<p id="remember-field">
-							<input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} />
-							<label for="remember">&{'secure.remember'}</label>
-						</p>
-						<p id="signin-field" class="form-buttons">
-							<input type="submit" id="signin" value="&{'secure.signin'}" class="btn btn-primary"/>
-						</p>
-					#{/form}
+					<validator name="validationLogin">
+						#{form @Secure.authenticate(), id:'loginForm'}
+							<p id="username-field" class="form-control">
+								<label for="username">&{'secure.username'}</label>
+								<input type="text" name="username" id="username" value="${flash.username}" v-validate:username="{required: true, minlength: 6}"/>
+								<span v-if="$validationLogin.username.required" class="error">&{'secure.validation.username.required'}</span>
+								<span v-if="$validationLogin.username.required == false && $validationLogin.username.minlength" class="error">&{'secure.validation.username.minlength' , 6}</span>
+							</p>
+							<p id="password-field" class="form-control">
+								<label for="password">&{'secure.password'}</label>
+								<input type="password" name="password" id="password" value="" v-validate:password="['required']"/>
+								<span v-if="$validationLogin.password.required" class="error">&{'secure.validation.password.required'}</span>
+							</p>
+							<p id="remember-field">
+								<input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} />
+								<label for="remember">&{'secure.remember'}</label>
+							</p>
+							<p id="signin-field" class="form-buttons">
+								<input type="submit" id="signin" value="&{'secure.signin'}" class="btn btn-primary" v-if="$validationLogin.valid"/>
+							</p>
+						#{/form}
+					</validator>
 				</div>
 				<div class="v-separator"></div>
 				<div id="createUser">
 					<h1>Or create an account</h1>
-					#{form @Users.signup(), id:'signupForm'}
-						<p id="usernameSignup-field" class="form-control">
-							<label for="usernameSignup">&{'secure.username'}</label>
-							<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" />
-						</p>
-						<p id="passwordSignup-field" class="form-control">
-							<label for="passwordSignup">&{'secure.password'}</label>
-							<input type="password" name="passwordSignup" id="passwordSignup" value="" />
-						</p>
-						<p id="password2Signup-field" class="form-control">
-							<label for="password2Signup">&{'secure.password.confirm'}</label>
-							<input type="password" name="password2Signup" id="password2Signup" value="" />
-						</p>
-						<p id="signup-field" class="form-buttons">
-							<input type="submit" id="signup" value="&{'secure.signup'}" class="btn btn-primary" />
-						</p>
-					#{/form}
+					<validator name="validationCreateUser">
+						#{form @Users.signup(), id:'signupForm'}
+							<p id="usernameSignup-field" class="form-control">
+								<label for="usernameSignup">&{'secure.username'}</label>
+								<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" v-validate:usernameSignup="{required: true, minlength: 6}"/>
+								<span v-if="$validationCreateUser.usernamesignup.required" class="error">&{'secure.validation.username.required'}</span>
+								<span v-if="$validationCreateUser.usernamesignup.required == false && $validationCreateUser.usernamesignup.minlength" class="error">&{'secure.validation.username.minlength' , 6}</span>
+							</p>
+							<p id="passwordSignup-field" class="form-control">
+								<label for="passwordSignup">&{'secure.password'}</label>
+								<input type="password" name="passwordSignup" id="passwordSignup" value="" v-validate:passwordSignup="{required: true, minlength: 8}"/>
+								<span v-if="$validationCreateUser.passwordsignup.required" class="error">&{'secure.validation.password.required'}</span>
+								<span v-if="$validationCreateUser.passwordsignup.required == false && $validationCreateUser.passwordsignup.minlength" class="error">&{'secure.validation.password.minlength' , 8}</span>
+							</p>
+							<p id="password2Signup-field" class="form-control">
+								<label for="password2Signup">&{'secure.password.confirm'}</label>
+								<input type="password" name="password2Signup" id="password2Signup" value="" v-validate:password2Signup="{required: true, minlength: 8, samepassword: true}"/>
+								<span v-if="$validationCreateUser.password2signup.required" class="error">&{'secure.validation.password2.required'}</span>
+								<span v-if="$validationCreateUser.password2signup.required == false && $validationCreateUser.password2signup.minlength" class="error">&{'secure.validation.password.minlength' , 8}</span>
+								<span v-if="$validationCreateUser.password2signup.samepassword" class="error">&{'secure.validation.password.samepasswords'}</span>
+							</p>
+							<p id="signup-field" class="form-buttons">
+								<input type="submit" id="signup" value="&{'secure.signup'}" class="btn btn-primary" v-if="$validationCreateUser.valid"/>
+							</p>
+						#{/form}
+					</validator>
 				</div>
 			</div>	
 		</div>

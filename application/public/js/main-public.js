@@ -6,6 +6,8 @@ function openLoginOverlay() {
 	$(".login-overlay").slideToggle();
 }
 
+var vueExt;
+
 $(document).ready(function() {
 	$(".moreinfo").click(function(e){
 		if (e.target !== this) {
@@ -18,5 +20,17 @@ $(document).ready(function() {
 			return;
 		}
 		$(this).find(".moreinfo").fadeIn();
+	});
+	Vue.use(VueValidator);
+	new Vue({
+		el: '#login'
+	})
+	vueExt = new Vue({
+		el: '#createUser',
+		validators: {
+			samepassword: function(val) {
+				return $("#password2Signup").val() == $("#passwordSignup").val();
+			}
+		}
 	})
 });

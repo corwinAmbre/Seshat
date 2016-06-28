@@ -14,6 +14,13 @@ secure.signup=Create an account
 secure.newuser=or Create a new user
 secure.error=Oops, unknown username or password
 
+secure.validation.username.required=Username is required
+secure.validation.username.minlength=Username has to be at least %s characters
+secure.validation.password.required=Password is required
+secure.validation.password2.required=Please retype your password
+secure.validation.password.minlength=Password has to be at least %s characters
+secure.validation.password.samepasswords=Provided passwords are different
+
 project.name=Project name
 project.new.password=Please confirm your account password to create a project
 project.create.new=Start writting
