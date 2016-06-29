@@ -1,10 +1,10 @@
-/**
+/*******************************************
 * Base colors:
-* Default text   : #7f8c8d - rgb(127, 140, 141)
-* Primary color  : #2980b9 - rgb(41, 128, 185)
-* Secondary color: #ecf0f1 - rgb(236, 240, 241)
-*/
-
+* Default text   : #7f8c8d
+* Primary color  : #2980b9
+* Secondary color: #ecf0f1
+* Error color    : #f44336
+*******************************************/
 
 /*******************************************
 * Fonts
@@ -66,14 +66,14 @@
 	font-family: 'Material Icons';
 	font-weight: normal;
 	font-style: normal;
-	font-size: 24px;  /* Preferred icon size */
+	font-size: 24px; /* Preferred icon size */
 	display: inline-block;
+	width: 1em;
+	height: 1em;
 	line-height: 1;
 	text-transform: none;
 	letter-spacing: normal;
 	word-wrap: normal;
-	white-space: nowrap;
-	direction: ltr;
 	/* Support for all WebKit browsers. */
 	-webkit-font-smoothing: antialiased;
 	/* Support for Safari and Chrome. */
@@ -125,6 +125,10 @@ nav.header .links a {
 	padding: 0em 0.5em;
 }
 
+#main_content {
+	padding-top: 3em;
+}
+
 article {
 	margin-top: 3em;
 }
@@ -132,20 +136,6 @@ article {
 .feature {
 	margin-top: 1em;
 	text-align: center;
-}
-
-.feature.withinfo {
-	cursor: pointer;
-}
-
-.feature.withinfo h3:after {
-	content: "help_outline";
-	font-family: 'Material Icons';
-	z-index: 10;
-	font-size: 0.8em;
-	color: #2980b9;
-	position: relative;
-	top: -0.5em;
 }
 
 .feature i.material-icons {
@@ -180,6 +170,7 @@ article h1, article h2 {
 
 .separator {
 	margin: auto;
+	margin-top: 15px;
 	width: 80%;
 	height: 1px;
 	background: rgba(255,255,255,1);
@@ -192,111 +183,67 @@ article h1, article h2 {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
 }
 
-.moreinfo {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 100;
-	background-color: rgba(127, 140, 141, 0.7);
-	padding: 10px;
-	display: none;
+.v-separator {
+	width: 1px;
+	margin-left: 15px;
+	margin-right: 15px;
+	background: rgba(255,255,255,1);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(50%, rgba(41,128,185,1)), color-stop(100%, rgba(255,255,255,1)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
 }
 
-.moreinfo > * {
-	width: 100%;
-	background-color: white;
-}
-
-.moreinfo > div {
-	position: relative;
-	height: 100%;
-}
-
-.moreinfo h4 {
-	padding-top: 15px;
-	margin-bottom: 15px;
-	color: #2980b9;
-	font-weight: 400;
-}
-
-.moreinfo p {
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-bottom: 15px;
-	overflow-y: auto;
-}
-
-.moreinfo .closebutton {
-	position: absolute;
-	top: 0;
-	right: 0;
-	color: #7f8c8d;
-	border: none;
-	background-color: white;
-	font-size: 1em;
-	padding: 0;
-}
-
-.moreinfo .closebutton  .material-icons {
-	font-size: 2em;
-	margin-right: 0;
-}
-
-/*****************
-* Start of login *
-******************/
-.loginTitle {
-	width: 100%;
-	text-align:center;
-	font-size: 7em;
-	color: #7f8c8d;
-}
-
-#login,
-#createnewproject,
-#createUser {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	margin: auto;
-	max-width: 400px;
-}
-
-#login h1,
-#createUser h1,
-#createnewproject h2 {
-	align-self: center;
-}
-
-#login {
-	margin-bottom: 2em;
-}
-
-#createUser {
-	margin-top: 2em;
-}
-
-.login-overlay h1 {
+h1 {
 	font-size: 2.5em;
 	font-weight: 400;
 	color: #2980b9;
 	margin-bottom: 0.1em;
 }
 
-.login-overlay {
-	padding: 0 20px 20px 20px;
-	z-index: 100;
-	position: absolute;
-	right: 0;
-	background: white;
+.hidden {
 	display: none;
 }
 
-/***************
-* End of login *
-***************/
+.message {
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.message p {
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.message .error {
+	color: #f44336;
+}
+
+.message .success {
+	color: #4CAF50;
+}
+
+@media screen and (min-width: 960px) {
+	.storytelling span.quote {
+		font-family: 'Lobster', cursive;
+		font-size: 5em;
+		z-index: 100;
+		position: absolute;
+		top: 1.5em;
+		color: #ecf0f1;
+		width: 30%;
+		text-align: right;
+	}
+	
+	.responsivewidth {
+		width: 80%;
+	}
+}
 
 /****************
 * Form controls *
@@ -338,74 +285,89 @@ form {
 
 .error {
 	color: #f44336;
+}
+
+/**************
+* Index page  *
+***************/
+#features {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+#features .book {
+	flex: 0 0 20%;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	cursor: pointer;
+}
+
+#features .book .fa {
+	font-size: 3em;
+}
+
+
+/**************
+* Editor page *
+***************/
+#editor {
+	width: 100%;
+}
+
+#editor h3 {
+	font-weight: normal;
+}
+
+#editor h3.chapter_title {
 	font-style: italic;
 }
 
-.invalid.touched {
-	border-color: #f44336;
-	border-style: solid;
-	border-size: 1px;
-	color: #f44336;
+.chapter {
+	width: 90%;
+	margin: auto;
+	background: no-repeat url(/images/paperbackground.png) 0 0;
+	background-color: #EBEBEB;
+	background-repeat: repeat;
+	color: black;
+	padding: 1em 2em;
+	box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.4);
+	margin-bottom: 2em; 
 }
 
-.invalid.touched:focus {
-	outline-color: #f44336;
+.scene:focus {
+	outline-style: none;
 }
 
-.invalid.untouched ~ .error {
-	display: none;
+#editor_nav div.chapter_list {
+	margin-top: 0.5em;
 }
 
-.invalid.touched ~ .error {
-	font-size: 0.9em;
+#editor_nav ul.chapter_list {
+	list-style-type: none;
+	padding: 0;
+	margin-top: 0;
+	border-top: 1px solid #7f8c8d;
 }
 
-@media screen and (min-width: 960px) {
-	.storytelling span.quote {
-		font-family: 'Lobster', cursive;
-		font-size: 5em;
-		z-index: 100;
-		position: absolute;
-		top: 1.5em;
-		color: #ecf0f1;
-		width: 30%;
-		text-align: right;
-	}
-	
-	.responsivewidth {
-		width: 80%;
-	}
-	
-	.moreinfo {
-		padding: 0px;
-		padding-top: 50px;
-	}
-	
-	.moreinfo > * {
-		width: 500px;
-		margin: auto;
-	}
-	
-	.moreinfo > div {
-		height: auto;
-		max-height: 90%;
-	}
-	
-	.moreinfo p, .moreinfo ul {
-		text-align: left;
-	}
-	
-	.v-separator {
-		width: 1px;
-		margin-left: 15px;
-		margin-right: 15px;
-		background: rgba(255,255,255,1);
-		background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
-		background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(50%, rgba(41,128,185,1)), color-stop(100%, rgba(255,255,255,1)));
-		background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
-		background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
-		background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
-		background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
-	}
+
+#editor_nav li.chapter_list {
+	cursor: pointer;
+	border-bottom: 1px solid #7f8c8d;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+#editor_nav li.chapter_list .chapter_title {
+	font-style: italic;
+}
+
+#editor_nav li.chapter_list .chapter_title[contentEditable=true]:empty:not(:focus):before{
+	content:attr(data-text) 
+}
+
+#editor_nav .button,
+i.button {
+	cursor: pointer;
 }

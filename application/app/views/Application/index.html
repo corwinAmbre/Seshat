@@ -13,27 +13,41 @@
 </article>
 <div class="separator"></div>
 #{/if}
-<article>
-	<form id="createnewproject">
-		<h2>Create a new project</h2>
-		<p id="projectname-field" class="form-control">
-			<label for="projectname">&{'project.name'}</label>
-			<input type="text" name="projectname" id="projectname" />
-		</p>
-		<p id="password-field" class="form-control">
-			<label for="password">&{'project.new.password'}</label>
-			<input type="password" name="password" id="password" />
-		</p>
-		<input type="hidden" id="ivVault" value="${user.getVault()._2}"/>
-		<p id="buttoncreateproject-field" class="form-buttons">
-			<button id="createproject" class="btn btn-primary" onclick="return createProject()">&{'project.create.new'}</button>
-		</p>
-	</form>
+<article id="createProjectSection">
+	<validator name="validationNewProject">
+		<form id="createnewproject">
+			<h2>Create a new project</h2>
+			<p id="projectname-field" class="form-control required">
+				<label for="projectname">&{'project.name'}</label>
+				<input type="text" name="projectname" id="projectname" v-validate:projectname="{required: true}"/>
+			</p>
+			<p id="password-field" class="form-control required">
+				<label for="password">&{'project.new.password'}</label>
+				<input type="password" name="password" id="password"  v-validate:password="{required: true, validatepassword: true}"/>
+			</p>
+			<input type="hidden" id="ivVault" value="${user.getVault()._2}"/>
+			<p id="buttoncreateproject-field" class="form-buttons">
+				<button id="createproject" class="btn btn-primary" onclick="return createProject()" v-if="$validationNewProject.valid">&{'project.create.new'}</button>
+				<button id="createproject" class="btn btn-deactivated" onclick="return false" disabled="disabled" v-else>&{'project.create.new'}</button>
+			</p>
+		</form>
+	</validator>
 </article>
 #{if user.getProjects().size() > 0}
 <div class="hidden">
 </div>
 <script>
+	Vue.use(VueValidator);
+	new Vue({
+		el: '#createProjectSection',
+		validators: {
+			validatepassword: function(val) {
+				var masterKey = readCookie("masterKey");
+				var sha256Password = CryptoJS.SHA256(val).toString(CryptoJS.enc.Hex)
+				return sha256Password == masterKey;		
+			}
+		}
+	});
 	var vault = readVault();
 	vault2 = null;
 	var knowsAllProjects = true;

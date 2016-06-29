@@ -41,6 +41,7 @@
 				#{secure.check "administrator"}
 					<a href="@{Administration.index}" title="Admin section"><i class="fa fa-cogs"></i> Administration</a>
 				#{/secure.check}
+				<a href="/projects" title="&{'public.header.button.myprojects'}"><i class="fa fa-book"></i> &{'public.header.button.myprojects'}</a>
 				<a href="/logout" title="Logout"><i class="fa fa-power-off"></i> ${user.username}</a>
 			</div>
 		</nav>

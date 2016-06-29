@@ -24,12 +24,12 @@ $(document).ready(function() {
 	Vue.use(VueValidator);
 	new Vue({
 		el: '#login'
-	})
+	});
 	vueExt = new Vue({
 		el: '#createUser',
 		validators: {
-			samepassword: function(val) {
-				return $("#password2Signup").val() == $("#passwordSignup").val();
+			equalValues: function(val, rule) {
+				return val == $("#" + rule).val();
 			}
 		}
 	})
