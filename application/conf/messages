@@ -25,6 +25,11 @@ project.name=Project name
 project.new.password=Please confirm your account password to create a project
 project.create.new=Start writting
 
+project.validation.projectname.required=Project name is required
+project.validation.projectname.exists=A project with the same name already exists in your library
+project.validation.password.required=Password is required
+project.validation.password.validate=Password does not match your password account
+
 user.create.error.repeatpassword=Passwords do not match, please enter the same password twice
 user.create.error.usernameexists=Username is already in use, please choose another one
 user.update.error.notfound=User not found

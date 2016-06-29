@@ -19,11 +19,15 @@
 			<h2>Create a new project</h2>
 			<p id="projectname-field" class="form-control required">
 				<label for="projectname">&{'project.name'}</label>
-				<input type="text" name="projectname" id="projectname" v-validate:projectname="{required: true}"/>
+				<input type="text" name="projectname" id="projectname" v-validate:projectname="{required: true, projectexist: true}"/>
+				<span v-if="$validationNewProject.projectname.required" class="error">&{'project.validation.projectname.required'}</span>
+				<span v-if="$validationNewProject.projectname.projectexist" class="error">&{'project.validation.projectname.exists'}</span>
 			</p>
 			<p id="password-field" class="form-control required">
 				<label for="password">&{'project.new.password'}</label>
 				<input type="password" name="password" id="password"  v-validate:password="{required: true, validatepassword: true}"/>
+				<span v-if="$validationNewProject.password.required" class="error">&{'project.validation.password.required'}</span>
+				<span v-if="$validationNewProject.password.required == false && $validationNewProject.password.validatepassword" class="error">&{'project.validation.password.validate'}</span>
 			</p>
 			<input type="hidden" id="ivVault" value="${user.getVault()._2}"/>
 			<p id="buttoncreateproject-field" class="form-buttons">
@@ -45,7 +49,17 @@
 				var masterKey = readCookie("masterKey");
 				var sha256Password = CryptoJS.SHA256(val).toString(CryptoJS.enc.Hex)
 				return sha256Password == masterKey;		
+			},
+			projectexist: function(val) {
+				var result = true;
+				$(".book h3").each(function() {
+					if($(this).text().trim() == val.trim()) {
+						result = false;
+					}
+				});
+				return result; 
 			}
+	
 		}
 	});
 	var vault = readVault();
