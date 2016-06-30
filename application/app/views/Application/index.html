@@ -37,9 +37,6 @@
 		</form>
 	</validator>
 </article>
-#{if user.getProjects().size() > 0}
-<div class="hidden">
-</div>
 <script>
 	Vue.use(VueValidator);
 	new Vue({
@@ -62,6 +59,11 @@
 	
 		}
 	});
+</script>
+#{if user.getProjects().size() > 0}
+<div class="hidden">
+</div>
+<script>
 	var vault = readVault();
 	vault2 = null;
 	var knowsAllProjects = true;

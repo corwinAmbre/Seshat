@@ -376,6 +376,13 @@ form {
 * Editor page *
 ***************/
 
+#features {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	margin-bottom: 2em;
+}
+
 #features .book {
 	flex: 0 0 20%;
 	display: flex;

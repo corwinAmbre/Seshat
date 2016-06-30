@@ -4,14 +4,14 @@
 
 application.name=Seshat
 
-secure.title=Please connect
+secure.title=Existing user
 secure.username=Username
 secure.password=Password
 secure.password.confirm=Confirm password
 secure.remember=Remember me
 secure.signin=Sign-in
 secure.signup=Create an account
-secure.newuser=or Create a new user
+secure.newuser=New user
 secure.error=Oops, unknown username or password
 
 secure.validation.username.required=Username is required

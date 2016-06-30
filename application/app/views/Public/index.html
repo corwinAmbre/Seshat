@@ -43,6 +43,11 @@
 						<i class="material-icons">error</i> ${messages.get(flash.error)}
 					</p>
 				</div>
+				<script>
+					$(document).ready(function() {
+						$(".login-overlay").show();
+					});
+				</script>
 			#{/if}
 			#{if flash.success}
 				<div class="message">
@@ -80,7 +85,7 @@
 				</div>
 				<div class="v-separator"></div>
 				<div id="createUser">
-					<h1>Or create an account</h1>
+					<h1>&{'secure.newuser'}</h1>
 					<validator name="validationCreateUser">
 						#{form @Users.signup(), id:'signupForm'}
 							<p id="usernameSignup-field" class="form-control required">

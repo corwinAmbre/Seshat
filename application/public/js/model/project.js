@@ -35,6 +35,9 @@ Project.prototype.removeChapter = function(number) {
 }
 
 Scene.prototype.getWords = function() {
+	if(this.content.trim().length == 0) {
+		return 0;
+	}
 	return this.content.split(" ").length;
 }
 

@@ -17,7 +17,7 @@ public class Users extends Controller {
 		} else {
 			flash.error(createdUser == null ? "error.generic.unexpected"
 					: createdUser._2);
-			Secure.login();
+			Public.index();
 		}
 	}
 
