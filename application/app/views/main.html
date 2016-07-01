@@ -42,9 +42,62 @@
 					<a href="@{Administration.index}" title="Admin section"><i class="fa fa-cogs"></i> Administration</a>
 				#{/secure.check}
 				<a href="/projects" title="&{'public.header.button.myprojects'}"><i class="fa fa-book"></i> &{'public.header.button.myprojects'}</a>
-				<a href="/logout" title="Logout"><i class="fa fa-power-off"></i> ${user.username}</a>
+				<a href="#" title="&{'secure.changepassword'}" onclick="javascript:toggleOverlay('chpwd-overlay')"><i class="fa fa-lock"></i> &{'secure.changepassword'}</a>
+				<a href="/logout" title="&{'secure.logout'}"><i class="fa fa-power-off"></i> ${user.username}</a>
 			</div>
 		</nav>
+		<div id="chpwd-overlay">			
+			<div class="flex-container">
+				<div id="chpwd">
+					<h1>&{'secure.changepassword'}</h1>
+					<validator name="validationNewPassword">
+						<form id="newPwdForm">
+							<p id="currentpwd-field" class="form-control required">
+								<label for="currentpwd">&{'secure.password.current'}</label>
+								<input type="password" name="currentpwd" id="currentpwd" value="" v-validate:currentpwd="{required: true, validatepassword: true}"/>
+								<span v-if="$validationNewPassword.currentpwd.required" class="error">&{'secure.validation.password.current.required'}</span>
+								<span v-if="$validationNewPassword.currentpwd.required == false && $validationNewPassword.currentpwd.validatepassword" class="error">&{'project.validation.password.validate'}</span>
+							</p>
+							<p id="newpwd-field" class="form-control required">
+								<label for="newpwd">&{'secure.password.new'}</label>
+								<input type="password" name="newpwd" id="newpwd" value="" v-validate:newpwd="{required: true, minlength: 8}"/>
+								<span v-if="$validationNewPassword.newpwd.required" class="error">&{'secure.validation.password.new.required'}</span>
+								<span v-if="$validationNewPassword.newpwd.required == false && $validationNewPassword.newpwd.minlength" class="error">&{'secure.validation.password.minlength' , 8}</span>
+							</p>
+							<p id="newpwd2-field" class="form-control required">
+								<label for="newpwd2">&{'secure.password.new2'}</label>
+								<input type="password" name="newpwd2" id="newpwd2" value="" v-validate:newpwd2="{required: true, minlength: 8, equalValues: 'newpwd'}"/>
+								<span v-if="$validationNewPassword.newpwd2.required" class="error">&{'secure.validation.password.new2.required'}</span>
+								<span v-if="$validationNewPassword.newpwd2.required == false && $validationNewPassword.newpwd2.minlength" class="error">&{'secure.validation.password.minlength' , 8}</span>
+								<span v-if="$validationNewPassword.newpwd2.equalValues" class="error">&{'secure.validation.password.samepasswords'}</span>
+							</p>
+							<p id="signin-field" class="form-buttons">
+								<input type="submit" id="changePwd" value="&{'secure.changepassword'}" class="btn btn-primary" onclick="return changePassword()" v-if="$validationNewPassword.valid"/>
+								<input type="submit" id="changePwd" value="&{'secure.changepassword'}" class="btn btn-deactivated" disabled="disabled" v-else/>
+							</p>
+						</form>
+					</validator>
+				</div>
+			</div>		
+		</div>
+		<script>
+			$(document).ready(function() {
+				Vue.use(VueValidator);
+				new Vue({
+					el: '#chpwd',
+					validators: {
+						equalValues: function(val, rule) {
+							return val == $("#" + rule).val();
+						},
+						validatepassword: function(val) {
+							var masterKey = readCookie("masterKey");
+							var sha256Password = CryptoJS.SHA256(val).toString(CryptoJS.enc.Hex)
+							return sha256Password == masterKey;		
+						}
+					}
+				})	
+			});
+		</script>
 		<div id="main_content">
 			#{doLayout /}
 		</div>

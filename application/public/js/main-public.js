@@ -6,8 +6,6 @@ function openLoginOverlay() {
 	$(".login-overlay").slideToggle();
 }
 
-var vueExt;
-
 $(document).ready(function() {
 	$(".moreinfo").click(function(e){
 		if (e.target !== this) {
@@ -25,12 +23,12 @@ $(document).ready(function() {
 	new Vue({
 		el: '#login'
 	});
-	vueExt = new Vue({
+	new Vue({
 		el: '#createUser',
 		validators: {
 			equalValues: function(val, rule) {
 				return val == $("#" + rule).val();
 			}
 		}
-	})
+	});
 });

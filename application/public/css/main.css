@@ -278,7 +278,8 @@ article h1, article h2 {
 	margin-top: 2em;
 }
 
-.login-overlay h1 {
+.login-overlay h1,
+#chpwd-overlay h1 {
 	font-size: 2.5em;
 	font-weight: 400;
 	color: #2980b9;
@@ -286,6 +287,15 @@ article h1, article h2 {
 }
 
 .login-overlay {
+	padding: 0 20px 20px 20px;
+	z-index: 100;
+	position: absolute;
+	right: 0;
+	background: white;
+	display: none;
+}
+
+#chpwd-overlay {
 	padding: 0 20px 20px 20px;
 	z-index: 100;
 	position: absolute;

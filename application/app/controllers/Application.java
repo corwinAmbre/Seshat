@@ -4,11 +4,13 @@ import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
 import play.i18n.Messages;
+import play.libs.F.Tuple;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 import fr.corwin.apps.sheshat.model.Project;
 import fr.corwin.apps.sheshat.model.User;
+import fr.corwin.apps.sheshat.services.SecurityService;
 
 @With(Secure.class)
 public class Application extends Controller {
@@ -62,12 +64,30 @@ public class Application extends Controller {
 			error();
 		}
 		User user = (User) renderArgs.get("user");
-		if(user.getQuota() > 0 && user.getSpaceConsumed().longValue() > user.getQuota()) {
+		if (user.getQuota() > 0
+				&& user.getSpaceConsumed().longValue() > user.getQuota()) {
 			error(509, Messages.get("error.user.quota.exceeded"));
 		}
 		project.addVersion(version);
 		project.save();
 		renderText(user.getSpaceConsumed().toString());
+	}
+
+	public static void changePassword(String currentpwd, String newpwd,
+			String newpwd2) {
+		User user = User.findByUsername(Security.connected());
+		Tuple<Boolean, String> result = user.updatePassword(currentpwd, newpwd,
+				newpwd2);
+		if (result._1) {
+			String vault = SecurityService.decrypt(
+					SecurityService.resizeKey(newpwd), user.getVault()._2,
+					user.getVault()._1);
+			response.setCookie("vault", vault.replaceAll("\"", "'"));
+			response.setCookie("masterKey", user.password);
+			renderText("Ok");
+		} else {
+			error(500, Messages.get(result._2));
+		}
 	}
 
 }

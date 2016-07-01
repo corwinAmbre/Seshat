@@ -65,23 +65,29 @@ public class User extends Model {
 		return projects;
 	}
 
-	public Boolean updatePassword(String oldPassword, String newPassword) {
+	public Tuple<Boolean, String> updatePassword(String oldPassword,
+			String newPassword, String confirmNewPassword) {
+		if (!StringUtils.equals(newPassword, confirmNewPassword)) {
+			return new Tuple<Boolean, String>(false,
+					"user.changepassword.validation.notsamepasswords");
+		}
 		if (!StringUtils.equals(this.password,
 				DigestUtils.sha256Hex(oldPassword))) {
-			return false;
+			return new Tuple<Boolean, String>(false,
+					"user.changepassword.validation.invalidcurrentpassword");
 		}
 		String vault = SecurityService.decrypt(
 				SecurityService.resizeKey(oldPassword), this.ivVault,
 				this.keysVault);
 		if (vault == null) {
-			return false;
+			return new Tuple<Boolean, String>(false, "error.generic.unexpected");
 		}
 		this.keysVault = SecurityService.encrypt(
 				SecurityService.resizeKey(newPassword), this.ivVault,
 				new String(vault));
 		this.password = DigestUtils.sha256Hex(newPassword);
 		this.save();
-		return true;
+		return new Tuple<Boolean, String>(true, null);
 	}
 
 	public Tuple<String, String> getVault() {

@@ -153,6 +153,15 @@ function prototypeProject(projectJson) {
 	return result;
 }
 
+function changePassword() {
+	var currentPwd = $("#newPwdForm #currentpwd").val();
+	var newPwd = $("#newPwdForm #newpwd").val();
+	var newPwd2 = $("#newPwdForm #newpwd2").val();
+	remoteCalls.updatePassword(currentPwd, newPwd, newPwd2);
+	toggleOverlay("chpwd-overlay");
+	return false;
+}
+
 /**
  * Methods to handle cookies with JS. Cookies are only read on application domain. 
  */
@@ -211,6 +220,14 @@ function readVault() {
 }
 
 /**
+ * Display a success message, used on result from ajax calls
+ * @param message String to display as success message
+ */
+function successMessage(message) {
+	alert(message);
+}
+
+/**
  * Display an error message, used on result from ajax calls
  * @param message String to display as error message
  */
@@ -256,6 +273,10 @@ function focusOnEditableContent(id, selectOption) {
 	if(isNodeEmpty) {
 		document.execCommand('delete', false, null);
 	}
+}
+
+function toggleOverlay(id) {
+	$("#" + id).slideToggle();
 }
 
 /***********************

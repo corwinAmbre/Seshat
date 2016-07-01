@@ -11,8 +11,10 @@ secure.password.confirm=Confirm password
 secure.remember=Remember me
 secure.signin=Sign-in
 secure.signup=Create an account
+secure.logout=Logout
 secure.newuser=New user
 secure.error=Oops, unknown username or password
+secure.changepassword=Change password
 
 secure.validation.username.required=Username is required
 secure.validation.username.minlength=Username has to be at least %s characters
@@ -20,6 +22,13 @@ secure.validation.password.required=Password is required
 secure.validation.password2.required=Please retype your password
 secure.validation.password.minlength=Password has to be at least %s characters
 secure.validation.password.samepasswords=Provided passwords are different
+
+secure.password.current=Current password
+secure.password.new=New password
+secure.password.new2=Confirm new password
+secure.validation.password.current.required=Current password is required
+secure.validation.password.new.required=New password is required
+secure.validation.password.new2.required=New password has to be confirmed
 
 project.name=Project name
 project.new.password=Please confirm your account password to create a project
@@ -34,6 +43,8 @@ user.create.error.repeatpassword=Passwords do not match, please enter the same p
 user.create.error.usernameexists=Username is already in use, please choose another one
 user.update.error.notfound=User not found
 user.update.error.unauthorizedself=You are not allowed to do this action on your user
+user.changepassword.validation.notsamepasswords=Current password is not valid
+user.changepassword.validation.invalidcurrentpassword=The two versions of the new password are different
 
 error.generic.unexpected=An unexpected error occured, please try again later or contact administrator
 error.user.quota.exceeded=Quota exceeded, the version cannot be saved

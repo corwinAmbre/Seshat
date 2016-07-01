@@ -22,6 +22,7 @@ GET		/fonts/								 	staticDir:public/fonts
 POST	/rest/project							Application.createProject
 POST	/rest/project/version					Application.addVersion
 GET		/project/{id}							Application.getProject
+POST	/rest/user/changepassword				Application.changePassword
 
 GET		/admin/									Administration.index
 GET		/admin/user								Administration.getUsers

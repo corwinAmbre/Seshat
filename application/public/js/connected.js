@@ -55,6 +55,21 @@ var remoteCalls = {
 			}).fail(function(data) {
 				errorMessage(data.responseText);
 			});
-		}	
+		},
+		updatePassword: function(currentPwd, newPwd, newPwd2) {
+			$.ajax({
+				url: "/rest/user/changepassword",
+				method: "POST",
+				data: {
+					currentpwd: currentPwd,
+					newpwd: newPwd,
+					newpwd2: newPwd2
+				}
+			}).done(function() {
+				successMessage("Password changed");
+			}).fail(function(data) {
+				errorMessage(data.responseText);
+			});
+		}
 }
 
