@@ -251,7 +251,11 @@ function closeError() {
  * @param confirmationLabel Message to display in action button - Not used for now
  * @returns true if user confirms action, false otherwise
  */
-function askConfirmation(message, confirmationLabel) {
+function askConfirmation(message, confirmationLabel, cancelLabel) {
+	$("#confirmationMessageContent").text(message);
+	$("#confirmationMessage .confirmationButtons .btn-primary span").text(confirmationLabel);
+	$("#confirmationMessage .confirmationButtons .btn-cancel span").text(cancelLabel);
+	//$("#confirmationMessage").css("display", "flex");
 	return confirm(message);
 }
 
