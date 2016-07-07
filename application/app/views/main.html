@@ -101,5 +101,17 @@
 		<div id="main_content">
 			#{doLayout /}
 		</div>
+		<div id="successMessage">
+			<div><i class="material-icons">done</i></div>
+			<div id="successMessageContent"></div>
+			<button class="closebutton" onclick="javascript:closeSuccess()"><i class="material-icons">clear</i></button>
+		</div>
+		<div id="errorMessage">
+			<div>
+				<div><i class="material-icons">error</i></div>
+				<div id="errorMessageContent"></div>
+				<button class="closebutton" onclick="javascript:closeError()"><i class="material-icons">clear</i></button>
+			</div>
+		</div>
 	</body>
 </html>

@@ -3,6 +3,8 @@
 * Default text   : #7f8c8d - rgb(127, 140, 141)
 * Primary color  : #2980b9 - rgb(41, 128, 185)
 * Secondary color: #ecf0f1 - rgb(236, 240, 241)
+* Success color  : #009688 - rgb(0, 150, 136)
+* Error color    : #f44336
 */
 
 
@@ -243,6 +245,85 @@ article h1, article h2 {
 	font-size: 2em;
 	margin-right: 0;
 }
+
+#successMessage {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	display: none;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+	background: white;
+	z-index: 500;
+	color: #009688;
+	padding: 10px 30px;
+	border: 1px #009688 solid;
+	width: 100%;
+}
+
+ #successMessage .closebutton {
+ 	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+	color: #009688;
+	border: none;
+	background-color: white;
+ }
+ 
+ #successMessage .closebutton .material-icons {
+ 	font-size: 1em;
+ }
+ 
+ #errorMessage {
+ 	position: fixed;
+ 	top: 0;
+ 	left: 0;
+ 	width: 100%;
+ 	height: 100%;
+ 	z-index: 500;
+	background-color: rgba(127, 140, 141, 0.7);
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+ }
+ 
+ #errorMessage > div {
+ 	background-color: white;
+ 	border: 1px solid #f44336;
+ 	color: #f44336;
+ 	width: 90%;
+ 	margin: auto;
+ 	display: flex;
+ 	flex-direction: column;
+ 	align-items: center;
+ 	padding: 30px 10px; 
+ 	
+ }
+ 
+ #errorMessage .closebutton {
+ 	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+	color: #f44336;
+	border: none;
+	background-color: white;
+ }
+ 
+ #errorMessage .material-icons {
+ 	font-size: 4em;
+ }
+ 
+ #errorMessage #errorMessageContent {
+ 	margin-top: 20px;
+}
+ 
+  #errorMessage .closebutton .material-icons {
+ 	font-size: 2em;
+ }
 
 /*****************
 * Start of login *
@@ -516,5 +597,13 @@ i.button {
 		background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
 		background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(41,128,185,1) 50%, rgba(255,255,255,1) 100%);
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+	}
+	
+	#successMessage {
+		width: auto;
+	}
+	
+	#errorMessage > div {
+		max-width: 400px;
 	}
 }

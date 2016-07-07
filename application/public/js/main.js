@@ -224,7 +224,12 @@ function readVault() {
  * @param message String to display as success message
  */
 function successMessage(message) {
-	alert(message);
+	$("#successMessageContent").text(message);
+	$("#successMessage").css("display", "flex");
+}
+
+function closeSuccess() {
+	$("#successMessage").slideUp();
 }
 
 /**
@@ -232,7 +237,12 @@ function successMessage(message) {
  * @param message String to display as error message
  */
 function errorMessage(message) {
-	alert(message);
+	$("#errorMessageContent").text(message);
+	$("#errorMessage").css("display", "flex");
+}
+
+function closeError() {
+	$("#errorMessage").slideUp();
 }
 
 /**
