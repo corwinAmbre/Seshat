@@ -252,11 +252,29 @@ function closeError() {
  * @returns true if user confirms action, false otherwise
  */
 function askConfirmation(message, confirmationLabel, cancelLabel) {
+	var defaultOKText = $("#confirmationMessage .confirmationButtons .btn-primary span").text();
+	var defaultKOText = $("#confirmationMessage .confirmationButtons .btn-cancel span").text();
 	$("#confirmationMessageContent").text(message);
-	$("#confirmationMessage .confirmationButtons .btn-primary span").text(confirmationLabel);
-	$("#confirmationMessage .confirmationButtons .btn-cancel span").text(cancelLabel);
-	//$("#confirmationMessage").css("display", "flex");
-	return confirm(message);
+	if(confirmationLabel !== undefined && confirmationLabel !== null && confirmationLabel !== '') {
+		$("#confirmationMessage .confirmationButtons .btn-primary span").text(confirmationLabel);
+	}
+	if(cancelLabel !== undefined && cancelLabel !== null && cancelLabel !== '') {
+		$("#confirmationMessage .confirmationButtons .btn-cancel span").text(cancelLabel);
+	}
+	var promise = $.Deferred();
+	promise.always(function() {
+		$("#confirmationMessage").css("display", "none");
+		$("#confirmationMessage .confirmationButtons .btn-primary span").text(defaultOKText);
+		$("#confirmationMessage .confirmationButtons .btn-cancel span").text(defaultKOText);
+	});
+	$("#confirmationMessage .confirmationButtons .btn-primary").click(function() {
+		promise.resolve(true);
+	});
+	$("#confirmationMessage .confirmationButtons .btn-cancel").click(function() {
+		promise.reject(false);
+	});
+	$("#confirmationMessage").css("display", "flex");
+	return promise;
 }
 
 function askInput(message) {
@@ -302,9 +320,9 @@ function toggleOverlay(id) {
  */
 function lockUser(source, id) {
 	var username = $(source).parent().parent().find("td:first").html();
-	if(askConfirmation("User \"" + username + "\" won't be able to login anymore, do you confirm lock?", "")) {
+	askConfirmation("User \"" + username + "\" won't be able to login anymore, do you confirm lock?", "Lock user").pipe(function() {
 		remoteCalls.lockUser(id, source);
-	}
+	});
 }
 
 /**
@@ -312,7 +330,7 @@ function lockUser(source, id) {
  */
 function unlockUser(source, id) {
 	var username = $(source).parent().parent().find("td:first").html();
-	if(askConfirmation("User \"" + username + "\" will be reactivated, do you confirm unlock?", "")) {
+	askConfirmation("User \"" + username + "\" will be reactivated, do you confirm unlock?", "Unlock user").pipe(function() {
 		remoteCalls.unlockUser(id, source);
-	}
+	});
 }

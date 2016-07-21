@@ -58,9 +58,10 @@
 			},
 			removeChapter: function(chapter) {
 				var message = "Chapter " + chapter + " containing " + this.chapters[chapter - 1].getWords() + " words is about to be deleted. Do you confirm?";
-				if(askConfirmation(message)) {
-					this.$data.removeChapter(chapter);
-				}
+				var $this = this;
+				askConfirmation(message, "Delete chapter").pipe(function() {
+					$this.$data.removeChapter(chapter);
+				});
 			},
 			chapterTitleUpdate: function(chapter, event) {
 				this.chapters[chapter - 1 ].title = $(event.target).html().trim();
