@@ -39,6 +39,7 @@
 		projectJson.remoteId = ${project.id};
 	}
 	var project = prototypeProject(projectJson);
+	project.saved = true;
 	
 	var projectVue = new Vue({
 		el: '#editor',
@@ -48,10 +49,12 @@
 				window.location.href= "#chapter_" + number;
 			},
 			contentUpdate: function(chapter, scene, event) {
+				this.saved = false;
 				this.chapters[chapter - 1 ].content[scene].content = $(event.target).html().trim();
 			},
 			pushToServer: function() {
 				saveProjectVersion(this.$data);
+				this.saved = true;
 			},
 			addChapter: function() {
 				this.$data.addChapter();
@@ -73,4 +76,11 @@
 			}
 		}
 	});
+	
+	window.onbeforeunload = function (e) {
+	    if(!project.saved) {
+	    	e.returnValue=("Your udpates won't be saved. Do you confirm closing page before saving?");
+	    	return "Your udpates won't be saved. Do you confirm closing page before saving?";
+	    }
+	};
 </script>
