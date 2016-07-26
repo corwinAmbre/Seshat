@@ -28,4 +28,8 @@ public class JasmineTests extends Controller {
 		render(tempUser);
 	}
 
+	public static void epub() {
+		render();
+	}
+
 }

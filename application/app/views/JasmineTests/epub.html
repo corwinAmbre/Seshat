@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>#{get 'title' /}</title>
+
+		<link rel="shortcut icon" type="image/png" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine_favicon.png'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.css'}">
+
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.js'}"></script>
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine-html.js'}"></script>
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/boot.js'}"></script>
+		
+		<script src="@{'public/js/cryptojs/rollups/aes.js'}"></script>
+		<script src="@{'public/js/cryptojs/rollups/pbkdf2.js'}"></script>
+		<script src="@{'public/js/zip.js'}"></script>
+		<script src="@{'public/js/zip-fs.js'}"></script>
+		<script src="@{'public/js/model/project.js'}"></script>
+		<script src="@{'public/js/model/epub.js'}"></script>
+	</head>
+	<body>
+		<a id="download-button" style="display:none">Do not click</a>
+		<script>
+			zip.workerScriptsPath = "/public/js/";
+			
+			
+			describe("Epub builder", function() {
+				it("can be initialized", function(){
+					var project = new Project("Test project");
+					var epub = new EpubBuilder(project);
+					expect(epub).toEqual(jasmine.any(Object));
+					expect(epub.project).toEqual(jasmine.any(Object));
+					expect(epub.project.name).toBe("Test project");
+				});
+			});
+			
+			var project = new Project("Test project");
+			for(i=0; i < 3; ++i) {
+				project.addChapter();
+				project.chapters[i].content[0].content = "Chapter " + (i+1) + ".<br/>Lore ipsum";
+			}
+			var epub = new EpubBuilder(project);
+			
+			
+			function checkZipTest1(zipReader) {
+				zipReader.getEntries(function(entries) {
+					var numberOfFiles = 0;
+			    	for(var i=0; i < entries.length; ++i) {
+			    		console.log("Entry " + i + ": " + (entries[i].directory ? "DIRECTORY - " : "") + entries[i].filename);
+			    		numberOfFiles += 1;
+			    	}
+			        zipReader.close();
+			    });
+			}
+
+			epub.build(function(result) {
+				console.log(result);
+				console.log("URL - Method 1: " + URL.createObjectURL(result));
+				var clickEvent;
+				var downloadButton = document.getElementById("download-button");
+				clickEvent = document.createEvent("MouseEvent");
+				clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				downloadButton.href = URL.createObjectURL(result);
+				downloadButton.download = "Test-" + new Date().getTime() + ".epub";
+				//downloadButton.dispatchEvent(clickEvent);
+				zip.createReader(new zip.BlobReader(result), checkZipTest1);
+			});
+		</script>
+	</body>
+</html>
