@@ -40,13 +40,13 @@
 					}
 					var epub = new EpubBuilder(project);
 					epub.build(function(result) {
-						var clickEvent;
+						/**var clickEvent;
 						var downloadButton = document.getElementById("download-button");
 						clickEvent = document.createEvent("MouseEvent");
 						clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 						downloadButton.href = URL.createObjectURL(result);
 						downloadButton.download = "Test-" + new Date().getTime() + ".epub";
-						downloadButton.dispatchEvent(clickEvent);
+						downloadButton.dispatchEvent(clickEvent);*/
 						zip.createReader(new zip.BlobReader(result), function(zipReader){
 							zipReader.getEntries(function(entries) {
 								var numberOfFiles = 0;
@@ -77,13 +77,13 @@
 					project.chapters[0].content[1].content = "Chapter 1 - Scene 2.<br/>Lore ipsum";
 					var epub = new EpubBuilder(project);
 					epub.build(function(result) {
-						var clickEvent;
+						/**var clickEvent;
 						var downloadButton = document.getElementById("download-button");
 						clickEvent = document.createEvent("MouseEvent");
 						clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 						downloadButton.href = URL.createObjectURL(result);
 						downloadButton.download = "Test-" + new Date().getTime() + ".epub";
-						downloadButton.dispatchEvent(clickEvent);
+						downloadButton.dispatchEvent(clickEvent);*/
 						zip.createReader(new zip.BlobReader(result), function(zipReader){
 							zipReader.getEntries(function(entries) {
 								var numberOfFiles = 0;
