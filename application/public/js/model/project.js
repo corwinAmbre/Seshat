@@ -34,6 +34,19 @@ Project.prototype.removeChapter = function(number) {
 	}
 }
 
+Chapter.prototype.addScene = function() {
+	this.content.push(new Scene());
+}
+
+Chapter.prototype.removeScene = function(number) {
+	if(number >= (this.content.length + 1) || number < 1) {
+		return false;
+	} else {
+		this.content.splice(number - 1, 1);
+		return true;
+	}
+}
+
 Scene.prototype.getWords = function() {
 	if(this.content.trim().length == 0) {
 		return 0;

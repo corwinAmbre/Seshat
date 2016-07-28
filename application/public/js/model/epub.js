@@ -1,12 +1,35 @@
 var EpubBuilder = function(project) {
 	this.project = project;
 	this.config = {
+		content: {
+			tableOfContent: 'Table of contents',
+			sceneSeparator: '<br/><br/><div style="width: 100%; text-align:center">***</div><br/><br/>',
+			chapterWithTitleFormat: '#d.<br/>#t',
+			chapterWithoutTitleFormat: '#d.',
+			chapterWithTitleFormatNav: '#t',
+			chapterWithoutTitleFormatNav: 'Chapter #d',
+		}
 	};
+}
+
+EpubBuilder.prototype.getChapterTitle = function (chapter, forNav) {
+	forNav = forNav || false;
+	if(chapter.title.length > 0) {
+		var result = forNav ? this.config.content.chapterWithTitleFormatNav : this.config.content.chapterWithTitleFormat;
+		result = result.replace("#d", chapter.number);
+		result = result.replace("#t", chapter.title);
+		return result;
+	} else {
+		var result = forNav ? this.config.content.chapterWithoutTitleFormatNav : this.config.content.chapterWithoutTitleFormat;
+		result = result.replace("#d", chapter.number);
+		return  result;
+	}
 }
 
 EpubBuilder.prototype.build = function(callback) {
 	// Prepare data
 	var uniqueIdentifier = "myUniqueId";
+	var $this = this;
 	
 	// Create blobs
 	// Mimetype (mimetype)
@@ -31,32 +54,32 @@ EpubBuilder.prototype.build = function(callback) {
 			'</head>' +
 			'<body>' +
 				'<section epub:type="frontmatter toc">' +
-					'<header>' +
-						'<h1>Contents</h1>' + 
+					'<header style="width:100%; text-align:center">' +
+						'<h1>' + this.config.content.tableOfContent + '</h1>' + 
 					'</header>' +
 					'<nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="toc" id="toc">' +
 						'<ol>';
 	this.project.chapters.forEach(function(chapter) {
 		chaptersManifest += '<item id="chapter' + chapter.number + '" href="chapter' + chapter.number + '.xhtml" media-type="application/xhtml+xml"/>';
 		spineManifest    += '<itemref idref="chapter' + chapter.number + '"/>';
-		navContent       += '<li><a href="chapter' + chapter.number + '.xhtml">Chapter ' + chapter.number + '</a></li>';
+		navContent       += '<li><a href="chapter' + chapter.number + '.xhtml">' + $this.getChapterTitle(chapter, true) + '</a></li>';
 		var chapterContent = '<?xml version="1.0" encoding="UTF-8"?>' +
 			'<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">' +
 			'<head>' +
-				'<title>' +	this.project.name + '</title>' +
+				'<title>' +	$this.project.name + '</title>' +
 				'<meta charset="utf-8"/>' +
 			'</head>' +
 			'<body>' +
 				'<section epub:type="bodymatter chapter">' +
-					'<header>' +
-						'<h1> Chapter ' + chapter.number + '.' + (chapter.title.length > 0 ? (" " + chapter.title) : "") + '</h1>' +
+					'<header style="width:100%; text-align:center">' +
+						'<h1>' + $this.getChapterTitle(chapter) + '</h1>' +
 					'</header>';
 		var first = true;
 		chapter.content.forEach(function(scene) {
 			if(first) {
 				first = false;
 			} else {
-				chapterContent += '<br/><br/><div style="margin:auto">***</div><br/><br/>';
+				chapterContent += $this.config.content.sceneSeparator;
 			}
 			chapterContent += scene.content;
 		});

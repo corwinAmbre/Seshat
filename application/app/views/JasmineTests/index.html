@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>#{get 'title' /}</title>
+        <title>Seshat - JS Unit Tests - Model and Crypto</title>
 
 		<link rel="shortcut icon" type="image/png" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine_favicon.png'}">
 		<link rel="stylesheet" type="text/css" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.css'}">
@@ -73,6 +73,31 @@
 					for(var i = 0; i < 7; i++) {
 						expect(project.chapters[i].number).toBe(i+1);
 					}
+				});
+				it("can add a scene", function() {
+					var project = new Project("Test with chapters and multiple scenes");
+					project.addChapter();
+					project.chapters[0].content[0].content = "Scene 1";
+					project.chapters[0].addScene();
+					expect(project.chapters[0].content.length).toBe(2);
+					expect(project.chapters[0].content[0].content).toBe("Scene 1");
+				});
+				it("can remove a scene", function() {
+					var project = new Project("Test with chapters and multiple scenes");
+					project.addChapter();
+					project.chapters[0].content[0].content = "Scene 1";
+					var chapter = project.chapters[0];
+					for(var i = 0; i < 5; i++) {
+						chapter.addScene();
+						chapter.content[i + 1].content = "Scene " + (i+2);
+					}
+					expect(project.chapters[0].content.length).toBe(6);
+					expect(chapter.removeScene(0)).toBe(false);
+					expect(chapter.removeScene(7)).toBe(false);
+					expect(chapter.removeScene(3)).toBe(true);
+					expect(project.chapters[0].content.length).toBe(5);
+					expect(chapter.content[1].content).toEqual("Scene 2");
+					expect(chapter.content[2].content).toEqual("Scene 4");
 				});
 			});
 			describe("Client side crypto methods", function(){
