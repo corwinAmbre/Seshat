@@ -13,6 +13,7 @@
 		<div>
 			<i class="material-icons button" title="Save to server" v-on:click="pushToServer()">save</i>
 			<i class="material-icons button" title="Add a chapter" v-on:click="addChapter()">add_circle</i>
+			<i class="material-icons button" title="Get Epub" v-on:click="getEpub()">import_contacts</i>
 		</div>
 		<div>
 			&{'editor.wordcount'} {{$data.getWords()}}
@@ -28,8 +29,11 @@
 			</ul>
 		</div>
 	</nav>
+	<a id="download-epub" style="display:none" aria-hidden="true">Epub</a>
 </div>
 <script type="text/javascript">
+	zip.workerScriptsPath = "/public/js/";
+
 	var projectEncrypted = "${project.getLatestVersionContent()}";
 	var projectKey = "${project.idKey}";
 	var vault = readVault();
@@ -68,6 +72,18 @@
 			},
 			chapterTitleUpdate: function(chapter, event) {
 				this.chapters[chapter - 1 ].title = $(event.target).html().trim();
+			},
+			getEpub: function() {
+				var epub = new EpubBuilder(project);
+				epub.build(function(result) {
+					var clickEvent;
+					var downloadButton = document.getElementById("download-epub");
+					clickEvent = document.createEvent("MouseEvent");
+					clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+					downloadButton.href = URL.createObjectURL(result);
+					downloadButton.download = project.name + ".epub";
+					downloadButton.dispatchEvent(clickEvent);
+				});
 			}
 		},
 		ready: function() {
