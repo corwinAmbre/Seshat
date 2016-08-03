@@ -1,5 +1,10 @@
 #{selenium}
     open('/JasmineTests/index')
+    waitForElementPresent('spec_spec15')
+    assertNotTitle('Application error')
+    assertTextPresent('0 failures')
+    open('/JasmineTests/epub')
+    waitForElementPresent('spec_spec3')
     assertNotTitle('Application error')
     assertTextPresent('0 failures')
 #{/selenium}

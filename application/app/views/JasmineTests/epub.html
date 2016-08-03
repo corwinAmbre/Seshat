@@ -103,6 +103,44 @@
 						});
 					});
 				});
+				it("can build an Epub config options", function(done){
+					var project = new Project("Test project");
+					for(i=0; i < 3; ++i) {
+						project.addChapter();
+						project.chapters[i].content[0].content = "Chapter " + (i+1) + ".<br/>Lore ipsum";
+						project.chapters[i].title = "Test title chapter " + (i+1);
+					}
+					project.chapters[0].addScene();
+					project.chapters[0].content[1].content = "Chapter 1 - Scene 2.<br/>Lore ipsum";
+					var epub = new EpubBuilder(project);
+					epub.config.navPosition = 'start';
+					epub.build(function(result) {
+						/**var clickEvent;
+						var downloadButton = document.getElementById("download-button");
+						clickEvent = document.createEvent("MouseEvent");
+						clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+						downloadButton.href = URL.createObjectURL(result);
+						downloadButton.download = "Test-" + new Date().getTime() + ".epub";
+						downloadButton.dispatchEvent(clickEvent);*/
+						zip.createReader(new zip.BlobReader(result), function(zipReader){
+							zipReader.getEntries(function(entries) {
+								var numberOfFiles = 0;
+								var numberOfDirectories = 0;
+						    	for(var i=0; i < entries.length; ++i) {
+						    		if(entries[i].directory) {
+										numberOfDirectories += 1;
+									} else {
+						    			numberOfFiles += 1;
+									}
+						    	}
+						        zipReader.close();
+						        expect(numberOfDirectories).toEqual(2);
+						        expect(numberOfFiles).toEqual(7);
+						        done();
+						    });
+						});
+					});
+				});
 			});
 			
 		</script>

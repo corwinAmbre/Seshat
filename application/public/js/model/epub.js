@@ -8,7 +8,8 @@ var EpubBuilder = function(project) {
 			chapterWithoutTitleFormat: '#d.',
 			chapterWithTitleFormatNav: '#t',
 			chapterWithoutTitleFormatNav: 'Chapter #d',
-		}
+		},
+		navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
 	};
 }
 
@@ -107,8 +108,9 @@ EpubBuilder.prototype.build = function(callback) {
 					chaptersManifest +
 				'</manifest>' +
 				'<spine>' +
+					(this.config.navPosition == 'start' ? '<itemref idref="nav" linear="no"/>' : '') +
 					spineManifest +
-					'<itemref idref="nav" linear="no"/>' +
+					(this.config.navPosition == 'end' ? '<itemref idref="nav" linear="no"/>' : '') +
 				'</spine>' +
 				'</package>';
 	var packageDoc = new Blob([packageDocContent], {type: 'application/oebps-package+xml'});
