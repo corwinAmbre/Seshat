@@ -32,4 +32,8 @@ public class JasmineTests extends Controller {
 		render();
 	}
 
+	public static void stickynotes() {
+		render();
+	}
+
 }

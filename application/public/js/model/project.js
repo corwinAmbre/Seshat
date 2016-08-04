@@ -20,6 +20,7 @@ var Project = function(name) {
 Project.prototype.addChapter = function() {
 	var newChap = new Chapter(this.chapters.length + 1);
 	this.chapters.push(newChap);
+	return newChap;
 }
 
 Project.prototype.removeChapter = function(number) {

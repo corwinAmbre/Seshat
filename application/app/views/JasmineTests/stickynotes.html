@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Seshat - JS Unit Tests - Sticky notes wall</title>
+
+		<link rel="shortcut icon" type="image/png" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine_favicon.png'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.css'}">
+
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.js'}"></script>
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine-html.js'}"></script>
+		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/boot.js'}"></script>
+		
+		<script src="@{'public/js/model/stickynotes.js'}"></script>
+	</head>
+	<body>
+		<script>
+			describe("Sticky notes wall", function() {
+				it("can be initialized", function(){
+					var wall = new StickyNoteWall();
+					expect(wall).toEqual(jasmine.any(Object));
+					expect(wall.notes).toEqual(jasmine.any(Array));
+					expect(wall.notes.length).toBe(0);
+				});
+				it("can add a note", function() {
+					var wall = new StickyNoteWall();
+					expect(wall.addNote).toEqual(jasmine.any(Function));
+					var noteContent = "Test content";
+					var note = wall.addNote(noteContent);
+					expect(note).not.toBe(null);
+					expect(wall.notes.length).toBe(1);
+					expect(note.content).toBe(noteContent);
+					expect(note.pos).toEqual([0,0,0]);
+					expect(note.id).toBe(0);
+				});
+				it("can add several notes", function() {
+					var wall = new StickyNoteWall();
+					expect(wall.addNote).toEqual(jasmine.any(Function));
+					var note1 = wall.addNote("Note 1");
+					var note2 = wall.addNote("Note 2");
+					expect(note1).not.toBe(null);
+					expect(note2).not.toBe(null);
+					expect(wall.notes.length).toBe(2);
+					expect(note1.id).toBe(0);
+					expect(note2.id).toBe(1);
+					expect(note1.pos).toEqual([0,0,0]);
+					expect(note2.pos).toEqual([0,0,1]);
+				});
+				it("can delete a note", function(){
+					var wall = new StickyNoteWall();
+					var notes = new Array();
+					for(var i = 0; i < 5; i++) {
+						notes[i] = wall.addNote("Note " + i);
+						expect(notes[i].id).toBe(i);
+					}
+					expect(wall.removeNote(-1)).toBe(false);
+					expect(wall.notes.length).toBe(5);
+					expect(wall.removeNote(10)).toBe(false);
+					expect(wall.notes.length).toBe(5);
+					expect(wall.removeNote(1)).toBe(true);
+					expect(wall.notes.length).toBe(4);
+					expect(wall.notes[0].id).toBe(0);
+					expect(wall.notes[1].id).toBe(2);
+					expect(wall.notes[2].id).toBe(3);
+					expect(wall.notes[3].id).toBe(4);
+					expect(wall.notes[0].pos[2]).toBe(0);
+					expect(wall.notes[1].pos[2]).toBe(1);
+					expect(wall.notes[2].pos[2]).toBe(2);
+					expect(wall.notes[3].pos[2]).toBe(3);
+					expect(wall.removeNote(1)).toBe(false);
+					expect(wall.notes.length).toBe(4);
+					var extraNote = wall.addNote("Extra note");
+					expect(extraNote.id).toBe(5);
+					expect(extraNote.pos[2]).toBe(4);
+				});
+			});
+			describe("Sticky note", function() {
+				it("can update position", function() {
+					var wall = new StickyNoteWall();
+					var note = wall.addNote("Test note");
+					expect(note.move).toEqual(jasmine.any(Function));
+					note.move(5, 10);
+					expect(note.pos[0]).toBe(5);
+					expect(note.pos[1]).toBe(10);
+					expect(note.pos[2]).toBe(0);
+				});
+				it("can stack top", function() {
+					var wall = new StickyNoteWall();
+					var notes = new Array();
+					for(var i = 0; i < 5; i++) {
+						notes[i] = wall.addNote("Note " + i);
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[4].stackTop();
+					for(var i = 0; i < 5; i++) {
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[2].stackTop();
+					expect(notes[0].pos[2]).toBe(0);
+					expect(notes[1].pos[2]).toBe(1);
+					expect(notes[2].pos[2]).toBe(4);
+					expect(notes[3].pos[2]).toBe(2);
+					expect(notes[4].pos[2]).toBe(3);
+					notes[0].stackTop();
+					expect(notes[0].pos[2]).toBe(4);
+					expect(notes[1].pos[2]).toBe(0);
+					expect(notes[2].pos[2]).toBe(3);
+					expect(notes[3].pos[2]).toBe(1);
+					expect(notes[4].pos[2]).toBe(2);
+				});
+				it("can stack down", function() {
+					var wall = new StickyNoteWall();
+					var notes = new Array();
+					for(var i = 0; i < 5; i++) {
+						notes[i] = wall.addNote("Note " + i);
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[0].stackDown();
+					for(var i = 0; i < 5; i++) {
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[2].stackDown();
+					expect(notes[0].pos[2]).toBe(1);
+					expect(notes[1].pos[2]).toBe(2);
+					expect(notes[2].pos[2]).toBe(0);
+					expect(notes[3].pos[2]).toBe(3);
+					expect(notes[4].pos[2]).toBe(4);
+					notes[4].stackDown();
+					expect(notes[0].pos[2]).toBe(2);
+					expect(notes[1].pos[2]).toBe(3);
+					expect(notes[2].pos[2]).toBe(1);
+					expect(notes[3].pos[2]).toBe(4);
+					expect(notes[4].pos[2]).toBe(0);
+				});
+				it("can stack down by one", function() {
+					var wall = new StickyNoteWall();
+					var notes = new Array();
+					for(var i = 0; i < 5; i++) {
+						notes[i] = wall.addNote("Note " + i);
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[0].down();
+					for(var i = 0; i < 5; i++) {
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[2].down();
+					expect(notes[0].pos[2]).toBe(0);
+					expect(notes[1].pos[2]).toBe(2);
+					expect(notes[2].pos[2]).toBe(1);
+					expect(notes[3].pos[2]).toBe(3);
+					expect(notes[4].pos[2]).toBe(4);
+					notes[4].down();
+					expect(notes[0].pos[2]).toBe(0);
+					expect(notes[1].pos[2]).toBe(2);
+					expect(notes[2].pos[2]).toBe(1);
+					expect(notes[3].pos[2]).toBe(4);
+					expect(notes[4].pos[2]).toBe(3);
+				});
+				it("can stack up by one", function() {
+					var wall = new StickyNoteWall();
+					var notes = new Array();
+					for(var i = 0; i < 5; i++) {
+						notes[i] = wall.addNote("Note " + i);
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[4].up();
+					for(var i = 0; i < 5; i++) {
+						expect(notes[i].pos[2]).toBe(i);
+					}
+					notes[2].up();
+					expect(notes[0].pos[2]).toBe(0);
+					expect(notes[1].pos[2]).toBe(1);
+					expect(notes[2].pos[2]).toBe(3);
+					expect(notes[3].pos[2]).toBe(2);
+					expect(notes[4].pos[2]).toBe(4);
+					notes[0].up();
+					expect(notes[0].pos[2]).toBe(1);
+					expect(notes[1].pos[2]).toBe(0);
+					expect(notes[2].pos[2]).toBe(3);
+					expect(notes[3].pos[2]).toBe(2);
+					expect(notes[4].pos[2]).toBe(4);
+				});
+			});
+		</script>
+	</body>
+</html>
