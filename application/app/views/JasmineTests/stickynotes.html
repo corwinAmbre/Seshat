@@ -6,24 +6,104 @@
 
 		<link rel="shortcut icon" type="image/png" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine_favicon.png'}">
 		<link rel="stylesheet" type="text/css" href="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.css'}">
+		<link rel="stylesheet" href="@{'/public/css/font-awesome.min.css'}">
+		<link rel="stylesheet" href="@{'/public/css/main.css'}">
 
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine.js'}"></script>
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/jasmine-html.js'}"></script>
 		<script type="text/javascript" src="@{'/public/js/jasmine/lib/jasmine-2.4.1/boot.js'}"></script>
 		
+		<script type="text/javascript" src="@{'/public/js/jquery-1.11.3.min.js'}" ></script>
+		<script src="@{'public/js/main.js'}"></script>
 		<script src="@{'public/js/model/stickynotes.js'}"></script>
+		
+		<style>
+			.wallTest {
+				box-sizing: border-box; 
+				width: 100%;
+				height: 80vh;
+				background-color: rgba(127, 140, 141, 0.3);
+				position: relative;
+				overflow-y: auto;
+				overflow-x: auto;
+			}
+			
+			.note {
+				background-color: #2980b9;
+				color: white;
+				position: absolute;
+				padding-bottom: 22px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 150px;
+				height: 100px;	
+				cursor: move;
+				box-sizing: border-box;
+			}
+			
+			.note:hover {
+				z-index: 5000 !important;
+			}
+			
+			.note .noteButtons {
+				color: black;
+				background-color: #ecf0f1;
+				height: 19px;
+				width: 100%;
+				text-align: right;
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				box-sizing: border-box;
+			}
+			
+			.note .noteButtons, .note .noteButtons .innerButtons {
+				display: flex;
+				align-items: center;
+			}
+			
+			.note .noteButtons .innerButtons {
+				display: none;
+				position: absolute;
+				bottom: 0;
+			}
+			
+			.note .fa {
+				cursor: pointer;
+				margin: 0px 3px; 
+			}
+		</style>
 	</head>
 	<body>
+		<!-- Test display section starts -->
+		<div class="wallTest">
+		</div>
+		<script>
+			var wall = new StickyNoteWall(".wallTest");
+			var note1 = wall.addNote("Content 1");
+			var note2 = wall.addNote("Content 2");
+			var note3 = wall.addNote("Content 3");
+			var note4 = wall.addNote("Content 4");
+			var note5 = wall.addNote("Content 5");
+			wall.render();
+			note1.move(0.5, 0);
+			note2.move(0, 0.2);
+			note3.move(0.9, 0.9);
+			wall.render();
+		</script>
+		<!--  Test display section ends -->
 		<script>
 			describe("Sticky notes wall", function() {
 				it("can be initialized", function(){
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					expect(wall).toEqual(jasmine.any(Object));
 					expect(wall.notes).toEqual(jasmine.any(Array));
 					expect(wall.notes.length).toBe(0);
+					expect(wall.dom).toBe(null);
 				});
 				it("can add a note", function() {
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					expect(wall.addNote).toEqual(jasmine.any(Function));
 					var noteContent = "Test content";
 					var note = wall.addNote(noteContent);
@@ -34,7 +114,7 @@
 					expect(note.id).toBe(0);
 				});
 				it("can add several notes", function() {
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					expect(wall.addNote).toEqual(jasmine.any(Function));
 					var note1 = wall.addNote("Note 1");
 					var note2 = wall.addNote("Note 2");
@@ -76,7 +156,7 @@
 			});
 			describe("Sticky note", function() {
 				it("can update position", function() {
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					var note = wall.addNote("Test note");
 					expect(note.move).toEqual(jasmine.any(Function));
 					note.move(5, 10);
@@ -85,7 +165,7 @@
 					expect(note.pos[2]).toBe(0);
 				});
 				it("can stack top", function() {
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					var notes = new Array();
 					for(var i = 0; i < 5; i++) {
 						notes[i] = wall.addNote("Note " + i);
@@ -109,7 +189,7 @@
 					expect(notes[4].pos[2]).toBe(2);
 				});
 				it("can stack down", function() {
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					var notes = new Array();
 					for(var i = 0; i < 5; i++) {
 						notes[i] = wall.addNote("Note " + i);
@@ -157,7 +237,7 @@
 					expect(notes[4].pos[2]).toBe(3);
 				});
 				it("can stack up by one", function() {
-					var wall = new StickyNoteWall();
+					var wall = new StickyNoteWall(null);
 					var notes = new Array();
 					for(var i = 0; i < 5; i++) {
 						notes[i] = wall.addNote("Note " + i);
@@ -182,5 +262,15 @@
 				});
 			});
 		</script>
+		<div id="confirmationMessage">
+			<div>
+				<div><i class="material-icons">help_outline</i></div>
+				<div id="confirmationMessageContent">Ask for confirmation</div>
+				<div class="confirmationButtons">
+					<button class="btn btn-cancel"><i class="material-icons">clear</i> <span>Cancel</span></button>
+					<button class="btn btn-primary"><i class="material-icons">done</i> <span>Validate</span></button>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
