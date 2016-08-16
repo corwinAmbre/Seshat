@@ -117,13 +117,13 @@ StickyNoteWall.prototype.render = function() {
 			$this.render();
 		});
 		$(innerButtons).append(stackButtonsDownFull);
-		var stackButtonsDown = $('<i class="fa fa-level-down" title="Send backward"></i>');
+		var stackButtonsDown = $('<i class="fa fa-caret-down" title="Send backward"></i>');
 		$(stackButtonsDown).click(function() {
 			$this.getNote(note.id).down();
 			$this.render();
 		});
 		$(innerButtons).append(stackButtonsDown);
-		var stackButtonsUp = $('<i class="fa fa-level-up" title="Bring forward"></i>');
+		var stackButtonsUp = $('<i class="fa fa-caret-up" title="Bring forward"></i>');
 		$(stackButtonsUp).click(function() {
 			$this.getNote(note.id).up();
 			$this.render();
