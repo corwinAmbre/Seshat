@@ -642,9 +642,13 @@ form {
 	content:attr(data-text) 
 }
 
-#editor_nav .button,
-i.button {
+#editor i.button {
 	cursor: pointer;
+}
+
+#editor_nav .button {
+	font-size: 1.8em;
+	margin-top: 10px;
 }
 
 #editor .addChapter i.fa {
@@ -657,7 +661,7 @@ i.button {
 }
 
 #editor .footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100%;
@@ -665,7 +669,8 @@ i.button {
 	-webkit-box-shadow: 0px -2px 3px 0px #7f8c8d;
 	-o-box-shadow: 0px -2px 3px 0px #7f8c8d;
 	box-shadow: 0px -2px 3px 0px #7f8c8d;
-	filter:progid:DXImageTransform.Microsoft.Shadow(color=#7f8c8d, Direction=90, Strength=3)
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#7f8c8d, Direction=90, Strength=3);
+	background-color: white;
 }
 
 /****************

@@ -11,16 +11,16 @@
 			</h3>
 			<input class="txtcenter w100 chapter_title" v-model="chapter.title" placeholder="&{'editor.placeholders.chaptertitle'}"/>
 			<div contenteditable="true" class="scene" v-for="scene in chapter.content" id="chapter_{{chapter.number}}_scene_{{$index}}" v-on:keyup="contentUpdate(chapter.number, $index, $event)" v-on:blur="contentUpdate(chapter.number, $index, $event)" v-on:paste="contentUpdate(chapter.number, $index, $event)" v-on:delete="contentUpdate(chapter.number, $index, $event)" v-on:focus="contentUpdate(chapter.number, $index, $event)">{{{* scene.content}}}</div>
-			<div class="txtright addScene"><i class="fa fa-plus-circle button" title="&{'editor.icons.addscene'}" v-on:click="addScene(chapter.number)"></i></div>
+			<div class="txtright addScene"><i class="fa fa-plus-circle button" title="&{'editor.icons.addscene'}" v-on:click="addScene(chapter.number)" role="button" tabindex="0" v-on:keydown.enter="addScene(chapter.number)" aria-label="&{'editor.icons.addscene'}"></i></div>
 		</div>
-		<div class="txtright addChapter"><i class="fa fa-plus-circle button" title="&{'editor.icons.addchapter'}" v-on:click="addChapter()"></i></div>
+		<div class="txtright addChapter"><i class="fa fa-plus-circle button" title="&{'editor.icons.addchapter'}" v-on:click="addChapter()" role="button" tabindex="0" v-on:keydown.enter="addChapter()" aria-label="&{'editor.icons.addchapter'}"></i></div>
 	</div>
 	<nav id="editor_nav" class="prs">
 		<div class="center">
-			<i class="material-icons button" title="&{'editor.icons.savetoserver'}" v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown="pushToServer()">save</i>
+			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown.enter="pushToServer()" aria-label="&{'editor.icons.savetoserver'}"></i>
 		</div>
 		<div class="txtright">
-			<i class="material-icons button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown="getEpub()">import_contacts</i>
+			<i class="fa fa-book button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}">			</i>
 		</div>
 		<!--div class="chapter_list">
 			&{'editor.chapters'}
