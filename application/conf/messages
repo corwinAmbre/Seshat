@@ -49,6 +49,7 @@ user.changepassword.validation.invalidcurrentpassword=The two versions of the ne
 error.generic.unexpected=An unexpected error occured, please try again later or contact administrator
 error.user.quota.exceeded=Quota exceeded, the version cannot be saved
 
+editor.title=Novel editor
 editor.chapter=Chapter
 editor.chapters=Chapters
 editor.words=words
