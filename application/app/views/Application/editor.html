@@ -4,32 +4,37 @@
 <div id="editor" class="flex-container">
 	<div id="editor_content" class="flex-item-fluid" spellcheck="true">
 		<div class="chapter" v-for="chapter in chapters" id="chapter_{{chapter.number}}">
-			<h3 class="lobster txtcenter w100">Chapter {{chapter.number}}</h3>
-			<h3 class="lobster txtcenter w100 chapter_title" v-show="chapter.title.length > 0">{{chapter.title}}</h3>
+			<h3 class="lobster txtcenter w100">
+				<span class="content">&{'editor.chapter'} {{chapter.number}}</span><span class="buttons">
+					<i class="fa fa-trash-o button" v-on:click="removeChapter(chapter.number)" title="&{'editor.icons.deletechapter'}"></i>
+				</span>
+			</h3>
+			<input class="txtcenter w100 chapter_title" v-model="chapter.title" placeholder="&{'editor.placeholders.chaptertitle'}"/>
 			<div contenteditable="true" class="scene" v-for="scene in chapter.content" id="chapter_{{chapter.number}}_scene_{{$index}}" v-on:keyup="contentUpdate(chapter.number, $index, $event)" v-on:blur="contentUpdate(chapter.number, $index, $event)" v-on:paste="contentUpdate(chapter.number, $index, $event)" v-on:delete="contentUpdate(chapter.number, $index, $event)" v-on:focus="contentUpdate(chapter.number, $index, $event)">{{{* scene.content}}}</div>
+			<div class="txtright addScene"><i class="fa fa-plus-circle button" title="&{'editor.icons.addscene'}" v-on:click="addScene(chapter.number)"></i></div>
 		</div>
+		<div class="txtright addChapter"><i class="fa fa-plus-circle button" title="&{'editor.icons.addchapter'}" v-on:click="addChapter()"></i></div>
 	</div>
-	<nav id="editor_nav" class="w200p">
-		<div>
-			<i class="material-icons button" title="Save to server" v-on:click="pushToServer()">save</i>
-			<i class="material-icons button" title="Add a chapter" v-on:click="addChapter()">add_circle</i>
-			<i class="material-icons button" title="Get Epub" v-on:click="getEpub()">import_contacts</i>
+	<nav id="editor_nav" class="prs">
+		<div class="center">
+			<i class="material-icons button" title="&{'editor.icons.savetoserver'}" v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown="pushToServer()">save</i>
 		</div>
-		<div>
-			&{'editor.wordcount'} {{$data.getWords()}}
+		<div class="txtright">
+			<i class="material-icons button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown="getEpub()">import_contacts</i>
 		</div>
-		<div class="chapter_list">
+		<!--div class="chapter_list">
 			&{'editor.chapters'}
 			<ul class="chapter_list">
 				<li v-for="chapter in chapters" class="chapter_list">
-					<span v-on:click="goTo(chapter.number)">{{chapter.number}} - {{chapter.getWords()}} &{'editor.words'}</span>
-					<i class="material-icons fr" title="Delete chapter" v-on:click="removeChapter(chapter.number)">delete</i>
-					<div id="chapter_title_{{chapter.number}}" class="chapter_title" contenteditable="true" data-text="Chapter title" v-on:keyup="chapterTitleUpdate(chapter.number, $event)">{{* chapter.title}}</div>
+					<span v-on:click="goTo(chapter.number)">&{'editor.chapter'} {{chapter.number}} - {{chapter.getWords()}} &{'editor.words'}</span>
 				</li>
 			</ul>
-		</div>
+		</div-->
 	</nav>
-	<a id="download-epub" style="display:none" aria-hidden="true">Epub</a>
+	<div class="footer">
+		&{'editor.wordcount'} {{$data.getWords()}}
+	</div>
+	<a id="download-epub" style="display:none" aria-hidden="true">&{'editor.icons.getepub'}</a>
 </div>
 <script type="text/javascript">
 	zip.workerScriptsPath = "/public/js/";
@@ -54,7 +59,18 @@
 			},
 			contentUpdate: function(chapter, scene, event) {
 				this.saved = false;
+				var previousLength = this.chapters[chapter - 1 ].content[scene].content.length;
 				this.chapters[chapter - 1 ].content[scene].content = $(event.target).html().trim();
+				if(previousLength == 0 && this.chapters[chapter - 1 ].content[scene].content.length == 0) {
+					console.log(event.keyCode);
+					if(event.keyCode == 8 || event.keyCode == 46) {
+						var message = "&{'editor.messages.removescene.firstpart'} " + chapter + " &{'editor.messages.removescene.finalpart'}";
+						var $this = this;
+						askConfirmation(message, "&{'editor.messages.removescene.button'}").pipe(function() {
+							$this.$data.chapters[chapter - 1].removeScene(scene + 1);
+						});
+					}
+				}
 			},
 			pushToServer: function() {
 				saveProjectVersion(this.$data);
@@ -64,14 +80,17 @@
 				this.$data.addChapter();
 			},
 			removeChapter: function(chapter) {
-				var message = "Chapter " + chapter + " containing " + this.chapters[chapter - 1].getWords() + " words is about to be deleted. Do you confirm?";
+				var message = "&{'editor.messages.removechapter.firstpart'} " + chapter + " &{'editor.messages.removechapter.secondpart'} " + this.chapters[chapter - 1].getWords() + " &{'editor.messages.removechapter.finalpart'}";
 				var $this = this;
-				askConfirmation(message, "Delete chapter").pipe(function() {
+				askConfirmation(message, "&{'editor.messages.removechapter.button'}").pipe(function() {
 					$this.$data.removeChapter(chapter);
 				});
 			},
-			chapterTitleUpdate: function(chapter, event) {
-				this.chapters[chapter - 1 ].title = $(event.target).html().trim();
+			addScene: function(chapter) {
+				this.chapters[chapter - 1].addScene();
+			},
+			renameChapter: function(chapter) {
+				
 			},
 			getEpub: function() {
 				var epub = new EpubBuilder(project);
@@ -89,14 +108,15 @@
 		ready: function() {
 			if(this.$data.chapters.length == 1 && this.$data.chapters[0].content.length == 1) {
 				focusOnEditableContent("chapter_1_scene_0", 0);
+				this.$data.saved = true;
 			}
 		}
 	});
 	
 	window.onbeforeunload = function (e) {
 	    if(!project.saved) {
-	    	e.returnValue=("Your udpates won't be saved. Do you confirm closing page before saving?");
-	    	return "Your udpates won't be saved. Do you confirm closing page before saving?";
+	    	e.returnValue="&{'editor.messages.warningnotsaved'}";
+	    	return "&{'editor.messages.warningnotsaved'}";
 	    }
 	};
 </script>

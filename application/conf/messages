@@ -49,9 +49,24 @@ user.changepassword.validation.invalidcurrentpassword=The two versions of the ne
 error.generic.unexpected=An unexpected error occured, please try again later or contact administrator
 error.user.quota.exceeded=Quota exceeded, the version cannot be saved
 
+editor.chapter=Chapter
 editor.chapters=Chapters
 editor.words=words
 editor.wordcount=Word count:
+editor.icons.savetoserver=Save to server
+editor.icons.addchapter=Add a chapter
+editor.icons.getepub=Download as Epub
+editor.icons.deletechapter=Delete chapter
+editor.icons.addscene=Add a scene to current chapter
+editor.placeholders.chaptertitle=Chapter title
+editor.messages.removechapter.firstpart=Chapter
+editor.messages.removechapter.secondpart=containing
+editor.messages.removechapter.finalpart=words is about to be deleted. Do you confirm?
+editor.messages.removechapter.button=Delete chapter
+editor.messages.removescene.firstpart=Scene from chapter
+editor.messages.removescene.finalpart=is about to be deleted. Do you confirm?
+editor.messages.removescene.button=Delete scene
+editor.messages.warningnotsaved=Your udpates won't be saved. Do you confirm closing page before saving?
 
 public.meta.description=Seshat - Your story is worth to be written
 public.header.button.signin=Signin
