@@ -15,6 +15,17 @@ var Project = function(name) {
 	this.name = name;
 	this.summary = "";
 	this.chapters = [];
+	this.exportConfig = {
+		content: {
+			tableOfContent: 'Table of contents',
+			sceneSeparator: '<br/><br/><div style="width: 100%; text-align:center">***</div><br/><br/>',
+			chapterWithTitleFormat: '#d.<br/>#t',
+			chapterWithoutTitleFormat: '#d.',
+			chapterWithTitleFormatNav: '#t',
+			chapterWithoutTitleFormatNav: 'Chapter #d',
+		},
+		navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
+	};
 }
 
 Project.prototype.addChapter = function() {

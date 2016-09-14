@@ -19,8 +19,11 @@
 		<div class="center">
 			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown.enter="pushToServer()" aria-label="&{'editor.icons.savetoserver'}"></i>
 		</div>
-		<div class="txtright">
-			<i class="fa fa-book button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}">			</i>
+		<div class="center">
+			<i class="fa fa-book button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"></i>
+		</div>
+		<div class="center">
+			<i class="fa fa-gear button" title="&{'editor.icons.setupoutput'}" v-on:click="showEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="showEpubConfig()" aria-label="&{'editor.icons.setupoutput'}"></i>
 		</div>
 		<!--div class="chapter_list">
 			&{'editor.chapters'}
@@ -31,6 +34,33 @@
 			</ul>
 		</div-->
 	</nav>
+	<div id="outputConfig">
+		<div>
+			<h2>&{'editor.export.config.title'}</h2>
+			<label>&{'editor.export.config.navpos.label'}</label>
+			<select v-model="exportConfig.navPosition">
+				<option value="start">&{'editor.export.config.navpos.start'}</option>
+				<option value="end">&{'editor.export.config.navpos.end'}</option>
+				<option value="none">&{'editor.export.config.navpos.none'}</option> 
+			</select>
+			<h3>&{'editor.export.config.localization'}</h3>
+			<label>&{'editor.export.config.localization.tableOfContent'}</label>
+			<input type="text" v-model="exportConfig.content.tableOfContent"/>
+			<label>&{'editor.export.config.localization.sceneSeparator'}</label>
+			<input type="text" v-model="exportConfig.content.sceneSeparator"/>
+			<label>&{'editor.export.config.localization.chapterFormat.withTitle'}</label>
+			<input type="text" v-model="exportConfig.content.chapterWithTitleFormat"/>
+			<label>&{'editor.export.config.localization.chapterFormat.withoutTitle'}</label>
+			<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormat"/>
+			<label>&{'editor.export.config.localization.chapterFormat.nav.withTitle'}</label>
+			<input type="text" v-model="exportConfig.content.chapterWithTitleFormatNav"/>
+			<label>&{'editor.export.config.localization.chapterFormat.nav.withoutTitle'}</label>
+			<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormatNav"/>
+			<div class="confirmationButtons">
+				<button class="btn btn-primary" v-on:click="closeEpubConfig(true)" role="button" tabindex="0" v-on:keydown.enter="closeEpubConfig()" aria-label="&{'editor.icons.confirmconfig'}"><i class="fa fa-check"></i> <span>&{'editor.icons.confirmconfig'}</span></button>
+			</div>
+		</div>
+	</div>
 	<div class="footer">
 		&{'editor.wordcount'} {{$data.getWords()}}
 	</div>
@@ -89,9 +119,6 @@
 			addScene: function(chapter) {
 				this.chapters[chapter - 1].addScene();
 			},
-			renameChapter: function(chapter) {
-				
-			},
 			getEpub: function() {
 				var epub = new EpubBuilder(project);
 				epub.build(function(result) {
@@ -103,6 +130,12 @@
 					downloadButton.download = project.name + ".epub";
 					downloadButton.dispatchEvent(clickEvent);
 				});
+			},
+			showEpubConfig: function() {
+				$("#outputConfig").css("display", "flex");
+			},
+			closeEpubConfig: function() {
+				$("#outputConfig").css("display", "none");
 			}
 		},
 		ready: function() {

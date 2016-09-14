@@ -1,16 +1,20 @@
 var EpubBuilder = function(project) {
 	this.project = project;
-	this.config = {
-		content: {
-			tableOfContent: 'Table of contents',
-			sceneSeparator: '<br/><br/><div style="width: 100%; text-align:center">***</div><br/><br/>',
-			chapterWithTitleFormat: '#d.<br/>#t',
-			chapterWithoutTitleFormat: '#d.',
-			chapterWithTitleFormatNav: '#t',
-			chapterWithoutTitleFormatNav: 'Chapter #d',
-		},
-		navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
-	};
+	if(project.exportConfig === undefined || project.exportConfig === null) {
+		this.config = {
+			content: {
+				tableOfContent: 'Table of contents',
+				sceneSeparator: '<br/><br/><div style="width: 100%; text-align:center">***</div><br/><br/>',
+				chapterWithTitleFormat: '#d.<br/>#t',
+				chapterWithoutTitleFormat: '#d.',
+				chapterWithTitleFormatNav: '#t',
+				chapterWithoutTitleFormatNav: 'Chapter #d',
+			},
+			navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
+		};
+	} else {
+		this.config = project.exportConfig;
+	}
 }
 
 EpubBuilder.prototype.getChapterTitle = function (chapter, forNav) {
