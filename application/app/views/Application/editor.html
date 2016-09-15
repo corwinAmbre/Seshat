@@ -15,15 +15,18 @@
 		</div>
 		<div class="txtright addChapter"><i class="fa fa-plus-circle button" title="&{'editor.icons.addchapter'}" v-on:click="addChapter()" role="button" tabindex="0" v-on:keydown.enter="addChapter()" aria-label="&{'editor.icons.addchapter'}"></i></div>
 	</div>
-	<nav id="editor_nav" class="prs">
-		<div class="center">
+	<nav id="editor_nav" class="prs center">
+		<div>
 			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown.enter="pushToServer()" aria-label="&{'editor.icons.savetoserver'}"></i>
 		</div>
-		<div class="center">
+		<div>
 			<i class="fa fa-book button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"></i>
 		</div>
-		<div class="center">
+		<div>
 			<i class="fa fa-gear button" title="&{'editor.icons.setupoutput'}" v-on:click="showEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="showEpubConfig()" aria-label="&{'editor.icons.setupoutput'}"></i>
+		</div>
+		<div>
+			<i class="fa fa-history button" title="&{'editor.icons.history'}" v-on:click="showHistory()" role="button" tabindex="0" v-on:keydown.enter="showHistory()" aria-label="&{'editor.icons.history'}"></i>
 		</div>
 		<!--div class="chapter_list">
 			&{'editor.chapters'}
@@ -57,9 +60,33 @@
 			<label>&{'editor.export.config.localization.chapterFormat.nav.withoutTitle'}</label>
 			<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormatNav"/>
 			<div class="confirmationButtons">
-				<button class="btn btn-primary" v-on:click="closeEpubConfig(true)" role="button" tabindex="0" v-on:keydown.enter="closeEpubConfig()" aria-label="&{'editor.icons.confirmconfig'}"><i class="fa fa-check"></i> <span>&{'editor.icons.confirmconfig'}</span></button>
+				<button class="btn btn-primary" v-on:click="closeEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="closeEpubConfig()" aria-label="&{'editor.icons.confirmconfig'}"><i class="fa fa-check"></i> <span>&{'editor.icons.confirmconfig'}</span></button>
 			</div>
 		</div>
+	</div>
+	<div id="historyDialog">
+		<div>
+			<h2>&{'editor.history.title'}</h2>
+			<table id="historyList">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Number of chapters</th>
+						<th>Number of words</th>
+					</tr>
+				</thead>
+				<tbody>
+				#{list items: project.getVersions(), as:'version'}
+					<tr>
+						<td>${version.date.format('HH:mm:ss dd/MM/YYYY')}</td>
+						<td>${version.chapters}</td>
+						<td>${version.words}</td>
+					</tr>
+				#{/list}
+				</tbody>
+			</table> 
+		</div>
+		<button class="closebutton" v-on:click="closeHistory()"><i class="fa fa-times"></i></button>
 	</div>
 	<div class="footer">
 		&{'editor.wordcount'} {{$data.getWords()}}
@@ -136,6 +163,12 @@
 			},
 			closeEpubConfig: function() {
 				$("#outputConfig").css("display", "none");
+			},
+			showHistory: function() {
+				$("#historyDialog").css("display", "flex");
+			},
+			closeHistory: function() {
+				$("#historyDialog").css("display", "none");
 			}
 		},
 		ready: function() {

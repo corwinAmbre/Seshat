@@ -135,7 +135,7 @@ function saveProjectVersion(project) {
 		return;
 	}
 	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
-	remoteCalls.saveVersion(project.remoteId, encryptedProject);
+	remoteCalls.saveVersion(project.remoteId, encryptedProject, project.getWords(), project.chapters.length);
 }
 
 function prototypeProject(projectJson) {

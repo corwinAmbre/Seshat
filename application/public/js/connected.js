@@ -20,16 +20,28 @@ var remoteCalls = {
 				errorMessage("Error while creating project on server");
 			});
 		},
-		saveVersion: function(id, version) {
+		saveVersion: function(id, version, words, chapters) {
 			$.ajax({
 				url: "/rest/project/version",
 				data: {
 					id: id,
-					version: version
+					version: version,
+					words: words,
+					chapters: chapters
 				},
 				method: "POST"
 			}).done(function(data) {
-				$("#quotameter").attr("value", data);
+				console.log(data);
+				var now = new Date();
+				var nowStr = (now.getHours() < 10 ? ("0" + now.getHours()) : now.getHours()) + ":" + (now.getMinutes() < 10 ? ("0" + now.getMinutes()) : now.getMinutes()) + ":" + (now.getSeconds() < 10 ? ("0" + now.getSeconds()) : now.getSeconds()) +
+					" " + (now.getDate() < 10 ? ("0" + now.getDate()) : now.getDate()) + "/" + (now.getMonth() < 10 ? ("0" + now.getMonth()) : now.getMonth()) + "/" + now.getFullYear();
+				$("#quotameter").attr("value", data._1);
+				$("#historyList tbody").append("<tr>" +
+						"<td>" + nowStr + "</td>" +
+						"<td>" + chapters + "</td>" +
+						"<td>" + words + "</td>" +
+						"<td>" + data._2 + "</td>" +
+					"</tr>");
 			}).fail(function() {
 				errorMessage("Error while pushing version to the server");
 			});

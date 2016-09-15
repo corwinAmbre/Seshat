@@ -48,10 +48,10 @@ public class Application extends Controller {
 			forbidden();
 		}
 		renderTemplate("Application/editor.html", project);
-
 	}
 
-	public static void addVersion(Long id, String version) {
+	public static void addVersion(Long id, String version, int words,
+			int chapters) {
 		Project project = Project.findById(id);
 		if (project == null) {
 			notFound();
@@ -68,9 +68,10 @@ public class Application extends Controller {
 				&& user.getSpaceConsumed().longValue() > user.getQuota()) {
 			error(509, Messages.get("error.user.quota.exceeded"));
 		}
-		project.addVersion(version);
+		project.addVersion(version, words, chapters);
 		project.save();
-		renderText(user.getSpaceConsumed().toString());
+		renderJSON(new Tuple(user.getSpaceConsumed().toString(), project
+				.getVersions().get(project.getVersions().size() - 1).id));
 	}
 
 	public static void changePassword(String currentpwd, String newpwd,

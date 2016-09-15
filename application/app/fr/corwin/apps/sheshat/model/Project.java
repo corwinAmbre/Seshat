@@ -66,6 +66,10 @@ public class Project extends Model {
 	}
 
 	public void addVersion(String version) {
+		addVersion(version, 0, 0);
+	}
+
+	public void addVersion(String version, int words, int chapters) {
 		String checksum = DigestUtils.sha256Hex(version);
 		File dest = new File(SeshatUtils.getStoragePath(author) + checksum);
 		try {
@@ -75,7 +79,8 @@ public class Project extends Model {
 					this.name);
 			return;
 		}
-		Version v = new Version(this, checksum);
+		Version v = new Version(this, checksum).withWords(words).withChapters(
+				chapters);
 		this.versions.add(v);
 		this.lastUpdate = Calendar.getInstance().getTime();
 	}
