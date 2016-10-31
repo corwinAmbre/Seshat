@@ -6,6 +6,11 @@ function openLoginOverlay() {
 	$(".login-overlay").slideToggle();
 }
 
+Vue.validator('email', function (val) {
+	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(val);
+});
+
 $(document).ready(function() {
 	$(".moreinfo").click(function(e){
 		if (e.target !== this) {

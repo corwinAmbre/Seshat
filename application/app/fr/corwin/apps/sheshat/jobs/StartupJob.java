@@ -26,7 +26,9 @@ public class StartupJob extends Job {
 					Play.configuration.getProperty("seshat.paths.versions"));
 		}
 		if (User.count() == 0) {
-			new User("admin", "admin").isAdmin(true).save();
+			String adminName = Play.configuration
+					.getProperty("seshat.startup.admin.account");
+			new User(adminName, "admin").isAdmin(true).save();
 		}
 	}
 }

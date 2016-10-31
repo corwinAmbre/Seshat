@@ -5,7 +5,7 @@
 application.name=Seshat
 
 secure.title=Existing user
-secure.username=Username
+secure.username=User e-mail
 secure.password=Password
 secure.password.confirm=Confirm password
 secure.remember=Remember me
@@ -16,8 +16,9 @@ secure.newuser=New user
 secure.error=Oops, unknown username or password
 secure.changepassword=Change password
 
-secure.validation.username.required=Username is required
-secure.validation.username.minlength=Username has to be at least %s characters
+secure.validation.username.required=Email is required
+secure.validation.username.minlength=Email has to be at least %s characters
+secure.validation.username.emailformat=Input is not a valid email
 secure.validation.password.required=Password is required
 secure.validation.password2.required=Please retype your password
 secure.validation.password.minlength=Password has to be at least %s characters

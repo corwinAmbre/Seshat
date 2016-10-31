@@ -4,3 +4,11 @@ require:
     - play
     - play -> secure
     - play -> greenscript 1.2.8b
+    - play1-mailgun -> play1-mailgun latest.integration
+    
+repositories:
+    - mailgun:
+        type: local
+        artifact: ${application.path}/../../play1/Mailgun/[module]
+        contains:
+            - play1-mailgun
