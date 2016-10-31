@@ -1,6 +1,9 @@
 package fr.corwin.apps.sheshat.utils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -26,6 +29,12 @@ public class SeshatUtils {
 				+ File.separator + DigestUtils.sha256Hex(author.username)
 				+ File.separator;
 
+	}
+
+	public static String getNow() {
+		Date now = Calendar.getInstance().getTime();
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+		return format.format(now);
 	}
 
 }

@@ -48,7 +48,7 @@ user.changepassword.validation.notsamepasswords=Current password is not valid
 user.changepassword.validation.invalidcurrentpassword=The two versions of the new password are different
 
 error.generic.unexpected=An unexpected error occured, please try again later or contact administrator
-error.user.quota.exceeded=Quota exceeded, the version cannot be saved
+error.user.quota.exceeded=Quota exceeded, the version cannot be saved. Please contact administrator to extend your quota by email at %s
 
 editor.title=Novel editor
 editor.chapter=Chapter
@@ -116,3 +116,6 @@ public.feature.stats.title=Follow your progress
 public.feature.stats.shortdesc=Statistic module will show you how often you write, how long and your average word speed
 public.staytuned.title=Stay tuned!
 public.staytuned.message=<span class="lobster">Seshat</span> is at its early stage and therefore will evolve. To be totally honest, project already changed quite a bit already. If you have ideas, feedback or just a message, you can follow technical articles <a href="https://blog.midkemia.fr/tag/seshat/" target="_blank">on my blog</a>, <a href="mailto:sebastien.domergue@gmail.com">contact me</a> or go to <a href="https://github.com/corwinAmbre/Seshat">the project page on Github <i class="fa fa-github"></i></a>
+
+notification.createUser.subject=New account created: %s
+notification.createUser.html=A new account has been created at %s for user %s

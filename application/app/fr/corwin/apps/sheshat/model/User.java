@@ -15,7 +15,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
 import play.db.jpa.Model;
+import play.i18n.Messages;
 import play.libs.F.Tuple;
+import fr.corwin.apps.sheshat.services.NotificationService;
 import fr.corwin.apps.sheshat.services.SecurityService;
 import fr.corwin.apps.sheshat.utils.SeshatUtils;
 
@@ -145,6 +147,10 @@ public class User extends Model {
 		}
 		User user = new User(username, password);
 		user.save();
+		NotificationService.sendEmailToAdmins(
+				Messages.get("notification.createUser.subject", username),
+				Messages.get("notification.createUser.html",
+						SeshatUtils.getNow(), username));
 		return new Tuple<User, String>(user, "");
 	}
 

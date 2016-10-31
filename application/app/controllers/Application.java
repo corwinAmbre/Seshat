@@ -3,6 +3,7 @@ package controllers;
 import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
+import play.Play;
 import play.i18n.Messages;
 import play.libs.F.Tuple;
 import play.mvc.Before;
@@ -66,7 +67,9 @@ public class Application extends Controller {
 		User user = (User) renderArgs.get("user");
 		if (user.getQuota() > 0
 				&& user.getSpaceConsumed().longValue() > user.getQuota()) {
-			error(509, Messages.get("error.user.quota.exceeded"));
+			error(509, Messages.get("error.user.quota.exceeded",
+					Play.configuration
+							.getProperty("seshat.startup.admin.account")));
 		}
 		project.addVersion(version, words, chapters);
 		project.save();
