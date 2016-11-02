@@ -69,7 +69,7 @@
 						#{form @Secure.authenticate(), id:'loginForm'}
 							<p id="username-field" class="form-control required">
 								<label for="username">&{'secure.username'}</label>
-								<input type="text" name="username" id="username" value="${flash.username}" v-validate:username="{required: true, email: true}"/>
+								<input type="email" name="username" id="username" value="${flash.username}" v-validate:username="{required: true, email: true}"/>
 								<span v-if="$validationLogin.username.required" class="error">&{'secure.validation.username.required'}</span>
 								<span v-if="$validationLogin.username.required == false && $validationLogin.username.email" class="error">&{'secure.validation.username.emailformat'}</span>
 							</p>
@@ -96,7 +96,7 @@
 						#{form @Users.signup(), id:'signupForm'}
 							<p id="usernameSignup-field" class="form-control required">
 								<label for="usernameSignup">&{'secure.username'}</label>
-								<input type="text" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" v-validate:usernameSignup="{required: true, email: true}"/>
+								<input type="email" name="usernameSignup" id="usernameSignup" value="${flash.usernameSignup}" v-validate:usernameSignup="{required: true, email: true}"/>
 								<span v-if="$validationCreateUser.usernamesignup.required" class="error">&{'secure.validation.username.required'}</span>
 								<span v-if="$validationCreateUser.usernamesignup.required == false && $validationCreateUser.usernamesignup.email" class="error">&{'secure.validation.username.emailformat'}</span>
 							</p>
