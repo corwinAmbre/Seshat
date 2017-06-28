@@ -17,7 +17,7 @@ public class ApplicationTest extends FunctionalTest {
 
 	@Test
 	public void testNotConnectedUser() {
-		Response response = GET("/");
+		Response response = GET("/projects");
 		assertStatus(302, response);
 		assertHeaderEquals("Location", "/login", response);
 	}

@@ -3,13 +3,11 @@ package fr.corwin.apps.sheshat.model;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Entity;
-
 import play.db.jpa.Model;
 import play.libs.F.Tuple;
 import fr.corwin.apps.sheshat.services.SecurityService;
 
-@Entity
+//@Entity
 public class TemporaryKey extends Model {
 
 	private String key;

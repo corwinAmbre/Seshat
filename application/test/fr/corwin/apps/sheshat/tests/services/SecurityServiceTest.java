@@ -54,7 +54,7 @@ public class SecurityServiceTest extends UnitTest {
 				checksum);
 	}
 
-	@Test
+	// @Test
 	public void testUserLogin() {
 		String username = "test User";
 		String password = "passwordtest";
@@ -76,7 +76,7 @@ public class SecurityServiceTest extends UnitTest {
 				key.getId())); // Wrong password
 	}
 
-	@Test
+	// @Test
 	public void testTemporaryKey() {
 		assertEquals(0, TemporaryKey.count());
 		TemporaryKey key1 = TemporaryKey.getTemporaryKey();
