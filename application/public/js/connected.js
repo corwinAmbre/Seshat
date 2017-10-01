@@ -31,7 +31,6 @@ var remoteCalls = {
 				},
 				method: "POST"
 			}).done(function(data) {
-				console.log(data);
 				var now = new Date();
 				var nowStr = (now.getHours() < 10 ? ("0" + now.getHours()) : now.getHours()) + ":" + (now.getMinutes() < 10 ? ("0" + now.getMinutes()) : now.getMinutes()) + ":" + (now.getSeconds() < 10 ? ("0" + now.getSeconds()) : now.getSeconds()) +
 					" " + (now.getDate() < 10 ? ("0" + now.getDate()) : now.getDate()) + "/" + (now.getMonth() < 10 ? ("0" + now.getMonth()) : now.getMonth()) + "/" + now.getFullYear();
@@ -40,11 +39,37 @@ var remoteCalls = {
 						"<td>" + nowStr + "</td>" +
 						"<td>" + chapters + "</td>" +
 						"<td>" + words + "</td>" +
-						"<td>" + data._2 + "</td>" +
 					"</tr>");
 			}).fail(function() {
 				errorMessage("Error while pushing version to the server");
 			});
+		},
+		saveLocalVersions: function(id) {
+			var versions = JSON.parse(localStorage.localVersions);
+			var failedPushs = Array();
+			versions.versions.forEach(function(item, index) {
+				$.ajax({
+					url: "/rest/project/version",
+					data: {
+						id: id,
+						version: item.version,
+						words: item.words,
+						chapters: item.chapters
+					},
+					method: "POST"
+				}).done(function(data) {
+					$("#quotameter").attr("value", data._1);
+					$("#historyList .localVersion:eq(" + index + ")").removeClass("localVersion");
+				}).fail(function() {
+					failedPushs.push(item);
+				});
+			});
+			if(failedPushs.length == 0) {
+				localStorage.removeItem("localVersions");
+			} else {
+				// TODO: remove indexes of failed pushes
+				localStorage.setItem("localVersions", JSON.stringify(versions));
+			}
 		},
 		lockUser: function(id, source) {
 			$.ajax({

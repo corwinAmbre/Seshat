@@ -17,7 +17,8 @@
 	</div>
 	<nav id="editor_nav" class="prs center">
 		<div>
-			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown.enter="pushToServer()" aria-label="&{'editor.icons.savetoserver'}"></i>
+			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-if="saved" role="button" tabindex="0" aria-label="&{'editor.icons.savetoserver'}" disabled="disabled"></i>			
+			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-else v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown.enter="pushToServer()" aria-label="&{'editor.icons.savetoserver'}"></i>
 		</div>
 		<div>
 			<i class="fa fa-book button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"></i>
@@ -27,6 +28,9 @@
 		</div>
 		<div>
 			<i class="fa fa-history button" title="&{'editor.icons.history'}" v-on:click="showHistory()" role="button" tabindex="0" v-on:keydown.enter="showHistory()" aria-label="&{'editor.icons.history'}"></i>
+		</div>
+		<div>			
+			<i class="fa fa-floppy-o button" title="&{'editor.icons.localtoserver'}" v-else v-on:click="pushLocalVersions()" role="button" tabindex="0" v-on:keydown.enter="pushLocalVersions()" aria-label="&{'editor.icons.localtoserver'}"></i>
 		</div>
 		<!--div class="chapter_list">
 			&{'editor.chapters'}
@@ -94,6 +98,9 @@
 	<a id="download-epub" style="display:none" aria-hidden="true">&{'editor.icons.getepub'}</a>
 </div>
 <script type="text/javascript">
+	localCalls.appendLocalVersions();
+
+
 	zip.workerScriptsPath = "/public/js/";
 
 	var projectEncrypted = "${project.getLatestVersionContent()}";
@@ -119,7 +126,6 @@
 				var previousLength = this.chapters[chapter - 1 ].content[scene].content.length;
 				this.chapters[chapter - 1 ].content[scene].content = $(event.target).html().trim();
 				if(previousLength == 0 && this.chapters[chapter - 1 ].content[scene].content.length == 0) {
-					console.log(event.keyCode);
 					if(event.keyCode == 8 || event.keyCode == 46) {
 						var message = "&{'editor.messages.removescene.firstpart'} " + chapter + " &{'editor.messages.removescene.finalpart'}";
 						var $this = this;
@@ -132,6 +138,9 @@
 			pushToServer: function() {
 				saveProjectVersion(this.$data);
 				this.saved = true;
+			},
+			pushLocalVersions: function() {
+				saveLocalVersions(this.$data.remoteId);
 			},
 			addChapter: function() {
 				this.$data.addChapter();

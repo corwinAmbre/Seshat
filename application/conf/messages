@@ -56,6 +56,7 @@ editor.chapters=Chapters
 editor.words=words
 editor.wordcount=Word count:
 editor.icons.savetoserver=Save to server
+editor.icons.localtoserver=Push local versions to server
 editor.icons.addchapter=Add a chapter
 editor.icons.getepub=Download as Epub
 editor.icons.setupoutput=Setup Epub

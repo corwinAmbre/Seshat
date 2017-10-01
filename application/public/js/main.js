@@ -93,6 +93,10 @@ function generateKeyAndIv(secretPhrase) {
 	 return {key: key, iv: iv};
 }
 
+function isConnected() {
+	return navigator.onLine || location.hostname == "localhost";
+}
+
 /**
  * Create a new project as a javascript object based on inputs provided in form
  * Always return false to prevent default behavior of button 
@@ -135,7 +139,19 @@ function saveProjectVersion(project) {
 		return;
 	}
 	var encryptedProject = encryptToServer(vault[project.key].key, vault[project.key].iv, JSON.stringify(project));
-	remoteCalls.saveVersion(project.remoteId, encryptedProject, project.getWords(), project.chapters.length);
+	if(isConnected()) {
+		remoteCalls.saveVersion(project.remoteId, encryptedProject, project.getWords(), project.chapters.length);
+	} else {
+		localCalls.saveVersion(project.remoteId, encryptedProject, project.getWords(), project.chapters.length);
+	}
+}
+
+function saveLocalVersions(projectId) {
+	if(isConnected() && typeof(Storage) !== "undefined") {
+		remoteCalls.saveLocalVersions(projectId);
+	} else {
+		errorMessage("You are not connected, impossible to push data to remote server.");
+	}
 }
 
 function prototypeProject(projectJson) {
