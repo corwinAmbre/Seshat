@@ -669,6 +669,14 @@ form {
 	font-size: 1.5em;
 }
 
+#editor #connection-status.connected {
+	color: green;
+}
+
+#editor #connection-status.disconnected {
+	color: red;
+}
+
 #editor .footer {
 	position: fixed;
 	bottom: 0;

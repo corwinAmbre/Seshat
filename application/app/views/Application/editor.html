@@ -32,6 +32,9 @@
 		<div>			
 			<i class="fa fa-floppy-o button" title="&{'editor.icons.localtoserver'}" v-else v-on:click="pushLocalVersions()" role="button" tabindex="0" v-on:keydown.enter="pushLocalVersions()" aria-label="&{'editor.icons.localtoserver'}"></i>
 		</div>
+		<div id="connection-status">
+			<i class="fa fa-plug button"></i>
+		</div>
 		<!--div class="chapter_list">
 			&{'editor.chapters'}
 			<ul class="chapter_list">
@@ -98,6 +101,26 @@
 	<a id="download-epub" style="display:none" aria-hidden="true">&{'editor.icons.getepub'}</a>
 </div>
 <script type="text/javascript">
+	$(document).ready(function() {
+		window.addEventListener('offline', function(e) {
+			if(!isConnected()) {
+				$("#connection-status").removeClass("connected");
+				$("#connection-status").addClass("disconnected");
+			}
+		});
+		window.addEventListener('online', function(e) { 
+			$("#connection-status").addClass("connected");
+			$("#connection-status").removeClass("disconnected"); 
+		});
+		if(isConnected()) {
+			$("#connection-status").addClass("connected");
+			$("#connection-status").removeClass("disconnected");
+		} else {
+			$("#connection-status").removeClass("connected");
+			$("#connection-status").addClass("disconnected");
+		}
+	});
+
 	localCalls.appendLocalVersions();
 
 
