@@ -29,9 +29,9 @@
 		<div>
 			<i class="fa fa-history button" title="&{'editor.icons.history'}" v-on:click="showHistory()" role="button" tabindex="0" v-on:keydown.enter="showHistory()" aria-label="&{'editor.icons.history'}"></i>
 		</div>
-		<div>			
+		<!--div>			
 			<i class="fa fa-floppy-o button" title="&{'editor.icons.localtoserver'}" v-else v-on:click="pushLocalVersions()" role="button" tabindex="0" v-on:keydown.enter="pushLocalVersions()" aria-label="&{'editor.icons.localtoserver'}"></i>
-		</div>
+		</div-->
 		<div id="connection-status">
 			<i class="fa fa-plug button"></i>
 		</div>
@@ -111,6 +111,7 @@
 		window.addEventListener('online', function(e) { 
 			$("#connection-status").addClass("connected");
 			$("#connection-status").removeClass("disconnected"); 
+			saveLocalVersions();
 		});
 		if(isConnected()) {
 			$("#connection-status").addClass("connected");

@@ -45,7 +45,13 @@ var remoteCalls = {
 			});
 		},
 		saveLocalVersions: function(id) {
+			if(localStorage.localVersions == null) {
+				return;
+			}
 			var versions = JSON.parse(localStorage.localVersions);
+			if(versions.length == 0) {
+				return;
+			}
 			var failedPushs = Array();
 			versions.versions.forEach(function(item, index) {
 				$.ajax({
@@ -61,14 +67,18 @@ var remoteCalls = {
 					$("#quotameter").attr("value", data._1);
 					$("#historyList .localVersion:eq(" + index + ")").removeClass("localVersion");
 				}).fail(function() {
-					failedPushs.push(item);
+					failedPushs.push(index);
 				});
 			});
 			if(failedPushs.length == 0) {
 				localStorage.removeItem("localVersions");
+				successMessage("Local versions pushed successfully on server");
 			} else {
-				// TODO: remove indexes of failed pushes
+				for(var i = failedPushs.length - 1; i >= 0; i--) {
+					verions.splice(failedPushs[i], 1);
+				}
 				localStorage.setItem("localVersions", JSON.stringify(versions));
+				errorMessage("Attempt to push local versions on remote server failed");
 			}
 		},
 		lockUser: function(id, source) {
