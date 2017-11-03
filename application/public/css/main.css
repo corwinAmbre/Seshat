@@ -625,6 +625,10 @@ form {
 	text-align:center;
 }
 
+#editor_nav {
+	align-self: flex-end;	
+}
+
 #editor_nav div.chapter_list {
 	margin-top: 0.5em;
 }
