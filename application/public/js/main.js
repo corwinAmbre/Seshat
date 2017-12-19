@@ -166,6 +166,9 @@ function prototypeProject(projectJson) {
 		});
 		result.chapters.push(chap);
 	});
+	if(result.exportConfig.content.exportToChapter == null) {
+		result.exportConfig.content.exportToChapter = result.chapters.length;
+	}
 	return result;
 }
 

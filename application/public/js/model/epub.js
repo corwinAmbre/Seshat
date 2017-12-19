@@ -9,7 +9,11 @@ var EpubBuilder = function(project) {
 				chapterWithoutTitleFormat: '#d.',
 				chapterWithTitleFormatNav: '#t',
 				chapterWithoutTitleFormatNav: 'Chapter #d',
+				exportAllChapters: true,
+				exportFromChapter: 1,
+				exportToChapter: null
 			},
+			exportFormat: 'epub', // Authorized values: 'epub', 'pdf', 'txt'
 			navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
 		};
 	} else {
@@ -32,6 +36,108 @@ EpubBuilder.prototype.getChapterTitle = function (chapter, forNav) {
 }
 
 EpubBuilder.prototype.build = function(callback) {
+	switch(this.config.exportFormat) {
+	case 'pdf':
+		this.buildPdf(callback);
+		break;
+	case 'txt':
+		//this.buildTxt(callback);
+		break;
+	case 'epub':
+	default:
+		this.buildEpub(callback);
+	}
+	
+}
+
+EpubBuilder.prototype.buildTxt = function(callback) {
+}
+
+EpubBuilder.prototype.buildPdf = function(callback) {
+	var $this = this;
+	
+	var pdfDoc = new PDFDocument();
+	var stream = pdfDoc.pipe(blobStream());
+	
+	pdfDoc.info.Title = this.project.name;
+	
+	pdfDoc.fontSize(25)
+		.text(this.project.name, {
+			align: 'center'
+		});
+	
+	this.project.chapters.forEach(function(chapter) {
+		if($this.config.content.exportAllChapters == true || ($this.config.content.exportFromChapter <= chapter.number && $this.config.content.exportToChapter >= chapter.number)) {
+			pdfDoc.addPage();
+			pdfDoc.font('Helvetica-Oblique', 18)
+				.text($this.getChapterTitle(chapter, true) + "\n", {
+					align: 'center',
+					features: ["ital"]
+				})
+				.font('Times-Roman', 12);
+				var first = true;
+				chapter.content.forEach(function(scene) {
+					if(first) {
+						first = false;
+					} else {
+						$this.convertHtmlToPdf(pdfDoc, $this.config.content.sceneSeparator, {
+							align: 'center'
+						});
+					}
+					$this.convertHtmlToPdf(pdfDoc, scene.content);
+				});
+		}
+	});	
+	pdfDoc.end();
+	stream.on('finish', function() {
+		blob = stream.toBlob('application/pdf');
+		callback(blob);
+	});	
+}
+
+EpubBuilder.prototype.convertHtmlToPdf = function(doc, content, options) {
+	if(content == null) {
+		return;
+	}
+	options = options || {};
+	content = content.split('<br/>').join('\n');
+	var paragraphs = content.match(new RegExp('(.*)<div(.)*>(.*)</div>(.*)'));
+	if(paragraphs != null) {
+		options.continued = false;
+		this.convertHtmlToPdf(doc, paragraphs[1], options);
+		options.continues = false;
+		this.convertHtmlToPdf(doc, paragraphs[3], options);
+		options.continues = false;
+		this.convertHtmlToPdf(doc, paragraphs[4], options);
+		return;
+	}	
+	var obliques = content.match(new RegExp('(.*)<i(.)*>(.*)</i>(.*)'));
+	if(obliques != null) {
+		options.continued = true;
+		this.convertHtmlToPdf(doc, obliques[1], options);
+		doc.font('Times-Italic', 12);
+		this.convertHtmlToPdf(doc, obliques[3], options);
+		doc.font('Times-Roman', 12);
+		options.continued = false;
+		this.convertHtmlToPdf(doc, obliques[4], options);
+		return;
+	}
+	var bolds = content.match(new RegExp('(.*)<b(.)*>(.*)</b>(.*)'));
+	if(bolds != null) {
+		options.continued = true;
+		this.convertHtmlToPdf(doc, bolds[1], options);
+		doc.font('Times-Bold', 12);
+		this.convertHtmlToPdf(doc, bolds[3], options);
+		doc.font('Times-Roman', 12);
+		options.continued = false;
+		this.convertHtmlToPdf(doc, bolds[4], options);
+		return;
+	} 
+	doc.text(content, options);
+}
+
+
+EpubBuilder.prototype.buildEpub = function(callback) {
 	// Prepare data
 	var uniqueIdentifier = "myUniqueId";
 	var $this = this;
@@ -65,31 +171,33 @@ EpubBuilder.prototype.build = function(callback) {
 					'<nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="toc" id="toc">' +
 						'<ol>';
 	this.project.chapters.forEach(function(chapter) {
-		chaptersManifest += '<item id="chapter' + chapter.number + '" href="chapter' + chapter.number + '.xhtml" media-type="application/xhtml+xml"/>';
-		spineManifest    += '<itemref idref="chapter' + chapter.number + '"/>';
-		navContent       += '<li><a href="chapter' + chapter.number + '.xhtml">' + $this.getChapterTitle(chapter, true) + '</a></li>';
-		var chapterContent = '<?xml version="1.0" encoding="UTF-8"?>' +
-			'<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">' +
-			'<head>' +
-				'<title>' +	$this.project.name + '</title>' +
-				'<meta charset="utf-8"/>' +
-			'</head>' +
-			'<body>' +
-				'<section epub:type="bodymatter chapter">' +
-					'<header style="width:100%; text-align:center">' +
-						'<h1>' + $this.getChapterTitle(chapter) + '</h1>' +
-					'</header>';
-		var first = true;
-		chapter.content.forEach(function(scene) {
-			if(first) {
-				first = false;
-			} else {
-				chapterContent += $this.config.content.sceneSeparator;
-			}
-			chapterContent += scene.content;
-		});
-		chapterContent += '</section></body></html>';
-		chapterBlobs["chapter" + chapter.number] = new Blob([chapterContent], {type: 'application/xhtml+xml'});
+		if($this.config.content.exportAllChapters == true || ($this.config.content.exportFromChapter <= chapter.number && $this.config.content.exportToChapter >= chapter.number)) {
+			chaptersManifest += '<item id="chapter' + chapter.number + '" href="chapter' + chapter.number + '.xhtml" media-type="application/xhtml+xml"/>';
+			spineManifest    += '<itemref idref="chapter' + chapter.number + '"/>';
+			navContent       += '<li><a href="chapter' + chapter.number + '.xhtml">' + $this.getChapterTitle(chapter, true) + '</a></li>';
+			var chapterContent = '<?xml version="1.0" encoding="UTF-8"?>' +
+				'<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">' +
+				'<head>' +
+					'<title>' +	$this.project.name + '</title>' +
+					'<meta charset="utf-8"/>' +
+				'</head>' +
+				'<body>' +
+					'<section epub:type="bodymatter chapter">' +
+						'<header style="width:100%; text-align:center">' +
+							'<h1>' + $this.getChapterTitle(chapter) + '</h1>' +
+						'</header>';
+			var first = true;
+			chapter.content.forEach(function(scene) {
+				if(first) {
+					first = false;
+				} else {
+					chapterContent += $this.config.content.sceneSeparator;
+				}
+				chapterContent += scene.content;
+			});
+			chapterContent += '</section></body></html>';
+			chapterBlobs["chapter" + chapter.number] = new Blob([chapterContent], {type: 'application/xhtml+xml'});
+		}
 	});
 	// Nav document (OEBPS/nav.xhtml)
 	navContent += '</ol></nav></section></body></html>';

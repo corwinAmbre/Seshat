@@ -5,6 +5,7 @@ var Scene = function() {
 var Chapter = function(number) {
 	this.number = number;
 	this.title = "";
+	this.exported = true;
 	this.content = [new Scene()];
 }
 
@@ -23,7 +24,11 @@ var Project = function(name) {
 			chapterWithoutTitleFormat: '#d.',
 			chapterWithTitleFormatNav: '#t',
 			chapterWithoutTitleFormatNav: 'Chapter #d',
+			exportAllChapters: true,
+			exportFromChapter: 1,
+			exportToChapter: null
 		},
+		exportFormat: 'epub',
 		navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
 	};
 }

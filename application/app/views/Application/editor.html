@@ -21,10 +21,7 @@
 			<i class="fa fa-floppy-o button" title="&{'editor.icons.savetoserver'}" v-else v-on:click="pushToServer()" role="button" tabindex="0" v-on:keydown.enter="pushToServer()" aria-label="&{'editor.icons.savetoserver'}"></i>
 		</div>
 		<div>
-			<i class="fa fa-book button" title="&{'editor.icons.getepub'}" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"></i>
-		</div>
-		<div>
-			<i class="fa fa-gear button" title="&{'editor.icons.setupoutput'}" v-on:click="showEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="showEpubConfig()" aria-label="&{'editor.icons.setupoutput'}"></i>
+			<i class="fa fa-book button" title="&{'editor.icons.setupoutput'}" v-on:click="showEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="showEpubConfig()" aria-label="&{'editor.icons.setupoutput'}"></i>
 		</div>
 		<div>
 			<i class="fa fa-history button" title="&{'editor.icons.history'}" v-on:click="showHistory()" role="button" tabindex="0" v-on:keydown.enter="showHistory()" aria-label="&{'editor.icons.history'}"></i>
@@ -47,27 +44,49 @@
 	<div id="outputConfig">
 		<div>
 			<h2>&{'editor.export.config.title'}</h2>
-			<label>&{'editor.export.config.navpos.label'}</label>
-			<select v-model="exportConfig.navPosition">
-				<option value="start">&{'editor.export.config.navpos.start'}</option>
-				<option value="end">&{'editor.export.config.navpos.end'}</option>
-				<option value="none">&{'editor.export.config.navpos.none'}</option> 
-			</select>
-			<h3>&{'editor.export.config.localization'}</h3>
-			<label>&{'editor.export.config.localization.tableOfContent'}</label>
-			<input type="text" v-model="exportConfig.content.tableOfContent"/>
-			<label>&{'editor.export.config.localization.sceneSeparator'}</label>
-			<input type="text" v-model="exportConfig.content.sceneSeparator"/>
-			<label>&{'editor.export.config.localization.chapterFormat.withTitle'}</label>
-			<input type="text" v-model="exportConfig.content.chapterWithTitleFormat"/>
-			<label>&{'editor.export.config.localization.chapterFormat.withoutTitle'}</label>
-			<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormat"/>
-			<label>&{'editor.export.config.localization.chapterFormat.nav.withTitle'}</label>
-			<input type="text" v-model="exportConfig.content.chapterWithTitleFormatNav"/>
-			<label>&{'editor.export.config.localization.chapterFormat.nav.withoutTitle'}</label>
-			<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormatNav"/>
+			<div class="columns">
+				<div>
+					<h3>&{'editor.export.config.format'}</h3>
+					<label>&{'editor.export.config.format.label'}</label>
+					<select v-model="exportConfig.exportFormat">
+						<option value="epub">&{'editor.export.config.format.epub'}</option>
+						<option value="pdf">&{'editor.export.config.format.pdf'}</option>
+						<option value="txt">&{'editor.export.config.format.txt'}</option>
+					</select>
+					<label style="width: 100%">
+						<input type="checkbox" v-model="exportConfig.content.exportAllChapters" style="width: auto"/>
+						&{'editor.export.config.chapters.exportall'}
+					</label>
+					<label v-if="!exportConfig.content.exportAllChapters">&{'editor.export.config.chapters.startFrom'}</label>
+					<input type="number" v-model="exportConfig.content.exportFromChapter" v-if="!exportConfig.content.exportAllChapters"/>
+					<label v-if="!exportConfig.content.exportAllChapters">&{'editor.export.config.chapters.toEnd'}</label>
+					<input type="number" v-model="exportConfig.content.exportToChapter" v-if="!exportConfig.content.exportAllChapters"/>
+					<label>&{'editor.export.config.navpos.label'}</label>
+					<select v-model="exportConfig.navPosition">
+						<option value="start">&{'editor.export.config.navpos.start'}</option>
+						<option value="end">&{'editor.export.config.navpos.end'}</option>
+						<option value="none">&{'editor.export.config.navpos.none'}</option> 
+					</select>
+				</div>
+				<div>
+					<h3>&{'editor.export.config.localization'}</h3>
+					<label>&{'editor.export.config.localization.tableOfContent'}</label>
+					<input type="text" v-model="exportConfig.content.tableOfContent"/>
+					<label>&{'editor.export.config.localization.sceneSeparator'}</label>
+					<input type="text" v-model="exportConfig.content.sceneSeparator"/>
+					<label>&{'editor.export.config.localization.chapterFormat.withTitle'}</label>
+					<input type="text" v-model="exportConfig.content.chapterWithTitleFormat"/>
+					<label>&{'editor.export.config.localization.chapterFormat.withoutTitle'}</label>
+					<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormat"/>
+					<label>&{'editor.export.config.localization.chapterFormat.nav.withTitle'}</label>
+					<input type="text" v-model="exportConfig.content.chapterWithTitleFormatNav"/>
+					<label>&{'editor.export.config.localization.chapterFormat.nav.withoutTitle'}</label>
+					<input type="text" v-model="exportConfig.content.chapterWithoutTitleFormatNav"/>
+				</div>
+			</div>
 			<div class="confirmationButtons">
-				<button class="btn btn-primary" v-on:click="closeEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="closeEpubConfig()" aria-label="&{'editor.icons.confirmconfig'}"><i class="fa fa-check"></i> <span>&{'editor.icons.confirmconfig'}</span></button>
+				<button class="btn" v-on:click="closeEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="closeEpubConfig()" aria-label="&{'editor.icons.confirmconfig'}"><i class="fa fa-check"></i> <span>&{'editor.icons.confirmconfig'}</span></button>
+				<button class="btn btn-primary" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"><i class="fa fa-book"></i> <span>&{'editor.icons.getepub'}</span></button>
 			</div>
 		</div>
 	</div>
@@ -121,14 +140,14 @@
 			$("#connection-status").addClass("disconnected");
 		}
 	});
-
+	
 	localCalls.appendLocalVersions();
 
-
 	zip.workerScriptsPath = "/public/js/";
-
+	
 	var projectEncrypted = "${project.getLatestVersionContent()}";
 	var projectKey = "${project.idKey}";
+
 	var vault = readVault();
 	var decryptionKey = vault[projectKey];
 	var projectJson = JSON.parse(decryptFromServer(decryptionKey.key, decryptionKey.iv, projectEncrypted));
@@ -137,85 +156,5 @@
 	}
 	var project = prototypeProject(projectJson);
 	project.saved = true;
-	
-	var projectVue = new Vue({
-		el: '#editor',
-		data: project,
-		methods: {
-			goTo: function(number) {
-				window.location.href= "#chapter_" + number;
-			},
-			contentUpdate: function(chapter, scene, event) {
-				this.saved = false;
-				var previousLength = this.chapters[chapter - 1 ].content[scene].content.length;
-				this.chapters[chapter - 1 ].content[scene].content = $(event.target).html().trim();
-				if(previousLength == 0 && this.chapters[chapter - 1 ].content[scene].content.length == 0) {
-					if(event.keyCode == 8 || event.keyCode == 46) {
-						var message = "&{'editor.messages.removescene.firstpart'} " + chapter + " &{'editor.messages.removescene.finalpart'}";
-						var $this = this;
-						askConfirmation(message, "&{'editor.messages.removescene.button'}").pipe(function() {
-							$this.$data.chapters[chapter - 1].removeScene(scene + 1);
-						});
-					}
-				}
-			},
-			pushToServer: function() {
-				saveProjectVersion(this.$data);
-				this.saved = true;
-			},
-			pushLocalVersions: function() {
-				saveLocalVersions(this.$data.remoteId);
-			},
-			addChapter: function() {
-				this.$data.addChapter();
-			},
-			removeChapter: function(chapter) {
-				var message = "&{'editor.messages.removechapter.firstpart'} " + chapter + " &{'editor.messages.removechapter.secondpart'} " + this.chapters[chapter - 1].getWords() + " &{'editor.messages.removechapter.finalpart'}";
-				var $this = this;
-				askConfirmation(message, "&{'editor.messages.removechapter.button'}").pipe(function() {
-					$this.$data.removeChapter(chapter);
-				});
-			},
-			addScene: function(chapter) {
-				this.chapters[chapter - 1].addScene();
-			},
-			getEpub: function() {
-				var epub = new EpubBuilder(project);
-				epub.build(function(result) {
-					var clickEvent;
-					var downloadButton = document.getElementById("download-epub");
-					clickEvent = document.createEvent("MouseEvent");
-					clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-					downloadButton.href = URL.createObjectURL(result);
-					downloadButton.download = project.name + ".epub";
-					downloadButton.dispatchEvent(clickEvent);
-				});
-			},
-			showEpubConfig: function() {
-				$("#outputConfig").css("display", "flex");
-			},
-			closeEpubConfig: function() {
-				$("#outputConfig").css("display", "none");
-			},
-			showHistory: function() {
-				$("#historyDialog").css("display", "flex");
-			},
-			closeHistory: function() {
-				$("#historyDialog").css("display", "none");
-			}
-		},
-		ready: function() {
-			if(this.$data.chapters.length == 1 && this.$data.chapters[0].content.length == 1) {
-				focusOnEditableContent("chapter_1_scene_0", 0);
-				this.$data.saved = true;
-			}
-		}
-	});
-	
-	window.onbeforeunload = function (e) {
-	    if(!project.saved) {
-	    	e.returnValue="&{'editor.messages.warningnotsaved'}";
-	    	return "&{'editor.messages.warningnotsaved'}";
-	    }
-	};
 </script>
+<script type="text/javascript" src="@{'public/js/editor.js'}"></script>
