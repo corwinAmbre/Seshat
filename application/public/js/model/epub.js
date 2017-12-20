@@ -70,22 +70,23 @@ EpubBuilder.prototype.buildPdf = function(callback) {
 		if($this.config.content.exportAllChapters == true || ($this.config.content.exportFromChapter <= chapter.number && $this.config.content.exportToChapter >= chapter.number)) {
 			pdfDoc.addPage();
 			pdfDoc.font('Helvetica-Oblique', 18)
-				.text($this.getChapterTitle(chapter, true) + "\n", {
+				.text($this.getChapterTitle(chapter, true), {
 					align: 'center',
 					features: ["ital"]
 				})
 				.font('Times-Roman', 12);
-				var first = true;
-				chapter.content.forEach(function(scene) {
-					if(first) {
-						first = false;
-					} else {
-						$this.convertHtmlToPdf(pdfDoc, $this.config.content.sceneSeparator, {
-							align: 'center'
-						});
-					}
-					$this.convertHtmlToPdf(pdfDoc, scene.content);
-				});
+			pdfDoc.moveDown();
+			var first = true;
+			chapter.content.forEach(function(scene) {
+				if(first) {
+					first = false;
+				} else {
+					$this.convertHtmlToPdf(pdfDoc, $this.config.content.sceneSeparator, {
+						align: 'center'
+					});
+				}
+				$this.convertHtmlToPdf(pdfDoc, scene.content);
+			});
 		}
 	});	
 	pdfDoc.end();
@@ -101,38 +102,39 @@ EpubBuilder.prototype.convertHtmlToPdf = function(doc, content, options) {
 	}
 	options = options || {};
 	content = content.split('<br/>').join('\n');
-	var paragraphs = content.match(new RegExp('(.*)<div(.)*>(.*)</div>(.*)'));
-	if(paragraphs != null) {
-		options.continued = false;
-		this.convertHtmlToPdf(doc, paragraphs[1], options);
-		options.continues = false;
-		this.convertHtmlToPdf(doc, paragraphs[3], options);
-		options.continues = false;
-		this.convertHtmlToPdf(doc, paragraphs[4], options);
-		return;
-	}	
-	var obliques = content.match(new RegExp('(.*)<i(.)*>(.*)</i>(.*)'));
-	if(obliques != null) {
-		options.continued = true;
-		this.convertHtmlToPdf(doc, obliques[1], options);
+	content = content.split('<br>').join('\n');
+	content = content.split('&nbsp;').join(' ');
+	content = content.split('<div>').join('\n');
+	content = content.split('</div>').join('');
+	content = content.replace(new RegExp("<div(.*)>", "g"), "\n");
+	var italicPos = content.indexOf("<i>");
+	if(italicPos >= 0) {
+		var endOfItalic = content.indexOf("</i>");
+		if(italicPos > 0) {
+			options.continued = true;
+			this.convertHtmlToPdf(doc, content.slice(0, italicPos), options);
+		}
 		doc.font('Times-Italic', 12);
-		this.convertHtmlToPdf(doc, obliques[3], options);
+		this.convertHtmlToPdf(doc, content.slice(italicPos + 3, endOfItalic), options);
 		doc.font('Times-Roman', 12);
 		options.continued = false;
-		this.convertHtmlToPdf(doc, obliques[4], options);
+		this.convertHtmlToPdf(doc, content.slice(endOfItalic + 4), options);
 		return;
 	}
-	var bolds = content.match(new RegExp('(.*)<b(.)*>(.*)</b>(.*)'));
-	if(bolds != null) {
-		options.continued = true;
-		this.convertHtmlToPdf(doc, bolds[1], options);
+	var boldPos = content.indexOf("<b>");
+	if(boldPos >= 0) {
+		var endOfBold = content.indexOf("</b>");
+		if(boldPos > 0) {
+			options.continued = true;
+			this.convertHtmlToPdf(doc, content.slice(0, boldPos), options);
+		}
 		doc.font('Times-Bold', 12);
-		this.convertHtmlToPdf(doc, bolds[3], options);
+		this.convertHtmlToPdf(doc, content.slice(boldPos + 3, endOfBold), options);
 		doc.font('Times-Roman', 12);
 		options.continued = false;
-		this.convertHtmlToPdf(doc, bolds[4], options);
+		this.convertHtmlToPdf(doc, content.slice(endOfBold + 4), options);
 		return;
-	} 
+	}
 	doc.text(content, options);
 }
 

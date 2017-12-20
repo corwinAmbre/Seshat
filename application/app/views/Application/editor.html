@@ -86,7 +86,7 @@
 			</div>
 			<div class="confirmationButtons">
 				<button class="btn" v-on:click="closeEpubConfig()" role="button" tabindex="0" v-on:keydown.enter="closeEpubConfig()" aria-label="&{'editor.icons.confirmconfig'}"><i class="fa fa-check"></i> <span>&{'editor.icons.confirmconfig'}</span></button>
-				<button class="btn btn-primary" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"><i class="fa fa-book"></i> <span>&{'editor.icons.getepub'}</span></button>
+				<button class="btn btn-primary" v-on:click="getEpub()" role="button" tabindex="0" v-on:keydown.enter="getEpub()" aria-label="&{'editor.icons.getepub'}"><i class="fa fa-book"></i> <span>&{'editor.icons.getepub'} {{exportConfig.exportFormat | capitalize}}</span></button>
 			</div>
 		</div>
 	</div>
