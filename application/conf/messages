@@ -84,6 +84,7 @@ editor.export.config.format.label=File type
 editor.export.config.format.epub=Epub
 editor.export.config.format.pdf=PDF
 editor.export.config.format.txt=Text
+editor.export.config.format.doc=Microsoft Word
 editor.export.config.chapters.exportall=Export all chapters
 editor.export.config.chapters.startFrom=First chapter to export
 editor.export.config.chapters.toEnd=Last chapter to export

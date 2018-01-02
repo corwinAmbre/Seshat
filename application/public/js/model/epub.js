@@ -13,7 +13,7 @@ var EpubBuilder = function(project) {
 				exportFromChapter: 1,
 				exportToChapter: null
 			},
-			exportFormat: 'epub', // Authorized values: 'epub', 'pdf', 'txt'
+			exportFormat: 'epub', // Authorized values: 'epub', 'pdf', 'txt', 'docx'
 			navPosition: 'end' // Authorized values: 'start', 'end' and 'none'
 		};
 	} else {
@@ -43,6 +43,9 @@ EpubBuilder.prototype.build = function(callback) {
 	case 'txt':
 		//this.buildTxt(callback);
 		break;
+	case 'docx':
+		this.buildDocx(callback);
+		break;
 	case 'epub':
 	default:
 		this.buildEpub(callback);
@@ -51,6 +54,39 @@ EpubBuilder.prototype.build = function(callback) {
 }
 
 EpubBuilder.prototype.buildTxt = function(callback) {
+}
+
+EpubBuilder.prototype.buildDocx = function(callback) {
+	var $this = this;
+	
+	var content = '<!DOCTYPE html><html><head><title>';
+	content += this.project.name;
+	content += '</title>';
+	content += '<style> .novel-title { text-align: center } .chapter-title { text-align: center } </style>';
+	content += '</head><body>';
+	content += '<div class="novel-title"><h1>' + this.project.name + '</h1></div>';
+	
+	
+	this.project.chapters.forEach(function(chapter) {
+		if($this.config.content.exportAllChapters == true || ($this.config.content.exportFromChapter <= chapter.number && $this.config.content.exportToChapter >= chapter.number)) {
+			content += '<br clear="all" style="page-break-before:always"/>';
+			content += '<div class="chapter-title"><h2>' + $this.getChapterTitle(chapter, false) + '</h2></div>';
+			content += '<div class="chapter-content">';
+			var first = true;
+			chapter.content.forEach(function(scene) {
+				if(first) {
+					first = false;
+				} else {
+					content += '<div class="scene-separator">' + $this.config.content.sceneSeparator + '</div>';
+				}
+				content += scene.content;
+			});
+			content += '</div>';
+		}
+	});
+	content += '</body></html>';
+	var blob = htmlDocx.asBlob(content);
+	callback(blob);
 }
 
 EpubBuilder.prototype.buildPdf = function(callback) {
@@ -70,7 +106,7 @@ EpubBuilder.prototype.buildPdf = function(callback) {
 		if($this.config.content.exportAllChapters == true || ($this.config.content.exportFromChapter <= chapter.number && $this.config.content.exportToChapter >= chapter.number)) {
 			pdfDoc.addPage();
 			pdfDoc.font('Helvetica-Oblique', 18)
-				.text($this.getChapterTitle(chapter, true), {
+				.text($this.getChapterTitle(chapter, false), {
 					align: 'center',
 					features: ["ital"]
 				})
